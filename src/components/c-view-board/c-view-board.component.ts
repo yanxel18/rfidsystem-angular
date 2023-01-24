@@ -4,9 +4,9 @@ import { AppService } from 'src/app/app.service';
 import { Apollo , QueryRef } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { IViewEmployeeBoard, IViewEmployeeBoardRes } from 'src/models/viewboard-model';
-const GET_VIEWBOARD = gql`
-subscription EmployeeBoardAllSub {
-  EmployeeBoardAllSub {
+const GET_VIEWBOARD_SUBSCRIBE = gql`
+subscription EmployeeBoardAllSub ($areaID: Int) {
+  EmployeeBoardAllSub (areaID: $areaID) {
     empID
     tagID
     lastUpdate
@@ -34,9 +34,9 @@ subscription EmployeeBoardAllSub {
   }
 }
 `;
-const GET_VIEWBOARD2 = gql`
-query EmployeeBoardAll {
-  EmployeeBoardAll {
+const GET_VIEWBOARD_TEMPLATE = gql`
+query EmployeeBoardAll($areaId: Int) {
+  EmployeeBoardAll(areaID: $areaId) {
     empID
     tagID
     lastUpdate
@@ -71,87 +71,41 @@ query EmployeeBoardAll {
 })
 export class CViewBoardComponent implements OnInit {
   todoQuery$!: Observable<IViewEmployeeBoard[]>;
-  commentsQuery: QueryRef<any>;
   comments: Observable<any> | undefined;
   constructor(private appService: AppService,
     private apollo: Apollo) {
-
-        this.commentsQuery = apollo.watchQuery({
-          query: GET_VIEWBOARD2
-        }) 
     }
-  //queryRef: QueryRef<any>;
   viewBoard$!: Observable<IViewEmployeeBoard[]>;
 
   async ngOnInit(): Promise<void> {
-    // this.viewBoard$ = this.appService.getViewBoard().valueChanges.pipe(
-    //   map(({ data }) => {
-    //     return data.EmployeeBoardAll;
-    //   })
-    // )
-
     this.getRealtimeBoardView();
-
-    // this.appService.getViewBoard().valueChanges.subscribe((response) => {
-    //   console.log(response.data)
-    // })
   }
-  getViewBoard(): QueryRef<IViewEmployeeBoardRes[]> {
-    return this.apollo.watchQuery<IViewEmployeeBoardRes[]>({
-      query: GET_VIEWBOARD, 
-      fetchPolicy: 'cache-and-network',
-      errorPolicy: 'all',
+  getViewBoard(): QueryRef<IViewEmployeeBoardRes> {
+    return this.apollo.watchQuery<IViewEmployeeBoardRes>({
+      query: GET_VIEWBOARD_TEMPLATE,
+      variables: {
+        areaID: null
+      } 
     });
   }
+
   getRealtimeBoardView(): void {
-     
-   this.commentsQuery?.subscribeToMore({
-      document: GET_VIEWBOARD, 
+   this.getViewBoard().subscribeToMore({
+      document: GET_VIEWBOARD_SUBSCRIBE, 
       variables: {
-        postID: 1243
+        areaID: null
       },
       updateQuery: (prev, { subscriptionData }): any => {
         if (!subscriptionData.data) {
           return prev;
         }
         const EmployeeBoardAll: IViewEmployeeBoard[]  = (subscriptionData.data).EmployeeBoardAllSub;   
- 
         return { ...prev,
           EmployeeBoardAll: EmployeeBoardAll
-        }
-
-        // return  Object.assign({EmployeeBoardAll: {
-        //   empID: null,
-        //   tagID: null,
-        //   lastUpdate: null,
-        //   timeElapse: null,
-        //   displayName: null,
-        //   statusID: null,
-        //   sign: null,
-        //   readwriterID: null,
-        //   comment: null,
-        //   areaID: null,
-        //   areaDesc: null,
-        //   alarm: null,
-        //   setAlarm: null,
-        //   setCount: null,
-        //   locID: null,
-        //   locDesc: null,
-        //   floor: null,
-        //   empProcessID: null,
-        //   processName: null,
-        //   teamID: null,
-        //   teamName: null,
-        //   leaveStart: null,
-        //   leaveEnd: null,
-        //   leaveType: null,
-        // }}, prev, EmployeeBoardAll)
+        } 
       },
     })
-
- 
- 
-   this.todoQuery$ = this.commentsQuery.valueChanges.pipe(map(({ data }) => {
+   this.todoQuery$ = this.getViewBoard().valueChanges.pipe(map(({ data }) => {
     return data.EmployeeBoardAll;
   })) 
 

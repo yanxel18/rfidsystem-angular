@@ -82,7 +82,20 @@ const newHttpLink = (link: HttpLink): ApolloLink => {
       provide: APOLLO_OPTIONS,
       useFactory(link: HttpLink) {
         return {
-          cache: new InMemoryCache(),
+          cache: new InMemoryCache({
+            typePolicies: {
+             Query: {
+                fields:{
+                  EmployeeBoardAll:{
+                    merge(existing, incoming){
+                      return incoming
+                    }
+                  }
+                }
+
+             }
+            }
+          }),
           link: newHttpLink(link),
           defaultOptions: {
             watchQuery: {
