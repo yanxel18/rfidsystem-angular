@@ -19,19 +19,23 @@ export interface IViewEmployeeBoard {
     locID: number | null
     locDesc: string | null
     floor: string | null
+    buildloc: string | null
     empProcessID: number | null
     processName: string | null
     teamID: number | null
     teamName: string | null
     leaveStart: Date | null
     leaveEnd: Date | null
-    leaveType: number | null
-    __typename: string | null | undefined
+    leaveType: number | null 
   }
 
   export interface IViewEmployeeBoardRes { 
-   
-        EmployeeBoardAll: IViewEmployeeBoard [] 
-    
+    EmployeeBoardAll: IViewEmployeeBoard [] 
   }
-  
+  export interface IEmployeeBoardArgs {
+    areaID?: number | null
+    teamID?: number | null
+    locID?: number | null
+    pageoffset?: number | null
+    pagenum?: number | null
+  }

@@ -1,0 +1,20 @@
+<mat-card class="mat-elevation-z1 card-container" fxLayout="row wrap" fxLayoutAlign="center center">
+    <div  class="card-container-holder" fxLayout="row wrap" fxLayoutAlign="center center" >
+        <div class="card-symbol-holder" fxLayout="col wrap" fxLayoutAlign="center center">
+            <div class="card-status-sign" [ngClass]="statusColor()" fxLayout="col wrap" fxLayoutAlign="center center">
+                <p class="sign-text">{{empData.sign}}</p>
+            </div>
+        </div>
+        <div class="card-name-time-holder" fxLayout="col wrap" fxLayoutAlign="center center">
+            <div class="card-name-holder" fxLayout="col wrap" fxLayoutAlign="center center">
+                {{empData.displayName}}
+            </div>
+            <div></div>
+        </div>
+        <div class="card-divider-holder" fxLayout="col wrap" fxLayoutAlign="center center">&nbsp;</div>
+        <div class="card-location-comment-holder" fxLayout="col wrap" fxLayoutAlign="center center">ccc</div>
+    </div>
+</mat-card>
+
+
+

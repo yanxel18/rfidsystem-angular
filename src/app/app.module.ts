@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
@@ -10,22 +10,26 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModules } from 'src/material-modules/material-module';
 import { CViewBoardComponent } from '../components/c-view-board/c-view-board.component';
 import { HttpClientModule, HttpHeaders } from '@angular/common/http';
-import { WebSocketLink } from "@apollo/client/link/ws";
+import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
-
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { registerLocaleData } from '@angular/common';
+import localeJa from '@angular/common/locales/ja';
+import { environment } from 'src/environments/environment';
+import { CBurgerComponent } from '../components/c-burger/c-burger.component';
+import { CEmployeeCardComponent } from '../components/c-employee-card/c-employee-card.component';
 const newHttpLink = (link: HttpLink): ApolloLink => {
-  const uri = 'http://localhost:3000/graphql';
+  const uri = environment.gUrl;
   const ws = new WebSocketLink({
-    uri: `ws://localhost:3000/graphql`,
+    uri: environment.ws,
     options: {
-      reconnect: true
-    }
+      reconnect: true,
+    },
   });
 
   const httpLink = link.create({
     uri,
   });
-
 
   const middleware = new ApolloLink((operation, forward) => {
     operation.setContext({
@@ -39,8 +43,7 @@ const newHttpLink = (link: HttpLink): ApolloLink => {
   const Mainlink = middleware.concat(httpLink);
   const errorlink = (): ApolloLink => {
     return onError(({ graphQLErrors, networkError }) => {
-      if (graphQLErrors)
-        graphQLErrors.map(({ message }) => errorMSG(message));
+      if (graphQLErrors) graphQLErrors.map(({ message }) => errorMSG(message));
       if (networkError) errorMSG(networkError.message);
     });
   };
@@ -54,11 +57,13 @@ const newHttpLink = (link: HttpLink): ApolloLink => {
     const a = msg.includes('QRスキャン');
     console.log(msg);
   };
-  const xlink = split(
-    // split based on operation type
+  const xlink = split( 
     ({ query }) => {
       const definition = getMainDefinition(query);
-      return definition.kind === 'OperationDefinition' && definition.operation === 'subscription';
+      return (
+        definition.kind === 'OperationDefinition' &&
+        definition.operation === 'subscription'
+      );
     },
     ws,
     errorlink().concat(Mainlink)
@@ -66,9 +71,10 @@ const newHttpLink = (link: HttpLink): ApolloLink => {
 
   return xlink;
 };
+registerLocaleData(localeJa);
 
 @NgModule({
-  declarations: [AppComponent, CViewBoardComponent],
+  declarations: [AppComponent, CViewBoardComponent, CBurgerComponent, CEmployeeCardComponent],
   imports: [
     MaterialModules,
     BrowserModule,
@@ -84,17 +90,16 @@ const newHttpLink = (link: HttpLink): ApolloLink => {
         return {
           cache: new InMemoryCache({
             typePolicies: {
-             Query: {
-                fields:{
-                  EmployeeBoardAll:{
-                    merge(existing, incoming){
-                      return incoming
-                    }
-                  }
-                }
-
-             }
-            }
+              Query: {
+                fields: {
+                  EmployeeBoardAll: {
+                    merge(existing, incoming) {
+                      return incoming;
+                    },
+                  },
+                },
+              },
+            },
           }),
           link: newHttpLink(link),
           defaultOptions: {
@@ -106,6 +111,8 @@ const newHttpLink = (link: HttpLink): ApolloLink => {
       },
       deps: [HttpLink],
     },
+    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
+    { provide: LOCALE_ID, useValue: "ja-JP" },
   ],
   bootstrap: [AppComponent],
 })
