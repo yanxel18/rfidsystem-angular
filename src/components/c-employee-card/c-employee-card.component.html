@@ -2,17 +2,28 @@
     <div  class="card-container-holder" fxLayout="row wrap" fxLayoutAlign="center center" >
         <div class="card-symbol-holder" fxLayout="col wrap" fxLayoutAlign="center center">
             <div class="card-status-sign" [ngClass]="statusColor()" fxLayout="col wrap" fxLayoutAlign="center center">
-                <p class="sign-text">{{empData.sign}}</p>
+                <span class="sign-text">{{empData.sign}}</span>
             </div>
         </div>
         <div class="card-name-time-holder" fxLayout="col wrap" fxLayoutAlign="center center">
-            <div class="card-name-holder" fxLayout="col wrap" fxLayoutAlign="center center">
-                {{empData.displayName}}
+            <div class="card-name-holder">
+                <div  class="card-name">
+                    {{empData.displayName}} 
+                </div> 
             </div>
-            <div></div>
+            <div class="card-time">{{empData.timeElapse}}</div>
         </div>
         <div class="card-divider-holder" fxLayout="col wrap" fxLayoutAlign="center center">&nbsp;</div>
-        <div class="card-location-comment-holder" fxLayout="col wrap" fxLayoutAlign="center center">ccc</div>
+        <div class="card-location-comment-holder" fxLayout="col wrap" fxLayoutAlign="center">
+            <div class="card-location-holder">
+                <div  class="card-location">
+                    {{empData.buildloc}}<br/>
+                    {{empData.areaDesc}}
+                </div> 
+            </div>
+            <div class="card-comment">{{empData.comment}}</div> 
+        
+        </div>
     </div>
 </mat-card>
 
