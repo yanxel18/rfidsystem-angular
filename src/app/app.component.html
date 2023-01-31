@@ -1,6 +1,7 @@
 <div class="main-container" [class.is-mobile]="mobileQuery.matches">
     <mat-toolbar  class="main-toolbar">
-        <app-c-burger (click)="snav.toggle()"></app-c-burger> 
+        <app-c-burger></app-c-burger> 
+        <!-- <app-c-burger (click)="snav.toggle()"></app-c-burger>  -->
       <button class="app-name"  mat-button>RFID位置確認リアルタイムシステム</button>
     </mat-toolbar>
   
@@ -14,7 +15,10 @@
       </mat-sidenav>
   
       <mat-sidenav-content>
-        <router-outlet></router-outlet>
+        <div class="body-wrapper">
+          <router-outlet></router-outlet>
+        </div>
+        
       </mat-sidenav-content>
     </mat-sidenav-container>
   </div>

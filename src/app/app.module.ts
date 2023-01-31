@@ -18,6 +18,9 @@ import localeJa from '@angular/common/locales/ja';
 import { environment } from 'src/environments/environment';
 import { CBurgerComponent } from '../components/c-burger/c-burger.component';
 import { CEmployeeCardComponent } from '../components/c-employee-card/c-employee-card.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { CViewBoardNaviComponent } from '../components/c-view-board-navi/c-view-board-navi.component';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 const newHttpLink = (link: HttpLink): ApolloLink => {
   const uri = environment.gUrl;
   const ws = new WebSocketLink({
@@ -42,9 +45,16 @@ const newHttpLink = (link: HttpLink): ApolloLink => {
   });
   const Mainlink = middleware.concat(httpLink);
   const errorlink = (): ApolloLink => {
-    return onError(({ graphQLErrors, networkError }) => {
-      if (graphQLErrors) graphQLErrors.map(({ message }) => errorMSG(message));
-      if (networkError) errorMSG(networkError.message);
+    return onError(({ graphQLErrors, networkError,operation,forward }) => {
+      if (graphQLErrors) graphQLErrors.map(({ message }) => {
+        errorMSG(message)
+        return forward(operation);
+      });
+      if (networkError) {
+        errorMSG(networkError.message);
+        return forward(operation);
+      } 
+      return forward(operation);
     });
   };
   const errorMSG = (msg: string): void => {
@@ -56,6 +66,7 @@ const newHttpLink = (link: HttpLink): ApolloLink => {
     const c = msg.includes('Permission Denied');
     const a = msg.includes('QRスキャン');
     console.log(msg);
+    console.log('Error occured here!!!')
   };
   const xlink = split( 
     ({ query }) => {
@@ -74,7 +85,7 @@ const newHttpLink = (link: HttpLink): ApolloLink => {
 registerLocaleData(localeJa);
 
 @NgModule({
-  declarations: [AppComponent, CViewBoardComponent, CBurgerComponent, CEmployeeCardComponent],
+  declarations: [AppComponent, CViewBoardComponent, CBurgerComponent, CEmployeeCardComponent, CViewBoardNaviComponent],
   imports: [
     MaterialModules,
     BrowserModule,
@@ -82,6 +93,8 @@ registerLocaleData(localeJa);
     ApolloModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    NgxSkeletonLoaderModule,
+    FlexLayoutModule
   ],
   providers: [
     {

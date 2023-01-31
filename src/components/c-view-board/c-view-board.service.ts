@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { IResponseGetEmpCount } from './../../models/viewboard-model';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Apollo, QueryRef } from 'apollo-angular';
 import {
   IEmployeeBoardArgs,
@@ -6,7 +7,7 @@ import {
   IViewEmployeeBoardRes,
 } from 'src/models/viewboard-model';
 import gql from 'graphql-tag';
-import { Observable, map } from 'rxjs';
+import { Observable, Subscription, map } from 'rxjs';
 const GET_VIEWBOARD_SUBSCRIBE = gql`
   subscription EmployeeBoardAllSub($areaID: Int, $teamID: Int, $locID: Int, $pageoffset: Int, $pagenum: Int) {
     EmployeeBoardAllSub(areaID: $areaID,teamID: $teamID,locID: $locID, pageoffset: $pageoffset,pagenum: $pagenum) {
@@ -69,10 +70,18 @@ const GET_VIEWBOARD_TEMPLATE = gql`
     }
   }
 `;
+
+const GET_EMP_COUNT = gql`
+      query Query {
+        EmpCount
+    } 
+`;
 @Injectable({
   providedIn: 'root',
 })
-export class CViewBoardService {
+export class CViewBoardService implements OnDestroy {
+  boardSubscription !: QueryRef<IViewEmployeeBoardRes>;
+  Subscriptions : Subscription [] = [];
   constructor(private apollo: Apollo) {}
   employeeRealtimeView$!: Observable<IViewEmployeeBoard[]>;
 
@@ -84,12 +93,18 @@ export class CViewBoardService {
   //     },
   //   });
   // }
-
+  getEmpCount(): QueryRef<IResponseGetEmpCount> {
+    return this.apollo.watchQuery<IResponseGetEmpCount>(
+      {
+        query: GET_EMP_COUNT
+      }
+    );
+  }
   getRealtimeBoardView(param: IEmployeeBoardArgs): Observable<IViewEmployeeBoard[]> {
-    const t : QueryRef<IViewEmployeeBoardRes>=  this.apollo.watchQuery<IViewEmployeeBoardRes>({
+      this.boardSubscription = this.apollo.watchQuery<IViewEmployeeBoardRes>({
         query: GET_VIEWBOARD_TEMPLATE
       }); 
-     t.subscribeToMore({
+      this.boardSubscription.subscribeToMore({
       document: GET_VIEWBOARD_SUBSCRIBE,
       variables: {
         areaID: param.areaID,
@@ -99,7 +114,7 @@ export class CViewBoardService {
         pagenum: param.pagenum
       },
       updateQuery: (prev, { subscriptionData }): any => {
-        if (!subscriptionData.data) {
+        if (!subscriptionData.data.EmployeeBoardAllSub) {
           return prev;
         }
         const EmployeeBoardAll: IViewEmployeeBoard[] =
@@ -107,8 +122,13 @@ export class CViewBoardService {
         return { ...prev, EmployeeBoardAll: EmployeeBoardAll };
       },
     }); 
-    return  t.valueChanges.pipe(map(({ data }) => {
+    return  this.boardSubscription.valueChanges.pipe(map(({ data }) => {
       return data.EmployeeBoardAll;
     })) 
+  }
+
+  ngOnDestroy(): void {
+    this.boardSubscription.stopPolling();
+   // this.viewSubscription.forEach((s) => s.unsubscribe());
   }
 }

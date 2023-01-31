@@ -1,12 +1,27 @@
+<mat-card-content  class="mat-elevation-z0 view-boardnavi"  fxLayout="column">
+  <div fxLayout="row wrap" fxLayoutAlign="center">
+    <app-c-view-board-navi [InputMaxCount]="empMaxCount | async" [InputPageView]="pagecountview" (OutPageSelect)="getPageNum($event)"></app-c-view-board-navi>
+  </div> 
+</mat-card-content>
+
+<mat-card  class="mat-elevation-z0 main-bulletin-container"  fxLayout="column">
+  <div class="card-area-view" fxLayout="row wrap" fxLayoutAlign="center" >
+      <div  class="per-emp-card" *ngFor="let data of empRealTime$ ; let i = index; trackBy: trackCardIndex ">
+        <app-c-employee-card [empData]="data"></app-c-employee-card>
+      </div>
+</div>
+<div class="card-area-view" fxLayout="row wrap" *ngIf="!empRealTime$ || empRealTime$.length === 0" fxLayoutAlign="center">
+  <div  class="per-emp-card" *ngFor="let data of skeletonLoader; trackBy: trackCardIndex ">
+    <ngx-skeleton-loader count="1" appearance="line" [theme]="{
+      'background-color': '#e2e2e2',
+      'height': '70px',
+      'border-radius': '60px',
+      'width': '350px'
+    }" animation="progress"></ngx-skeleton-loader>
+  </div>
+</div>
 
 
+</mat-card > 
 
 
-
-<div 
-*ngFor="let data of empRealTime$ | async; let i = index"
->
-
-
-<app-c-employee-card [empData]="data" ></app-c-employee-card>
-</div> 

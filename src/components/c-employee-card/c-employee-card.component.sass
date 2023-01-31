@@ -1,8 +1,9 @@
 .card-container
     width:350px  
     height:70px
-    border-radius: 60px
- 
+    max-width:350px  
+    max-height:70px
+    border-radius: 60px 
 .card-container-holder
     //border: 1px solid red
     height:70px
@@ -11,36 +12,56 @@
     justify-content: center  
     max-width: 350px !important
     display: flex 
-.card-symbol-holder
+.card-sign-holder
     //border:1px solid blue
-    display: inline-block    
-    width:44px
-    height:44px
-.card-name-time-holder
-    //border:1px solid green 
-    width:140px
-    height:70px
-.card-name-holder
-    height:48px 
-    display: flex
+    display: flex  
+    width:62px
+    height:62px
+    position: relative
     align-items: center
     justify-content: center
+.card-spinner
+    position: absolute
+    top:0px
+    left:0px 
+    width:62px
+    height:62px 
+    display: flex
+    //border:1px solid red
+:host ::ng-deep .card-spinner circle   
+    stroke: #0086f3
+    stroke-linecap: round !important 
+:host ::ng-deep .card-sign-holder .card-spinner-red circle   
+    stroke: #ff0000
+    stroke-linecap: round !important 
+:host ::ng-deep .card-sign-holder .card-spinner-blue circle   
+    stroke: #0086f3
+    stroke-linecap: round !important    
+.card-name-time-holder 
+    width:140px
+    height:70px
+    //border:1px solid green 
+.card-name   
+    flex: 1 auto
+    height:48px 
+    width:140px
+    line-height: 24px
     overflow: hidden
-.card-name 
-    line-height: 23px
     font-size: 24px
     text-align: center
     color: #6e6e6e 
     word-wrap: break-word 
     align-items: center
-    justify-content: center  
-.card-time 
-    //border:1px solid red
-    height:12px 
+    justify-content: center 
+    //border:1px solid blue 
+.card-time  
+    height:22px 
+    flex: 1 auto
     display: flex 
     color: #6e6e6e 
     align-items: center
     justify-content: center
+    //border:1px solid pink
 .card-divider-holder 
     display: inline-block
     height: 46px
@@ -48,8 +69,7 @@
     width: 1px
     background-color: #cccccc
 .card-location-comment-holder
-    //border:1px solid yellow
-    display: inline-block
+    //border:1px solid orange 
     width:135px
     height:70px
 
@@ -60,44 +80,41 @@
     justify-content: center
     overflow: hidden 
 .card-location
-    //border:1px solid blue 
-    line-height: 16px
-    font-size: 16px
-    text-align: center
+    width: 134px
+    height:22px 
+    //border:1px solid blue  
+    font-size: 16px 
     color: #6e6e6e 
-    word-wrap: break-word 
-    align-items: center
-    justify-content: center  
+    word-wrap: break-word  
+    line-height: 16px 
+    text-align: center
 .card-comment
     //border:1px solid red
-    height:12px 
-    display: flex
-    color: #6e6e6e 
-    align-items: center
-    justify-content: center
+    height:20px 
+    flex: 1
+    color: #6e6e6e  
 
 .card-status-sign
-    width:42px
-    height:42px
+    width:58px
+    height:58px
     //border:1px solid pink
-    border-radius: 25px  
-    overflow: hidden
+    border-radius: 60px  
     text-align: center
     line-height: 40px
     
 .sign-text
     font-size: 26px 
 
-.card-symbol-holder .is-in 
+.card-sign-holder .is-in 
     background-color: #00b8d8
     color: #353535
-.card-symbol-holder .is-out 
+.card-sign-holder .is-out 
     background-color: #2ed652
     color: #353535
-.card-symbol-holder .is-home 
+.card-sign-holder .is-home 
     background-color: #fffb0b
     color: #353535
-.card-symbol-holder .is-leave 
+.card-sign-holder .is-leave 
     background-color: #ee1c1c
     color: #ffffff
 

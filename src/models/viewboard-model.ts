@@ -39,3 +39,12 @@ export interface IViewEmployeeBoard {
     pageoffset?: number | null
     pagenum?: number | null
   }
+
+  export interface IPageValues {
+    pageSize: number,
+    pageIndex: number
+  }
+
+  export interface IResponseGetEmpCount{
+    EmpCount: number | null
+  }

@@ -26,6 +26,7 @@
     "apollo-angular": "^4.2.0",
     "apollo-link-ws": "^1.0.20",
     "graphql": "^16.6.0",
+    "ngx-skeleton-loader": "^6.0.0",
     "roboto-fontface": "^0.10.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
