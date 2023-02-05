@@ -48,3 +48,30 @@ export interface IViewEmployeeBoard {
   export interface IResponseGetEmpCount{
     EmpCount: number | null
   }
+
+  export interface IAreaList {
+    areaID?: number;
+    areaDesc?: string;
+  }
+  
+  export interface ILocationList {
+    locID?: number;
+    buildloc?: string;
+  }
+  
+  export interface ITeamList {
+    teamID?: number;
+    teamName?: string;
+  }
+   
+  export interface IViewDropList {
+    ViewDropList: {
+      IAreaList: IAreaList[] ;
+      ILocationList: ILocationList[] ;
+      ITeamList: ITeamList[];
+    } 
+  }
+  
+  export interface IFilteredCountRes {
+    EmpBoardMaxCountFilter: number
+  }

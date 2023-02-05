@@ -21,15 +21,71 @@ import { CEmployeeCardComponent } from '../components/c-employee-card/c-employee
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { CViewBoardNaviComponent } from '../components/c-view-board-navi/c-view-board-navi.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-const newHttpLink = (link: HttpLink): ApolloLink => {
-  const uri = environment.gUrl;
-  const ws = new WebSocketLink({
-    uri: environment.ws,
-    options: {
-      reconnect: true,
+import { SubscriptionClient } from 'subscriptions-transport-ws';
+import Swal from 'sweetalert2';
+
+const displayErrMsg = () => {
+  const Toast = Swal.mixin({
+    showConfirmButton: false,
+    toast: true,
+    position: 'top-end',
+    icon: 'error',
+    showClass: {
+      backdrop: 'swal2-noanimation', // disable backdrop animation
+      popup: '', // disable popup animation
+      icon: '', // disable icon animation
+    },
+    hideClass: {
+      popup: '', // disable popup fade-out animation
     },
   });
-
+  Toast.fire({
+    text: `サーバーに接続は切断されています。再接続しています。しばらくお待ちください。`,
+    timerProgressBar: true,
+  });
+};
+const customErrorMsg = (message: string) => {
+  const Toast = Swal.mixin({
+    showConfirmButton: false,
+    toast: true,
+    position: 'top-end',
+    icon: 'error',
+    showClass: {
+      backdrop: 'swal2-noanimation', // disable backdrop animation
+      popup: '', // disable popup animation
+      icon: '', // disable icon animation
+    },
+    hideClass: {
+      popup: '', // disable popup fade-out animation
+    },
+  });
+  Toast.fire({
+    text: `${message}`,
+    timerProgressBar: true,
+  });
+};
+const successMsg = (message: string) => {
+  const Toast = Swal.mixin({
+    showConfirmButton: false,
+    toast: true,
+    position: 'top-end',
+    timer: 3000,
+    icon: 'success',
+  });
+  Toast.fire({
+    text: `${message}`,
+    timerProgressBar: true,
+  });
+};
+const newHttpLink = (link: HttpLink): ApolloLink => {
+  const uri = environment.gUrl;
+  const wsLink = new SubscriptionClient(environment.ws, {
+    reconnect: true,
+  });
+  const ws = new WebSocketLink(wsLink);
+  wsLink.onConnected(() => successMsg('サーバーに接続済み。'));
+  wsLink.onDisconnected((err) => displayErrMsg());
+  wsLink.onReconnected(() => successMsg('サーバーに再接続済み。'));
   const httpLink = link.create({
     uri,
   });
@@ -45,15 +101,17 @@ const newHttpLink = (link: HttpLink): ApolloLink => {
   });
   const Mainlink = middleware.concat(httpLink);
   const errorlink = (): ApolloLink => {
-    return onError(({ graphQLErrors, networkError,operation,forward }) => {
-      if (graphQLErrors) graphQLErrors.map(({ message }) => {
-        errorMSG(message)
-        return forward(operation);
-      });
+    return onError(({ graphQLErrors, networkError, operation, forward }) => {
+      if (graphQLErrors)
+        graphQLErrors.map(({ extensions, message }) => {
+          console.log(extensions);
+          errorMSG(message);
+          return forward(operation);
+        });
       if (networkError) {
         errorMSG(networkError.message);
         return forward(operation);
-      } 
+      }
       return forward(operation);
     });
   };
@@ -61,14 +119,8 @@ const newHttpLink = (link: HttpLink): ApolloLink => {
     const m = msg.includes('failure')
       ? 'サーバー接続問題が発生しました！'
       : msg;
-    const u = msg.includes('401') ? true : false;
-    const p = msg.includes('400') ? true : false;
-    const c = msg.includes('Permission Denied');
-    const a = msg.includes('QRスキャン');
-    console.log(msg);
-    console.log('Error occured here!!!')
   };
-  const xlink = split( 
+  const xlink = split(
     ({ query }) => {
       const definition = getMainDefinition(query);
       return (
@@ -85,7 +137,13 @@ const newHttpLink = (link: HttpLink): ApolloLink => {
 registerLocaleData(localeJa);
 
 @NgModule({
-  declarations: [AppComponent, CViewBoardComponent, CBurgerComponent, CEmployeeCardComponent, CViewBoardNaviComponent],
+  declarations: [
+    AppComponent,
+    CViewBoardComponent,
+    CBurgerComponent,
+    CEmployeeCardComponent,
+    CViewBoardNaviComponent,
+  ],
   imports: [
     MaterialModules,
     BrowserModule,
@@ -94,7 +152,7 @@ registerLocaleData(localeJa);
     HttpClientModule,
     BrowserAnimationsModule,
     NgxSkeletonLoaderModule,
-    FlexLayoutModule
+    FlexLayoutModule,
   ],
   providers: [
     {
@@ -124,8 +182,11 @@ registerLocaleData(localeJa);
       },
       deps: [HttpLink],
     },
-    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
-    { provide: LOCALE_ID, useValue: "ja-JP" },
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: { appearance: 'outline' },
+    },
+    { provide: LOCALE_ID, useValue: 'ja-JP' },
   ],
   bootstrap: [AppComponent],
 })
