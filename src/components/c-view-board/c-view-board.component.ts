@@ -21,6 +21,7 @@ import { CViewBoardNaviComponent } from '../c-view-board-navi/c-view-board-navi.
 import { MsgServiceService } from 'src/handlers/msg-service.service';
 import { MatSelectChange } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-c-view-board',
@@ -51,10 +52,12 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(CViewBoardNaviComponent)
   ViewBoardNaviComponent!: CViewBoardNaviComponent;
   constructor(
-    private viewboardService: CViewBoardService
+    private viewboardService: CViewBoardService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     const getpageview: string | null = localStorage?.getItem('pagecountview');
     const getpagenum: string | null = localStorage?.getItem('pagenum');
     const getArea: string | null = localStorage?.getItem('areaSelected');
@@ -136,6 +139,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.selectedLocation = null;
     this.selectedArea = null;
     this.selectedTeam = null;
+    this.selectedAreaText =　"すべて";
     this.reInitializeBoardFromList(false,null);
   }
   private reInitializedBoardView(): void {
@@ -157,17 +161,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
       })
     );
   }
-  // getMaxEmpNum(): void {
-  //   this.viewboardService.getEmpCount().refetch();
-  //   this.Subscriptions.push(
-  //     this.viewboardService
-  //       .getEmpCount()
-  //       .valueChanges.pipe(take(1))
-  //       .subscribe(({ data }) => {
-  //         this.empMaxCount = data.EmpCount ? data.EmpCount : 0;
-  //       })
-  //   );
-  // }
+ 
   getCurrentFilteredCount(): void {
     const paramDTO: IEmployeeBoardArgs = {
       areaID: this.selectedArea,

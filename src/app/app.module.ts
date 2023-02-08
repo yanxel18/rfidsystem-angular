@@ -44,26 +44,7 @@ const displayErrMsg = () => {
     timerProgressBar: true,
   });
 };
-const customErrorMsg = (message: string) => {
-  const Toast = Swal.mixin({
-    showConfirmButton: false,
-    toast: true,
-    position: 'top-end',
-    icon: 'error',
-    showClass: {
-      backdrop: 'swal2-noanimation', // disable backdrop animation
-      popup: '', // disable popup animation
-      icon: '', // disable icon animation
-    },
-    hideClass: {
-      popup: '', // disable popup fade-out animation
-    },
-  });
-  Toast.fire({
-    text: `${message}`,
-    timerProgressBar: true,
-  });
-};
+ 
 const successMsg = (message: string) => {
   const Toast = Swal.mixin({
     showConfirmButton: false,

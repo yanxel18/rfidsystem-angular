@@ -103,13 +103,7 @@ export class CViewBoardService implements OnDestroy {
   constructor(private apollo: Apollo
     ,private msgHandler: MsgServiceService) {}
   employeeRealtimeView$!: Observable<IViewEmployeeBoard[]>;
-  getEmpCount(): QueryRef<IResponseGetEmpCount> {
-    return this.apollo.watchQuery<IResponseGetEmpCount>(
-      {
-        query: GET_EMP_COUNT, 
-      }
-    );
-  }
+ 
 
   getFilteredCount(param: IEmployeeBoardArgs): QueryRef<IFilteredCountRes> { 
     return this.apollo.watchQuery<IFilteredCountRes>(
