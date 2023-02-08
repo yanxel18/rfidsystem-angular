@@ -27,10 +27,23 @@ export interface IViewEmployeeBoard {
     leaveStart: Date | null
     leaveEnd: Date | null
     leaveType: number | null 
+    empLoc: number | null
+    empArea: number | null
   }
-
-  export interface IViewEmployeeBoardRes { 
-    EmployeeBoardAll: IViewEmployeeBoard [] 
+  export interface EmployeeBoardWithRatio { 
+    EmployeeBoardAll: {
+      EmployeeBoardAllSub: IViewEmployeeBoard []
+      AreaRatio?: IEmployeeCountRatio  
+    }
+      
+  }
+  export interface IEmployeeCountRatio {
+    currentPercent?: string | null
+    currentWorkerCount?: number | null
+    totalWorkerCount?: number | null
+  }
+  export interface IViewEmployedeBoardRes { 
+    EmployeeBoardAllSub: IViewEmployeeBoard [] 
   }
   export interface IEmployeeBoardArgs {
     areaID?: number | null

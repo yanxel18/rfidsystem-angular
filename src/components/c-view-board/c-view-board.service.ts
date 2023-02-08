@@ -1,10 +1,9 @@
-import { IFilteredCountRes, IResponseGetEmpCount, IViewDropList } from './../../models/viewboard-model';
+import { EmployeeBoardWithRatio, IFilteredCountRes, IResponseGetEmpCount, IViewDropList } from './../../models/viewboard-model';
 import { Injectable, OnDestroy } from '@angular/core';
 import { Apollo, QueryRef } from 'apollo-angular';
 import {
   IEmployeeBoardArgs,
-  IViewEmployeeBoard,
-  IViewEmployeeBoardRes,
+  IViewEmployeeBoard, 
 } from 'src/models/viewboard-model';
 import gql from 'graphql-tag';
 import { Observable, Subscription, map } from 'rxjs';
@@ -12,62 +11,58 @@ import { MsgServiceService } from 'src/handlers/msg-service.service';
 const GET_VIEWBOARD_SUBSCRIBE = gql`
   subscription EmployeeBoardAllSub($areaID: Int, $teamID: Int, $locID: Int, $pageoffset: Int, $pagenum: Int) {
     EmployeeBoardAllSub(areaID: $areaID,teamID: $teamID,locID: $locID, pageoffset: $pageoffset,pagenum: $pagenum) {
+      EmployeeBoardAllSub {
       empID
-      tagID
       lastUpdate
       timeElapse
       displayName
       statusID
       sign
-      readwriterID
       comment
       areaID
       areaDesc
-      alarm
       setAlarm
-      setCount
       locID
       locDesc
       floor
       buildloc
-      empProcessID
       processName
-      teamID
-      teamName
-      leaveStart
-      leaveEnd
-      leaveType
+      teamID 
+      }
+      AreaRatio {
+      currentPercent
+      currentWorkerCount
+      totalWorkerCount
+    }
     }
   }
 `;
 const GET_VIEWBOARD_TEMPLATE = gql`
   query EmployeeBoardAll($areaId: Int, $teamID: Int, $locID: Int, $pageoffset: Int, $pagenum: Int) {
     EmployeeBoardAll(areaID: $areaId,teamID: $teamID,locID: $locID, pageoffset: $pageoffset,pagenum: $pagenum) {
+      EmployeeBoardAllSub{
       empID
-      tagID
       lastUpdate
       timeElapse
       displayName
       statusID
       sign
-      readwriterID
       comment
       areaID
       areaDesc
-      alarm
       setAlarm
-      setCount
       locID
       locDesc
       floor
       buildloc
-      empProcessID
       processName
-      teamID
-      teamName
-      leaveStart
-      leaveEnd
-      leaveType
+      teamID 
+      }
+      AreaRatio {
+      currentPercent
+      currentWorkerCount
+      totalWorkerCount
+    }
     }
   }
 `;
@@ -103,7 +98,7 @@ const GET_VIEWDROPLIST = gql`
   providedIn: 'root',
 })
 export class CViewBoardService implements OnDestroy {
-  boardSubscription !: QueryRef<IViewEmployeeBoardRes>;
+  boardSubscription !: QueryRef<EmployeeBoardWithRatio>;
   Subscriptions : Subscription [] = [];
   constructor(private apollo: Apollo
     ,private msgHandler: MsgServiceService) {}
@@ -135,8 +130,8 @@ export class CViewBoardService implements OnDestroy {
       }
     );
   }
-  getRealtimeBoardView(param: IEmployeeBoardArgs): Observable<IViewEmployeeBoard[]> {
-      this.boardSubscription = this.apollo.watchQuery<IViewEmployeeBoardRes>({
+  getRealtimeBoardView(param: IEmployeeBoardArgs): Observable<EmployeeBoardWithRatio> {
+      this.boardSubscription = this.apollo.watchQuery<EmployeeBoardWithRatio>({
         query: GET_VIEWBOARD_TEMPLATE, 
       }); 
       this.boardSubscription.subscribeToMore({
@@ -149,19 +144,19 @@ export class CViewBoardService implements OnDestroy {
         pagenum: param.pagenum
       },
       updateQuery: (prev, { subscriptionData }): any => {
-        if (!subscriptionData.data.EmployeeBoardAllSub) {
+        if (!subscriptionData.data) {
           return prev;
         }
-        const EmployeeBoardAll: IViewEmployeeBoard[] =
-          subscriptionData.data.EmployeeBoardAllSub;
-        return { ...prev, EmployeeBoardAll: EmployeeBoardAll };
+        const receivedPayload: EmployeeBoardWithRatio =
+          subscriptionData.data.EmployeeBoardAllSub; 
+        return { ...prev, EmployeeBoardAll: receivedPayload };
       },onError: (err) =>{ 
         this.msgHandler.generalMessageError(err.message)
         //window.location.reload();
       }
     }); 
-    return  this.boardSubscription.valueChanges.pipe(map(({ data }) => {
-      return data.EmployeeBoardAll;
+    return  this.boardSubscription.valueChanges.pipe(map(({ data }) => { 
+      return data;
     })) 
   }
 

@@ -1,6 +1,7 @@
 import {
   IAreaList,
   IEmployeeBoardArgs,
+  IEmployeeCountRatio,
   ILocationList,
   IPageValues,
   ITeamList,
@@ -17,16 +18,20 @@ import { Observable, map, Subscription, take } from 'rxjs';
 import { IViewEmployeeBoard } from 'src/models/viewboard-model';
 import { CViewBoardService } from './c-view-board.service';
 import { CViewBoardNaviComponent } from '../c-view-board-navi/c-view-board-navi.component';
+import { MsgServiceService } from 'src/handlers/msg-service.service';
+import { MatSelectChange } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
 
 @Component({
   selector: 'app-c-view-board',
   templateUrl: './c-view-board.component.html',
   styleUrls: ['./c-view-board.component.sass'],
-  providers:[CViewBoardService],
+  providers: [CViewBoardService],
   encapsulation: ViewEncapsulation.None,
 })
 export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   empRealTime$!: IViewEmployeeBoard[];
+  checkDataSubscription!: Subscription;
   comments: Observable<any> | undefined;
   empMaxCount: number = 0;
   pagecountview: number = 15;
@@ -40,16 +45,20 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   selectedLocation: number | null = null;
   selectedTeam: number | null = null;
   selectorFlag: boolean = false;
-
+  selectedAreaText: string = "すべて";
+  viewboardStatusRatio?: IEmployeeCountRatio;
   @ViewChild('titleContainer', { static: true }) public titleContainer: any;
   @ViewChild(CViewBoardNaviComponent)
   ViewBoardNaviComponent!: CViewBoardNaviComponent;
-  constructor(private viewboardService: CViewBoardService) {}
+  constructor(
+    private viewboardService: CViewBoardService
+  ) {}
 
   ngOnInit(): void {
     const getpageview: string | null = localStorage?.getItem('pagecountview');
     const getpagenum: string | null = localStorage?.getItem('pagenum');
     const getArea: string | null = localStorage?.getItem('areaSelected');
+    const getAreaText: string | null = localStorage?.getItem('selectedAreaText');
     const getTeam: string | null = localStorage?.getItem('teamSelected');
     const getLoc: string | null = localStorage?.getItem('locSelected');
     this.pagecountview = getpageview
@@ -58,16 +67,25 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.skeletonLoader = new Array<number>(this.pagecountview);
     this.pagenum = getpagenum ? parseInt(getpagenum) : this.pagenum;
     this.selectedArea = getArea ? parseInt(getArea) : null;
+    this.selectedAreaText =getAreaText ? getAreaText : "すべて";
     this.selectedTeam = getTeam ? parseInt(getTeam) : null;
     this.selectedLocation = getLoc ? parseInt(getLoc) : null;
     this.getCurrentFilteredCount();
     this.initializeBoardView();
   }
-  reInitializeBoardFromList(): void {
+  reInitializeBoardFromList(allowed:boolean, event: MatSelectChange | null): void {
+    if (allowed) {
+      const val = (event?.source.selected as MatOption)?.viewValue
+      this.selectedAreaText = val ? val : "すべて";
+    } 
     this.Subscriptions.forEach((s) => s.unsubscribe());
     localStorage.setItem(
       'areaSelected',
       this.selectedArea ? this.selectedArea.toString() : '-'
+    );
+    localStorage.setItem(
+      'selectedAreaText',
+      this.selectedAreaText ? this.selectedAreaText.toString() : 'すべて'
     );
     localStorage.setItem(
       'teamSelected',
@@ -93,8 +111,18 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     };
     this.Subscriptions.push(
       this.viewboardService.getRealtimeBoardView(paramDTO).subscribe({
-        next: (data) => {
-          this.empRealTime$ = data;
+        next: ( { EmployeeBoardAll}) => {  
+          
+         
+          if (EmployeeBoardAll.EmployeeBoardAllSub) { 
+            if(EmployeeBoardAll.EmployeeBoardAllSub.length > 0) { 
+              this.empRealTime$ = EmployeeBoardAll.EmployeeBoardAllSub; 
+            } 
+            else this.empRealTime$ = [];
+          }
+          if (EmployeeBoardAll.AreaRatio) {
+            this.viewboardStatusRatio =  EmployeeBoardAll.AreaRatio;
+          } 
         },
         error: () => {
           this.Subscriptions.forEach((s) => s.unsubscribe());
@@ -104,7 +132,12 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
       })
     );
   }
-
+  selectOptionClear(): void {
+    this.selectedLocation = null;
+    this.selectedArea = null;
+    this.selectedTeam = null;
+    this.reInitializeBoardFromList(false,null);
+  }
   private reInitializedBoardView(): void {
     const paramDTO: IEmployeeBoardArgs = {
       areaID: this.selectedArea,
