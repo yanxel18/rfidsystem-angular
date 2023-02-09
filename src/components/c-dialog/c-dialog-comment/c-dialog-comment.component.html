@@ -1,0 +1,36 @@
+<div mat-dialog-content  class="dialog-container">
+  <div
+    class="worker-name-container"
+    fxLayout="col wrap"
+    fxLayoutAlign="left center"
+  >
+   名: {{ this.receivedData.displayName }}
+  </div>
+  <div
+  class="comment-text-area-container"
+  fxLayout="col wrap"
+  fxLayoutAlign="center center"
+><form
+[formGroup]="commentFormGroup" 
+(keydown.enter)="$event.preventDefault()">
+
+  <mat-form-field class="comment-text-area">
+    <mat-label>備考:</mat-label>
+    <input class="comment-text" matInput #remarks maxlength="20" formControlName="comment"  placeholder="例: 高崎GC外出" />
+    <button *ngIf="remarks.value" matSuffix mat-icon-button aria-label="Clear" (click)="commentFormGroup.reset()">
+        <mat-icon>close</mat-icon>
+      </button>
+    <mat-hint align="end">{{ remarks.value.length }} / 20</mat-hint>
+    
+  </mat-form-field>
+</form>
+</div>
+</div>
+<div mat-dialog-actions fxLayout="col wrap" fxLayoutAlign="center center">
+<button   mat-flat-button (click)="updateComment()" color="primary" class="save-button">
+    <mat-icon>save</mat-icon>
+</button>
+<button mat-stroked-button (click)="closeDialog()" class="close-button">
+    <mat-icon>cancel</mat-icon>
+</button>
+</div>
