@@ -24,8 +24,9 @@
             <div  class="card-location" fxLayout="row wrap" fxLayoutAlign="center center">
                 {{empData.areaDesc}}
             </div> 
-            <div class="card-comment" fxLayout="row wrap" fxLayoutAlign="center center">
-                {{ empData.comment ? empData.comment : 'ー' }}
+            <div class="card-comment" fxLayout="row wrap">
+                <button mat-flat-button class="card-comment-button" (click)="openCommentBox()" matTooltip="備考入力ボタン" >{{ empData.comment ? empData.comment : 'ー' }}</button>
+                
             </div> 
         
         </div>

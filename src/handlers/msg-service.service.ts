@@ -8,18 +8,28 @@ export class MsgServiceService {
   public LoadSuccess: boolean = true;
  
  
-  public generalMessageError(message: string): void {
+  public generalMessage(): void {
     const Toast = Swal.mixin({
       toast: true,
       position: 'top-end',
       showConfirmButton: false,
-      timer: 5000,
+      timer: 2000,
     });
     Toast.fire({
-      icon: 'error',
-      title: 'エラーメッセージ',
-      text: `${message}`,
+      icon: 'success',
+      showClass: {
+        backdrop: 'swal2-noanimation', // disable backdrop animation
+        popup: '', // disable popup animation
+        icon: '', // disable icon animation
+      },
+      hideClass: {
+        popup: '', // disable popup fade-out animation
+      },
+      text: `再接続しています。しばらくお待ちください。`,
       timerProgressBar: true, 
+      didOpen() {
+        Toast.showLoading();
+      },
       didClose: () => {
         window.location.reload();
       }

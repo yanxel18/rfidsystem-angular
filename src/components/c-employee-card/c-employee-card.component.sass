@@ -33,10 +33,16 @@
     stroke-linecap: round !important 
 :host ::ng-deep .card-sign-holder .card-spinner-red circle   
     stroke: #ff0000
+    animation: blinker 1s linear infinite
     stroke-linecap: round !important 
 :host ::ng-deep .card-sign-holder .card-spinner-blue circle   
     stroke: #0086f3
     stroke-linecap: round !important    
+@keyframes blinker 
+  50% 
+    opacity: 0
+  
+
 .card-name-time-holder 
     width:140px
     height:70px
@@ -70,7 +76,7 @@
     background-color: #cccccc
 .card-location-comment-holder
     //border:1px solid orange 
-    width:135px
+    width:141px
     height:70px
 
 .card-location-holder
@@ -88,12 +94,25 @@
     word-wrap: break-word  
     line-height: 16px 
     text-align: center
-.card-comment
-    //border:1px solid red
-    height:20px 
-    flex: 1
+.card-comment 
+    height:26px 
+    padding: 0px 
+    
+.card-comment-button  
+    word-break: break-all
+    font-size:12px
+    letter-spacing: 0px !important
+    padding: 0px !important
+    overflow: hidden
+    line-height: 12px
+    width: 136px 
+    text-align: center
+    height:26px  
+    border-top-right-radius: 0px
+    border-top-left-radius: 0px
+    border-bottom-left-radius: 0px
+    border-bottom-right-radius: 10009px  
     color: #6e6e6e  
-
 .card-status-sign
     width:58px
     height:58px

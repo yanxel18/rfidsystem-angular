@@ -144,16 +144,14 @@ export class CViewBoardService implements OnDestroy {
         const receivedPayload: EmployeeBoardWithRatio =
           subscriptionData.data.EmployeeBoardAllSub; 
         return { ...prev, EmployeeBoardAll: receivedPayload };
-      },onError: (err) =>{ 
-        this.msgHandler.generalMessageError(err.message)
-        //window.location.reload();
+      },onError: (err) =>{  
+        this.msgHandler.generalMessage()
       }
     }); 
-    return  this.boardSubscription.valueChanges.pipe(map(({ data }) => { 
+    return  this.boardSubscription.valueChanges.pipe(map(({ data }) => {  
       return data;
     })) 
-  }
-
+  }  
   ngOnDestroy(): void {
     this.boardSubscription.stopPolling();
    // this.viewSubscription.forEach((s) => s.unsubscribe());

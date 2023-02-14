@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  gUrl: "http://localhost:3000/graphql",
-  ws: "ws://localhost:3000/graphql"
+  gUrl: "http://172.31.12.206:3100/graphql",
+  ws: "ws://172.31.12.206:3100/graphql"
 };

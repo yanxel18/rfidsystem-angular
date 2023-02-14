@@ -151,14 +151,15 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
       pagenum: this.pagenum,
     };
     this.Subscriptions.push(
-      this.viewboardService.getRealtimeBoardView(paramDTO).subscribe({
-        next: (data) => {
-          if (data) {
-            this.viewDropList();
-            //this.getMaxEmpNum();
-          }
-        },
-      })
+      this.viewboardService.getRealtimeBoardView(paramDTO).subscribe((data) => {
+        if (data) {
+          this.viewDropList();
+          //this.getMaxEmpNum();
+        }
+      }, Error  =>{
+        console.log("error here new!!")
+      }
+       )
     );
   }
  

@@ -1,7 +1,8 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { IViewEmployeeBoard } from 'src/models/viewboard-model';
 import { StatusStyle } from 'src/models/enum';
-
+import { MatDialog } from '@angular/material/dialog';
+import { CDialogCommentComponent } from '../c-dialog/c-dialog-comment/c-dialog-comment.component';
 @Component({
   selector: 'app-c-employee-card',
   templateUrl: './c-employee-card.component.html',
@@ -12,7 +13,13 @@ export class CEmployeeCardComponent implements OnInit {
   @Input() divCount!: number;
   @Input() rowCount!: number; 
   @Output() nameoutput = new EventEmitter<string>();
- 
+  constructor(private commentDialogBox: MatDialog){
+
+  }
+  commentDialog = {
+    minWidth: '320px',
+    maxWidth: '825px',
+  };
   ngOnInit(): void { }
 
   progressValue(): number {
@@ -32,6 +39,13 @@ export class CEmployeeCardComponent implements OnInit {
     else if (elapseTimeHour === 0) return computeTime;
     else if (elapseTimeHour > 0) return MAXSPINNERVAL;
     else return 0;
+  }
+  openCommentBox(): void { 
+    this.commentDialogBox.open(CDialogCommentComponent, {
+      disableClose: false,
+      minWidth: this.commentDialog.minWidth,
+      data: this.empData,
+    });
   }
   statusColor(): string {  
     switch (this.empData.statusID) {

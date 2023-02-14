@@ -23,6 +23,8 @@ import { CViewBoardNaviComponent } from '../components/c-view-board-navi/c-view-
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
 import Swal from 'sweetalert2';
+import { CDialogCommentComponent } from '../components/c-dialog/c-dialog-comment/c-dialog-comment.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const displayErrMsg = () => {
   const Toast = Swal.mixin({
@@ -42,9 +44,12 @@ const displayErrMsg = () => {
   Toast.fire({
     text: `サーバーに接続は切断されています。再接続しています。しばらくお待ちください。`,
     timerProgressBar: true,
+    didOpen() {
+      Toast.showLoading();
+    },
   });
 };
- 
+
 const successMsg = (message: string) => {
   const Toast = Swal.mixin({
     showConfirmButton: false,
@@ -58,6 +63,22 @@ const successMsg = (message: string) => {
     timerProgressBar: true,
   });
 };
+const successMsgOnRecon = (message: string) => {
+  const Toast = Swal.mixin({
+    showConfirmButton: false,
+    toast: true,
+    position: 'top-end',
+    timer: 2000,
+    icon: 'success',
+  });
+  Toast.fire({
+    text: `${message}`,
+    timerProgressBar: true,
+    didClose: () => {
+      window.location.reload();
+    },
+  });
+};
 const newHttpLink = (link: HttpLink): ApolloLink => {
   const uri = environment.gUrl;
   const wsLink = new SubscriptionClient(environment.ws, {
@@ -66,7 +87,7 @@ const newHttpLink = (link: HttpLink): ApolloLink => {
   const ws = new WebSocketLink(wsLink);
   wsLink.onConnected(() => successMsg('サーバーに接続済み。'));
   wsLink.onDisconnected((err) => displayErrMsg());
-  wsLink.onReconnected(() => successMsg('サーバーに再接続済み。'));
+  wsLink.onReconnected(() => successMsgOnRecon('サーバーに再接続済み。'));
   const httpLink = link.create({
     uri,
   });
@@ -124,6 +145,7 @@ registerLocaleData(localeJa);
     CBurgerComponent,
     CEmployeeCardComponent,
     CViewBoardNaviComponent,
+    CDialogCommentComponent,
   ],
   imports: [
     MaterialModules,
@@ -134,6 +156,8 @@ registerLocaleData(localeJa);
     BrowserAnimationsModule,
     NgxSkeletonLoaderModule,
     FlexLayoutModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [
     {

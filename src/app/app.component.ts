@@ -8,7 +8,7 @@ import {ChangeDetectorRef, Component, OnDestroy} from '@angular/core';
 })
 export class AppComponent  {
   mobileQuery: MediaQueryList;
-
+  yearNow = (new Date()).getFullYear();
   fillerNav = Array.from({length: 50}, (_, i) => `Nav Item ${i + 1}`);
 
   private _mobileQueryListener: () => void;
