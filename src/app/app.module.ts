@@ -176,6 +176,7 @@ registerLocaleData(localeJa);
                 },
               },
             },
+            addTypename: false
           }),
           link: newHttpLink(link),
           defaultOptions: {
