@@ -1,9 +1,28 @@
 .board-view-main-container
-    background-color: #ffffff 
-    border:1px solid blue
+    background-color: #ffffff  
+    height: calc(100% - 107px)
+    overflow-y: auto
+    scroll-behavior: smooth
+.board-view-main-container::-webkit-scrollbar
+    -webkit-appearance: none
+    width: 7px
+.board-view-main-container::-webkit-scrollbar-track
+    border-radius: 10px
+    background: rgba(0,0,0,0.1)
+ 
+.board-view-main-container::-webkit-scrollbar-thumb
+    -webkit-appearance: true
+    border-radius: 10px
+    background: rgba(0,0,0,0.2)
+
+.board-view-main-container::-webkit-scrollbar-thumb:hover
+    background: rgba(0,0,0,0.4)
+
+.board-view-main-container::-webkit-scrollbar-thumb:active
+    background: rgba(0,0,0,0.9)   
 .view-boardnavi-container  
     display: flex 
-    background-color: #ffffff 
+    background-color: #ffffff  
 .employee-ratio-container
     margin: 5px 0px 2px 0px  
     display: flex 
@@ -12,8 +31,8 @@
     color: #727272
 .page-navi 
     padding-top: 10px
-    max-width: 590px
-    min-width: 590px
+    max-width: 610px
+    min-width: 610px
     height: 60px   
 .droplist-container  
     padding-top: 10px

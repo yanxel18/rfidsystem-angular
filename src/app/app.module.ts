@@ -25,6 +25,7 @@ import { SubscriptionClient } from 'subscriptions-transport-ws';
 import Swal from 'sweetalert2';
 import { CDialogCommentComponent } from '../components/c-dialog/c-dialog-comment/c-dialog-comment.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CScrolltopComponent } from '../components/c-scrolltop/c-scrolltop.component';
 
 const displayErrMsg = () => {
   const Toast = Swal.mixin({
@@ -146,6 +147,7 @@ registerLocaleData(localeJa);
     CEmployeeCardComponent,
     CViewBoardNaviComponent,
     CDialogCommentComponent,
+    CScrolltopComponent,
   ],
   imports: [
     MaterialModules,

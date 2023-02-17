@@ -1,76 +1,148 @@
- 
-  <div  class="view-boardnavi-container"  fxLayoutAlign="center"  fxLayout="row wrap"  >
-    <div class="page-navi">
-      <app-c-view-board-navi [InputMaxCount]="empMaxCount" [InputPageView]="pagecountview" [InputPageNum]="pagenum" (OutPageSelect)="getPageNum($event)"></app-c-view-board-navi>
-    </div> 
-    <div class="droplist-container" fxLayout="row wrap" fxLayoutAlign="end" >
-        <mat-form-field>
-          <mat-label>所属エリア名</mat-label>
-          <mat-select panelClass="area-select" [(value)]="selectedArea" (selectionChange)="reInitializeBoardFromList(true,$event)" name="area">
-            <mat-option [value]="null">ー</mat-option> 
-             <mat-option *ngFor="let list of areaList" [value]="list.areaID">
-              {{list.areaDesc}}
-            </mat-option> 
-          </mat-select>
-        </mat-form-field>  
-  
-        <mat-form-field>
-          <mat-label>号棟</mat-label>
-          <mat-select panelClass="bldg-select" [(value)]="selectedLocation" (selectionChange)="reInitializeBoardFromList(false,$event)" name="loc">
-            <mat-option [value]="null">ー</mat-option> 
-             <mat-option *ngFor="let list of locationList" [value]="list.locID">
-              {{list.buildloc}}
-            </mat-option> 
-          </mat-select>
-        </mat-form-field>  
-  
-        <mat-form-field>
-          <mat-label>班</mat-label>
-          <mat-select panelClass="team-select" [(value)]="selectedTeam" (selectionChange)="reInitializeBoardFromList(false,$event)" name="team">
-            <mat-option [value]="null">ー</mat-option> 
-             <mat-option *ngFor="let list of teamList" [value]="list.teamID">
-              {{list.teamName}}
-            </mat-option> 
-          </mat-select>
-        </mat-form-field>  
-        <div class="clear-button-container" fxLayout="row wrap" fxLayoutAlign="center center">
-          <button mat-icon-button class="clear-button" (click)="selectOptionClear()" matTooltip="リセット">
-            <mat-icon>autorenew</mat-icon>
-          </button>
-        </div>
-        <!-- <div class="order-button-container" fxLayout="row wrap" fxLayoutAlign="center center">
-          <button mat-icon-button  class="order-button"  matTooltip="並び変え">
-            <mat-icon>sort_by_alpha</mat-icon>
-          </button>
-        </div> -->
+<div
+  class="view-boardnavi-container"
+  fxLayoutAlign="center"
+  fxLayout="row wrap"
+>
+  <div class="page-navi">
+    <app-c-view-board-navi
+      [InputMaxCount]="empMaxCount"
+      [InputPageView]="pagecountview"
+      [InputPageNum]="pagenum"
+      (OutPageSelect)="getPageNum($event)"
+    ></app-c-view-board-navi>
+  </div>
+  <div class="droplist-container" fxLayout="row wrap" fxLayoutAlign="end">
+    <mat-form-field>
+      <mat-label>所属エリア名</mat-label>
+      <mat-select
+        panelClass="area-select"
+        [(value)]="selectedArea"
+        (selectionChange)="reInitializeBoardFromList(true, $event)"
+        name="area"
+      >
+        <mat-option [value]="null">ー</mat-option>
+        <mat-option *ngFor="let list of areaList" [value]="list.areaID">
+          {{ list.areaDesc }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>号棟</mat-label>
+      <mat-select
+        panelClass="bldg-select"
+        [(value)]="selectedLocation"
+        (selectionChange)="reInitializeBoardFromList(false, $event)"
+        name="loc"
+      >
+        <mat-option [value]="null">ー</mat-option>
+        <mat-option *ngFor="let list of locationList" [value]="list.locID">
+          {{ list.buildloc }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>班</mat-label>
+      <mat-select
+        panelClass="team-select"
+        [(value)]="selectedTeam"
+        (selectionChange)="reInitializeBoardFromList(false, $event)"
+        name="team"
+      >
+        <mat-option [value]="null">ー</mat-option>
+        <mat-option *ngFor="let list of teamList" [value]="list.teamID">
+          {{ list.teamName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div
+      class="clear-button-container"
+      fxLayout="row wrap"
+      fxLayoutAlign="center center"
+    >
+      <button
+        mat-icon-button
+        class="clear-button"
+        (click)="selectOptionClear()"
+        matTooltip="リセット"
+      >
+        <mat-icon>autorenew</mat-icon>
+      </button>
+    </div>
+    <!-- <div class="order-button-container" fxLayout="row wrap" fxLayoutAlign="center center">
+              <button mat-icon-button  class="order-button"  matTooltip="並び変え">
+                <mat-icon>sort_by_alpha</mat-icon>
+              </button>
+            </div> -->
+  </div>
+</div>
+<div
+class="mat-elevation-z0 employee-ratio-container"
+fxLayoutAlign="center"
+fxLayout="row wrap"
+>
+<span class="area-display"
+  >所属エリア: <b>{{ selectedAreaText }}</b></span
+>
+<span class="area-percent-display"
+  >在室率: <b>{{ viewboardStatusRatio?.currentPercent }}</b></span
+>
+<span class="area-currentin-display"
+  >在室人数:
+  <b
+    >{{ viewboardStatusRatio?.currentWorkerCount }}/{{
+      viewboardStatusRatio?.totalWorkerCount
+    }}</b
+  ></span
+>
+</div>
+<div class="board-view-main-container">
+
+
+  <div class="mat-elevation-z0 main-bulletin-container" fxLayout="column">
+    <div class="card-area-view" fxLayout="row wrap" fxLayoutAlign="center">
+      <div
+        class="per-emp-card"
+        *ngFor="
+          let data of empRealTime$;
+          let i = index;
+          trackBy: trackCardIndex
+        "
+      >
+        <app-c-employee-card [empData]="data"></app-c-employee-card>
+      </div>
+    </div>
+    <div
+      fxLayout="row wrap"
+      fxLayoutAlign="center"
+      class="data-not-found-msg"
+      *ngIf="!empRealTime$ || empRealTime$.length === 0"
+    >
+      <h3>データがありません。</h3>
+    </div>
+    <div
+      class="card-area-view"
+      fxLayout="row wrap"
+      *ngIf="!empRealTime$ || empRealTime$.length === 0"
+      fxLayoutAlign="center"
+    >
+      <div
+        class="per-emp-card"
+        *ngFor="let data of skeletonLoader; trackBy: trackCardIndex"
+      >
+        <ngx-skeleton-loader
+          count="1"
+          appearance="line"
+          [theme]="{
+            'background-color': '#e2e2e2',
+            height: '70px',
+            'border-radius': '60px',
+            width: '350px'
+          }"
+          animation="progress"
+        ></ngx-skeleton-loader>
+      </div>
     </div>
   </div>
-  <div  class="mat-elevation-z0 employee-ratio-container"  fxLayoutAlign="center"  fxLayout="row wrap"  >
-    <span class="area-display">所属エリア: <b>{{selectedAreaText}}</b></span>
-    <span class="area-percent-display">在室率: <b>{{viewboardStatusRatio?.currentPercent}}</b></span> 
-    <span class="area-currentin-display">在室人数: <b>{{viewboardStatusRatio?.currentWorkerCount}}/{{viewboardStatusRatio?.totalWorkerCount}}</b></span>
-  </div>
-  <div class="mat-elevation-z0 main-bulletin-container"  fxLayout="column">
-    <div class="card-area-view" fxLayout="row wrap" fxLayoutAlign="center" >
-        <div  class="per-emp-card" *ngFor="let data of empRealTime$ ; let i = index; trackBy: trackCardIndex ">
-          <app-c-employee-card [empData]="data"></app-c-employee-card>
-        </div>
-  </div>
-  <div  fxLayout="row wrap" fxLayoutAlign="center"  class="data-not-found-msg" *ngIf="!empRealTime$ || empRealTime$.length === 0" >
-   <h3>データがありません。</h3>
-  </div>
-  <div class="card-area-view" fxLayout="row wrap" *ngIf="!empRealTime$ || empRealTime$.length === 0" fxLayoutAlign="center">
-    <div  class="per-emp-card" *ngFor="let data of skeletonLoader; trackBy: trackCardIndex ">
-      <ngx-skeleton-loader count="1" appearance="line" [theme]="{
-        'background-color': '#e2e2e2',
-        'height': '70px',
-        'border-radius': '60px',
-        'width': '350px'
-      }" animation="progress"></ngx-skeleton-loader>
-    </div>
-  </div> 
-</div> 
- 
-
-
-
+</div>

@@ -31,13 +31,14 @@ import { Router } from '@angular/router';
   encapsulation: ViewEncapsulation.None,
 })
 export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
+  DEFAULTCOUNT: number = 100;
   empRealTime$!: IViewEmployeeBoard[];
   checkDataSubscription!: Subscription;
   comments: Observable<any> | undefined;
   empMaxCount: number = 0;
-  pagecountview: number = 15;
+  pagecountview: number = this.DEFAULTCOUNT;
   pagenum: number = 1;
-  skeletonLoader: Array<number> = [15];
+  skeletonLoader: Array<number> = [this.DEFAULTCOUNT];
   Subscriptions: Subscription[] = [];
   areaList!: IAreaList[];
   locationList!: ILocationList[];
