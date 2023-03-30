@@ -97,7 +97,7 @@ fxLayout="row wrap"
   ></span
 >
 </div>
-<div class="board-view-main-container">
+<div class="board-view-main-container i" [ngClass]="boardStyleOnClick()">
 
 
   <div class="mat-elevation-z0 main-bulletin-container" fxLayout="column">
@@ -145,4 +145,17 @@ fxLayout="row wrap"
       </div>
     </div>
   </div>
+
 </div>
+<mat-expansion-panel (opened)="openGraph = true"
+(closed)="openGraph = false" class="mat-elevation-z0" [expanded]="openGraph">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Personal data
+    </mat-panel-title>
+    <mat-panel-description>
+      Type your name and age
+      <mat-icon>account_circle</mat-icon>
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  </mat-expansion-panel>

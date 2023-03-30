@@ -12,3 +12,8 @@ export interface ISelectedWorkerResponse {
 export interface INewComment  {
     comment: string
   }
+
+export interface ICommentDialog {
+    minWidth: string,
+    maxWidth: string
+}

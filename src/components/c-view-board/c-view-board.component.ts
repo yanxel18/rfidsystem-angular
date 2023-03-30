@@ -22,6 +22,7 @@ import { MsgServiceService } from 'src/handlers/msg-service.service';
 import { MatSelectChange } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { Router } from '@angular/router';
+import { BoardGraphStyle } from 'src/models/enum';
 
 @Component({
   selector: 'app-c-view-board',
@@ -43,6 +44,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   areaList!: IAreaList[];
   locationList!: ILocationList[];
   teamList!: ITeamList[];
+  openGraph: boolean = true;
   selectedArea: number | null = null;
   selectedLocation: number | null = null;
   selectedTeam: number | null = null;
@@ -190,6 +192,9 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     );
   }
 
+  boardStyleOnClick(): string {
+    return this.openGraph ? BoardGraphStyle.IS_OPEN : BoardGraphStyle.IS_CLOSE
+  }
   viewDropList(): void {
     this.viewboardService.getViewDropList().refetch();
     this.Subscriptions.push(

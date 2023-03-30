@@ -1,14 +1,15 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { IViewEmployeeBoard } from 'src/models/viewboard-model';
 import { StatusStyle } from 'src/models/enum';
 import { MatDialog } from '@angular/material/dialog';
 import { CDialogCommentComponent } from '../c-dialog/c-dialog-comment/c-dialog-comment.component';
+import { ICommentDialog } from 'src/models/dialog-model';
 @Component({
   selector: 'app-c-employee-card',
   templateUrl: './c-employee-card.component.html',
   styleUrls: ['./c-employee-card.component.sass'],
 })
-export class CEmployeeCardComponent implements OnInit {
+export class CEmployeeCardComponent  {
   @Input() empData!: IViewEmployeeBoard;
   @Input() divCount!: number;
   @Input() rowCount!: number; 
@@ -16,14 +17,12 @@ export class CEmployeeCardComponent implements OnInit {
   constructor(private commentDialogBox: MatDialog){
 
   }
-  commentDialog = {
+  commentDialog: ICommentDialog = {
     minWidth: '320px',
     maxWidth: '825px',
-  };
-  ngOnInit(): void { }
-
+  }; 
   progressValue(): number {
-    const HOUR: number = 60;
+    const HOURMIN: number = 60;
     const MAXSPINNERVAL: number = 100;
     const elapseTimeHour: number = this.empData.timeElapse
       ? parseInt(this.empData.timeElapse.slice(0, 2))
@@ -31,8 +30,7 @@ export class CEmployeeCardComponent implements OnInit {
     const elapseTimeMinute: number = this.empData.timeElapse
       ? parseInt(this.empData.timeElapse.slice(3, 5))
       : 0;
-    const computeTime = parseFloat(
-      ((elapseTimeMinute / HOUR) * MAXSPINNERVAL).toFixed(2)
+    const computeTime = parseFloat(((elapseTimeMinute / HOURMIN) * MAXSPINNERVAL).toFixed(2)
     );
       
     if (this.empData.statusID === 1) return 0;

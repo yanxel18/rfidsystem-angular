@@ -5,3 +5,8 @@ export enum StatusStyle {
     IS_HOME = 'is-home',
     IS_LEAVE = 'is-leave'
 }
+
+export enum BoardGraphStyle {
+    IS_OPEN = 'graph-is-open',
+    IS_CLOSE = 'graph-is-close'
+}
