@@ -147,15 +147,18 @@ fxLayout="row wrap"
   </div>
 
 </div>
-<mat-expansion-panel (opened)="openGraph = true"
-(closed)="openGraph = false" class="mat-elevation-z0" [expanded]="openGraph">
+
+<mat-expansion-panel (opened)="openGraph = true;openGraphPanel()"
+(closed)="openGraph = false" class="mat-elevation-z5" [expanded]="openGraph">
   <mat-expansion-panel-header>
     <mat-panel-title>
-      Personal data
-    </mat-panel-title>
+      <b>在室率推移</b>
+    </mat-panel-title> 
     <mat-panel-description>
-      Type your name and age
-      <mat-icon>account_circle</mat-icon>
+      ※グラフを表示するには「所属エリア名」,「号棟」, 「班」でフィルタリングしてください。
     </mat-panel-description>
   </mat-expansion-panel-header>
+ 
+    <app-c-perarea-graph *ngIf="perAreaGraphData" [rawData]="perAreaGraphData"></app-c-perarea-graph>
+   
   </mat-expansion-panel>

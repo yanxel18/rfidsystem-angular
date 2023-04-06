@@ -26,6 +26,7 @@ import Swal from 'sweetalert2';
 import { CDialogCommentComponent } from '../components/c-dialog/c-dialog-comment/c-dialog-comment.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CScrolltopComponent } from '../components/c-scrolltop/c-scrolltop.component';
+import { CPerareaGraphComponent } from '../components/c-perarea-graph/c-perarea-graph.component';
 
 const displayErrMsg = () => {
   const Toast = Swal.mixin({
@@ -148,6 +149,7 @@ registerLocaleData(localeJa);
     CViewBoardNaviComponent,
     CDialogCommentComponent,
     CScrolltopComponent,
+    CPerareaGraphComponent
   ],
   imports: [
     MaterialModules,

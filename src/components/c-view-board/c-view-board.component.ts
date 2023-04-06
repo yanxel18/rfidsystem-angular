@@ -4,7 +4,9 @@ import {
   IEmployeeCountRatio,
   ILocationList,
   IPageValues,
+  IPerAreaGraph,
   ITeamList,
+  perAreaArgs,
 } from './../../models/viewboard-model';
 import {
   Component,
@@ -17,8 +19,7 @@ import {
 import { Observable, map, Subscription, take } from 'rxjs';
 import { IViewEmployeeBoard } from 'src/models/viewboard-model';
 import { CViewBoardService } from './c-view-board.service';
-import { CViewBoardNaviComponent } from '../c-view-board-navi/c-view-board-navi.component';
-import { MsgServiceService } from 'src/handlers/msg-service.service';
+import { CViewBoardNaviComponent } from '../c-view-board-navi/c-view-board-navi.component'; 
 import { MatSelectChange } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { Router } from '@angular/router';
@@ -35,7 +36,6 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   DEFAULTCOUNT: number = 100;
   empRealTime$!: IViewEmployeeBoard[];
   checkDataSubscription!: Subscription;
-  comments: Observable<any> | undefined;
   empMaxCount: number = 0;
   pagecountview: number = this.DEFAULTCOUNT;
   pagenum: number = 1;
@@ -45,6 +45,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   locationList!: ILocationList[];
   teamList!: ITeamList[];
   openGraph: boolean = true;
+  perAreaGraphData!: IPerAreaGraph[]
   selectedArea: number | null = null;
   selectedLocation: number | null = null;
   selectedTeam: number | null = null;
@@ -52,13 +53,12 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   selectedAreaText: string = "すべて";
   viewboardStatusRatio?: IEmployeeCountRatio;
   @ViewChild('titleContainer', { static: true }) public titleContainer: any;
-  @ViewChild(CViewBoardNaviComponent)
-  ViewBoardNaviComponent!: CViewBoardNaviComponent;
+  @ViewChild(CViewBoardNaviComponent) ViewBoardNaviComponent!: CViewBoardNaviComponent;
   constructor(
     private viewboardService: CViewBoardService,
     private router: Router
   ) {}
-
+ 
   ngOnInit(): void {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     const getpageview: string | null = localStorage?.getItem('pagecountview');
@@ -78,6 +78,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.selectedLocation = getLoc ? parseInt(getLoc) : null;
     this.getCurrentFilteredCount();
     this.initializeBoardView();
+    this.initializeGraph();
   }
   reInitializeBoardFromList(allowed:boolean, event: MatSelectChange | null): void {
     if (allowed) {
@@ -106,8 +107,24 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getCurrentFilteredCount();
     this.initializeBoardView();
     this.ViewBoardNaviComponent.rerenderpaginator();
+    this.initializeGraph();
+    
+
+  }
+
+  private initializeGraph(): void {
+    const perAreaDTO: perAreaArgs = {
+      areaId: this.selectedArea,
+      locationId: this.selectedLocation,
+      teamId: this.selectedTeam
+    }
+    this.Subscriptions.push(this.viewboardService.getPerAreaGraph(perAreaDTO).valueChanges.subscribe(({ data }) =>{
+      if(data) this.perAreaGraphData = data.PerAreaGraph; 
+    }));
+ 
   }
   private initializeBoardView(): void {
+
     const paramDTO: IEmployeeBoardArgs = {
       areaID: this.selectedArea,
       teamID: this.selectedTeam,
@@ -117,9 +134,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     };
     this.Subscriptions.push(
       this.viewboardService.getRealtimeBoardView(paramDTO).subscribe({
-        next: ( { EmployeeBoardAll}) => {  
-          
-         
+        next: ( { EmployeeBoardAll}) => {   
           if (EmployeeBoardAll.EmployeeBoardAllSub) { 
             if(EmployeeBoardAll.EmployeeBoardAllSub.length > 0) { 
               this.empRealTime$ = EmployeeBoardAll.EmployeeBoardAllSub; 
@@ -130,6 +145,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
             this.viewboardStatusRatio =  EmployeeBoardAll.AreaRatio;
           } 
         },
+
         error: () => {
           this.Subscriptions.forEach((s) => s.unsubscribe());
           this.initializeBoardView();
@@ -137,6 +153,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
         },
       })
     );
+    
   }
   selectOptionClear(): void {
     this.selectedLocation = null;
@@ -192,6 +209,9 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     );
   }
 
+  openGraphPanel(): void {
+     
+  }
   boardStyleOnClick(): string {
     return this.openGraph ? BoardGraphStyle.IS_OPEN : BoardGraphStyle.IS_CLOSE
   }

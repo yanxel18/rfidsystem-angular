@@ -9,13 +9,13 @@ export class CBurgerComponent {
   @Input() init: boolean | undefined;
   @Output() opened = new EventEmitter<any>();
 
-  active = false;
+  public active = false;
 
   ngOnInit() {
     this.active = this.init || false;
   }
 
-  onBurgerClicked() {
+  public onBurgerClicked() {
     this.active = !this.active;
     this.opened.emit();
   }

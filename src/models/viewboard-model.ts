@@ -88,3 +88,25 @@ export interface IViewEmployeeBoard {
   export interface IFilteredCountRes {
     EmpBoardMaxCountFilter: number
   }
+  export interface IPerAreaStatistics {
+    bldgName: string | null
+    actualProc: string | null
+    workerInTotal: number | null
+    workerTotal: number | null
+    workerInPercent: number | null
+  }
+
+  export interface IPerAreaGraph {
+    x: string 
+    y: number 
+  }
+
+  export interface perAreaArgs {
+    areaId: number | null
+    locationId: number | null
+    teamId: number | null
+  }
+
+  export interface IPerAreaGraphResponse {
+    PerAreaGraph : IPerAreaGraph []
+  }
