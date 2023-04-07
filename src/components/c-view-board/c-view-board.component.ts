@@ -44,8 +44,8 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   areaList!: IAreaList[];
   locationList!: ILocationList[];
   teamList!: ITeamList[];
-  openGraph: boolean = true;
-  perAreaGraphData!: IPerAreaGraph[]
+  openGraph: boolean = false;
+  perAreaGraphData!: IPerAreaGraph[];
   selectedArea: number | null = null;
   selectedLocation: number | null = null;
   selectedTeam: number | null = null;
@@ -67,6 +67,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     const getAreaText: string | null = localStorage?.getItem('selectedAreaText');
     const getTeam: string | null = localStorage?.getItem('teamSelected');
     const getLoc: string | null = localStorage?.getItem('locSelected');
+    const getViewBoard: string | null = localStorage?.getItem('vgrph');
     this.pagecountview = getpageview
       ? parseInt(getpageview)
       : this.pagecountview;
@@ -76,6 +77,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.selectedAreaText =getAreaText ? getAreaText : "すべて";
     this.selectedTeam = getTeam ? parseInt(getTeam) : null;
     this.selectedLocation = getLoc ? parseInt(getLoc) : null;
+    this.openGraph = getViewBoard ==="1" ? true: false;
     this.getCurrentFilteredCount();
     this.initializeBoardView();
     this.initializeGraph();
@@ -172,12 +174,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     };
     this.Subscriptions.push(
       this.viewboardService.getRealtimeBoardView(paramDTO).subscribe((data) => {
-        if (data) {
-          this.viewDropList();
-          //this.getMaxEmpNum();
-        }
-      }, Error  =>{
-        console.log("error here new!!")
+        if (data) this.viewDropList();
       }
        )
     );
@@ -209,10 +206,9 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     );
   }
 
-  openGraphPanel(): void {
-     
-  }
+
   boardStyleOnClick(): string {
+    localStorage.setItem('vgrph',this.openGraph ? '1' : '0');
     return this.openGraph ? BoardGraphStyle.IS_OPEN : BoardGraphStyle.IS_CLOSE
   }
   viewDropList(): void {

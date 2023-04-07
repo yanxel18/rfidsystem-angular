@@ -183,9 +183,7 @@ export class CViewBoardService implements OnDestroy {
         pagenum: param.pagenum,
       },
       updateQuery: (prev, { subscriptionData }): any => {
-        if (!subscriptionData.data) {
-          return prev;
-        }
+        if (!subscriptionData.data) return prev;
         const receivedPayload: EmployeeBoardWithRatio =
           subscriptionData.data.EmployeeBoardAllSub;
         return { ...prev, EmployeeBoardAll: receivedPayload };

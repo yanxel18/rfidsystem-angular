@@ -27,6 +27,7 @@ import { CDialogCommentComponent } from '../components/c-dialog/c-dialog-comment
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CScrolltopComponent } from '../components/c-scrolltop/c-scrolltop.component';
 import { CPerareaGraphComponent } from '../components/c-perarea-graph/c-perarea-graph.component';
+import { CMainDashboardComponent } from '../components/c-main-dashboard/c-main-dashboard.component';
 
 const displayErrMsg = () => {
   const Toast = Swal.mixin({
@@ -149,7 +150,8 @@ registerLocaleData(localeJa);
     CViewBoardNaviComponent,
     CDialogCommentComponent,
     CScrolltopComponent,
-    CPerareaGraphComponent
+    CPerareaGraphComponent,
+    CMainDashboardComponent
   ],
   imports: [
     MaterialModules,

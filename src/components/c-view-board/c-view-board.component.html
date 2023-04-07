@@ -148,7 +148,7 @@ fxLayout="row wrap"
 
 </div>
 
-<mat-expansion-panel (opened)="openGraph = true;openGraphPanel()"
+<mat-expansion-panel (opened)="openGraph = true"
 (closed)="openGraph = false" class="mat-elevation-z5" [expanded]="openGraph">
   <mat-expansion-panel-header>
     <mat-panel-title>
@@ -158,7 +158,8 @@ fxLayout="row wrap"
       ※グラフを表示するには「所属エリア名」,「号棟」, 「班」でフィルタリングしてください。
     </mat-panel-description>
   </mat-expansion-panel-header>
- 
+ <div  *ngIf="!perAreaGraphData" class="graph-loading" fxLayout="row wrap" fxLayoutAlign="center center" >
+<mat-spinner  [diameter]="50" ></mat-spinner>
+</div>  
     <app-c-perarea-graph *ngIf="perAreaGraphData" [rawData]="perAreaGraphData"></app-c-perarea-graph>
-   
   </mat-expansion-panel>
