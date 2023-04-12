@@ -88,13 +88,7 @@ export interface IViewEmployeeBoard {
   export interface IFilteredCountRes {
     EmpBoardMaxCountFilter: number
   }
-  export interface IPerAreaStatistics {
-    bldgName: string | null
-    actualProc: string | null
-    workerInTotal: number | null
-    workerTotal: number | null
-    workerInPercent: number | null
-  }
+ 
 
   export interface IPerAreaGraph {
     x: string 
@@ -109,4 +103,30 @@ export interface IViewEmployeeBoard {
 
   export interface IPerAreaGraphResponse {
     PerAreaGraph : IPerAreaGraph []
+  }
+
+  export interface ITotalArea {
+    total: number | null
+    percent: number | null
+    workerIn: number | null
+  }
+
+  export interface IPerArea {
+    area: string | null
+    bldg: string | null
+    workerIn: number | null
+    workerInTotal: number | null
+    percent: number | null
+  }
+
+  export interface IPerAreaTotalStatistics {
+    PerArea: IPerArea []  
+    TotalArea: ITotalArea [] 
+  }
+
+  export interface ISkeletonLoader {
+    'background-color': string
+    height: string
+    'border-radius': string
+    width: string
   }

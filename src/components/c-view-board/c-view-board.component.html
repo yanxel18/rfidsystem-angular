@@ -11,7 +11,7 @@
       (OutPageSelect)="getPageNum($event)"
     ></app-c-view-board-navi>
   </div>
-  <div class="droplist-container" fxLayout="row wrap" fxLayoutAlign="end">
+  <div class="droplist-container " fxLayout="row wrap"fxLayoutAlign="end">
     <mat-form-field>
       <mat-label>所属エリア名</mat-label>
       <mat-select
@@ -134,12 +134,7 @@ fxLayout="row wrap"
         <ngx-skeleton-loader
           count="1"
           appearance="line"
-          [theme]="{
-            'background-color': '#e2e2e2',
-            height: '70px',
-            'border-radius': '60px',
-            width: '350px'
-          }"
+          [theme]=loaderStyle
           animation="progress"
         ></ngx-skeleton-loader>
       </div>
@@ -151,7 +146,7 @@ fxLayout="row wrap"
 <mat-expansion-panel (opened)="openGraph = true"
 (closed)="openGraph = false" class="mat-elevation-z5" [expanded]="openGraph">
   <mat-expansion-panel-header>
-    <mat-panel-title>
+    <mat-panel-title class="panel-chart-title"><mat-icon> show_chart</mat-icon>
       <b>在室率推移</b>
     </mat-panel-title> 
     <mat-panel-description>

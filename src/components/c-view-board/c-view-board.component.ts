@@ -5,6 +5,7 @@ import {
   ILocationList,
   IPageValues,
   IPerAreaGraph,
+  ISkeletonLoader,
   ITeamList,
   perAreaArgs,
 } from './../../models/viewboard-model';
@@ -16,7 +17,7 @@ import {
   AfterViewInit,
   ViewEncapsulation,
 } from '@angular/core';
-import { Observable, map, Subscription, take } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { IViewEmployeeBoard } from 'src/models/viewboard-model';
 import { CViewBoardService } from './c-view-board.service';
 import { CViewBoardNaviComponent } from '../c-view-board-navi/c-view-board-navi.component'; 
@@ -52,6 +53,12 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   selectorFlag: boolean = false;
   selectedAreaText: string = "すべて";
   viewboardStatusRatio?: IEmployeeCountRatio;
+  loaderStyle: ISkeletonLoader = {
+    'background-color': '#e2e2e2',
+    height: '70px',
+    'border-radius': '60px',
+    width: '350px'
+  }
   @ViewChild('titleContainer', { static: true }) public titleContainer: any;
   @ViewChild(CViewBoardNaviComponent) ViewBoardNaviComponent!: CViewBoardNaviComponent;
   constructor(

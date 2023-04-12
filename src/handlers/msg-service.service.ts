@@ -6,7 +6,8 @@ import Swal from 'sweetalert2';
 export class MsgServiceService {
   public messages: string | undefined;
   public LoadSuccess: boolean = true;
- 
+  
+  constructor() { }
  
   public generalMessage(): void {
     const Toast = Swal.mixin({
@@ -53,5 +54,5 @@ export class MsgServiceService {
 
     　
   }
-  constructor() { }
+ 
 }

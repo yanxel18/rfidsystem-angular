@@ -108,8 +108,7 @@ const newHttpLink = (link: HttpLink): ApolloLink => {
   const errorlink = (): ApolloLink => {
     return onError(({ graphQLErrors, networkError, operation, forward }) => {
       if (graphQLErrors)
-        graphQLErrors.map(({ extensions, message }) => {
-          console.log(extensions);
+        graphQLErrors.map(({ extensions, message }) => { 
           errorMSG(message);
           return forward(operation);
         });

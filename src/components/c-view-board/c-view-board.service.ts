@@ -1,7 +1,7 @@
 import {
   EmployeeBoardWithRatio,
-  IFilteredCountRes, 
-  IPerAreaGraphResponse, 
+  IFilteredCountRes,
+  IPerAreaGraphResponse,
   IViewDropList,
   perAreaArgs,
 } from './../../models/viewboard-model';
@@ -121,14 +121,13 @@ const GET_VIEWDROPLIST = gql`
   }
 `;
 const GET_PERAREA_GRAPH = gql`
-  query Query($areaId: Int, $locationId: Int,$teamId: Int) {
-    PerAreaGraph(areaID: $areaId, locationID: $locationId,teamID: $teamId) {
-      x:DateSelect
-      y:WorkerRate
+  query Query($areaId: Int, $locationId: Int, $teamId: Int) {
+    PerAreaGraph(areaID: $areaId, locationID: $locationId, teamID: $teamId) {
+      x: DateSelect
+      y: WorkerRate
     }
   }
 `;
-
 
 @Injectable({
   providedIn: 'root',
@@ -150,17 +149,17 @@ export class CViewBoardService implements OnDestroy {
     });
   }
 
- getPerAreaGraph(param: perAreaArgs): QueryRef<IPerAreaGraphResponse> {
-  return this.apollo.watchQuery<IPerAreaGraphResponse>({
-    query: GET_PERAREA_GRAPH,
-    variables: {
-      areaId: param.areaId,
-      locationId: param.locationId,
-      teamId: param.teamId
-    },
-    pollInterval: (1000 * 60 *5)
-  })
- }
+  getPerAreaGraph(param: perAreaArgs): QueryRef<IPerAreaGraphResponse> {
+    return this.apollo.watchQuery<IPerAreaGraphResponse>({
+      query: GET_PERAREA_GRAPH,
+      variables: {
+        areaId: param.areaId,
+        locationId: param.locationId,
+        teamId: param.teamId,
+      },
+      pollInterval: 1000 * 60 * 5,
+    });
+  }
 
   getViewDropList(): QueryRef<IViewDropList> {
     return this.apollo.watchQuery<IViewDropList>({
@@ -203,4 +202,3 @@ export class CViewBoardService implements OnDestroy {
     // this.viewSubscription.forEach((s) => s.unsubscribe());
   }
 }
- 

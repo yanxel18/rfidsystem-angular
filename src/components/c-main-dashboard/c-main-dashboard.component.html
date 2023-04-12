@@ -1,1 +1,128 @@
-<p>c-main-dashboard works!</p>
+<mat-card class="main-dashboard-container">
+  <div class="dashboard-toolbar"> 
+    
+  </div>
+  <div
+    *ngIf="$totalAreaData | async"
+    class="mat-elevation-z0 dashboard-areavalue-container"
+  >
+    <div
+      class="mat-elevation-z0 dashboard-areavalue"
+      *ngFor="
+        let x of ($totalAreaData | async)!?.TotalArea;
+        let i = index;
+        trackBy: trackArea
+      "
+      fxLayout="row wrap"
+      fxLayoutAlign="center"
+    >
+      <mat-card class="areavalue-box box-areain">
+        <div class="box-area-container-top">在室人数</div>
+        <div class="box-area-left-right-container" fxLayout="row wrap">
+          <div class="box-area-container-left" fxLayoutAlign="center center">
+            {{ x.workerIn }}
+          </div>
+          <div class="box-area-container-right-areain" fxLayoutAlign="end">
+            <mat-icon> bar_chart</mat-icon>
+          </div>
+        </div>
+      </mat-card>
+      <mat-card class="areavalue-box box-totalworker">
+        <div class="box-area-container-top">出社人数</div>
+        <div class="box-area-left-right-container" fxLayout="row wrap">
+          <div class="box-area-container-left" fxLayoutAlign="center center">
+            {{ x.total }}
+          </div>
+          <div class="box-area-container-right-totalworker" fxLayoutAlign="end">
+            <mat-icon> bar_chart</mat-icon>
+          </div>
+        </div>
+      </mat-card>
+      <mat-card class="areavalue-box box-percent">
+        <div class="box-area-container-top">在室率</div>
+        <div class="box-area-left-right-container" fxLayout="row wrap">
+          <div class="box-area-container-left" fxLayoutAlign="center center">
+            {{ x.percent }}%
+          </div>
+          <div class="box-area-container-right-percent" fxLayoutAlign="end">
+            <mat-icon> bar_chart</mat-icon>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+
+  <div
+    *ngIf="!($totalAreaData | async)"
+    class="mat-elevation-z0 skeleton-box dashboard-areavalue-container"
+    fxLayout="row wrap"
+    fxLayoutAlign="center"
+  >
+    <ngx-skeleton-loader
+      class="areavalue-box skeleton-box"
+      count="1"
+      appearance="line"
+      [theme]="skeletonStyle"
+      animation="progress"
+    ></ngx-skeleton-loader>
+    <ngx-skeleton-loader
+      class="areavalue-box skeleton-box"
+      count="1"
+      appearance="line"
+      [theme]="skeletonStyle"
+      animation="progress"
+    ></ngx-skeleton-loader>
+    <ngx-skeleton-loader
+      class="areavalue-box skeleton-box"
+      count="1"
+      appearance="line"
+      [theme]="skeletonStyle"
+      animation="progress"
+    ></ngx-skeleton-loader>
+  </div>
+  <mat-card class="dashboard-content">    
+    
+
+    <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)"
+    class="mat-elevation-z8">
+
+<!-- Position Column -->
+<ng-container matColumnDef="position">
+ <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">
+   No.
+ </th>
+ <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+</ng-container>
+
+<!-- Name Column -->
+<ng-container matColumnDef="name">
+ <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
+   Name
+ </th>
+ <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+</ng-container>
+
+<!-- Weight Column -->
+<ng-container matColumnDef="weight">
+ <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by weight">
+   Weight
+ </th>
+ <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+</ng-container>
+
+<!-- Symbol Column -->
+<ng-container matColumnDef="symbol">
+ <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by symbol">
+   Symbol
+ </th>
+ <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+</ng-container>
+
+<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+
+
+</mat-card>
+</mat-card>

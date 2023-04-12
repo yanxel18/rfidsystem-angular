@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { CMainDashboardComponent } from 'src/components/c-main-dashboard/c-main-dashboard.component';
 import { CViewBoardComponent } from 'src/components/c-view-board/c-view-board.component';
 const routes: Routes = [
-  { path: '', redirectTo: 'boardview', pathMatch: 'full' },
+  { path: '', redirectTo: 'main', pathMatch: 'full' },
   { path: 'boardview', component: CViewBoardComponent},
- 
+  { path: 'main', component: CMainDashboardComponent},
 
 ];
 @NgModule({
