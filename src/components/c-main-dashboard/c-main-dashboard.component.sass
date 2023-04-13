@@ -4,7 +4,7 @@
 .main-dashboard-container::-webkit-scrollbar-track
     border-radius: 10px
     background: rgba(0,0,0,0.1)
- 
+
 .main-dashboard-container::-webkit-scrollbar-thumb
     -webkit-appearance: true
     border-radius: 10px
@@ -14,12 +14,12 @@
     background: rgba(0,0,0,0.4)
 
 .main-dashboard-container::-webkit-scrollbar-thumb:active
-    background: rgba(0,0,0,0.9)   
+    background: rgba(0,0,0,0.9)
 .main-dashboard-container
     height: 100%
     border-radius: 0px
     overflow: auto
-.dashboard-toolbar   
+.dashboard-toolbar
     padding: 6px
     height: 40px
     display: inline-block
@@ -31,57 +31,84 @@
     padding-top: 0px
     padding: 0px
     padding-bottom: 0px
-    column-gap: 50px 
+    column-gap: 50px
     width: 100%
-.dashboard-content  
-    padding: 6px 
+.dashboard-content
+    padding: 6px 12px 6px 12px
     height: 100%
     border-radius: 0px
-    display: inline-block   
+    display: inline-block
+    overflow-y: auto
+    column-gap: 50px
+
+.dashboard-content::-webkit-scrollbar
+    -webkit-appearance: none
+    width: 7px
+.dashboard-content::-webkit-scrollbar-track
+    border-radius: 10px
+    background: rgba(0,0,0,0.1)
+
+.dashboard-content::-webkit-scrollbar-thumb
+    -webkit-appearance: true
+    border-radius: 10px
+    background: rgba(0,0,0,0.2)
+
+.dashboard-content::-webkit-scrollbar-thumb:hover
+    background: rgba(0,0,0,0.4)
+
+.dashboard-content::-webkit-scrollbar-thumb:active
+    background: rgba(0,0,0,0.9)
+
 .areavalue-box
-    min-width: 200px 
-    flex: 1 
+    min-width: 200px
+    flex: 1
 .box-area-container-top
-    height:18px 
-    padding: 4px 
+    height: 18px
+    padding: 4px
     padding-left: 20px
     color: #636363
     font-weight: bold
     font-size: 12px !important
 .box-area-left-right-container
-    height: 54px
-.box-area-container-left  
-    flex:1
+    height: 44px
+.box-area-container-left
+    flex: 1
     height: 100% !important
-    padding: 4px 
-    font-size: 50px
+    padding: 4px
+    font-size: 45px
     font-weight: bold
     color: #585858
-.box-area-container-right-areain 
-    width:40px   
+.box-area-container-right-areain
+    width: 40px
     color: #00b8d8
-    font-size: 30px !important  
-.box-area-container-right-totalworker 
-    width:40px  
+    font-size: 30px !important
+.box-area-container-right-totalworker
+    width: 40px
     color: #00b8d8
-    font-size: 30px !important 
+    font-size: 30px !important
 .box-area-container-right-percent
-    width:40px  
+    width: 40px
     color: #00b8d8
-    font-size: 30px !important 
+    font-size: 30px !important
 .mat-icon
-    font-size: 40px !important
-    width:100px !important
+    font-size: 45px !important
+    width: 100px !important
     height: 40px !important
 .box-areain
-    border-bottom:4px solid #00b8d8
+    border-bottom: 4px solid #00b8d8
 .box-totalworker
-    border-bottom:4px solid #00b8d8
+    border-bottom: 4px solid #00b8d8
 .box-percent
-    border-bottom:4px solid #00b8d8
+    border-bottom: 4px solid #00b8d8
 .skeleton-box
-   padding: 0px
-   height: 86px
-   column-gap: 50px
-   padding: 0px 12px 12px 12px
-    
+    padding: 0px
+    height: 86px
+    column-gap: 50px
+    padding: 0px 12px 12px 12px
+
+.table-container
+    width: 50%
+.piechart-container
+    border: 1px solid yellow
+    height: 400px !important
+    width: 400px

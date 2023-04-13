@@ -1,0 +1,29 @@
+<table mat-table [dataSource]="tableDatasource" class="mat-elevation-z0 area-table">
+  <ng-container matColumnDef="bldg">
+    <th mat-header-cell *matHeaderCellDef>号棟</th>
+    <td mat-cell *matCellDef="let e">{{ e.bldg }}</td>
+  </ng-container>
+  <ng-container matColumnDef="area">
+    <th mat-header-cell *matHeaderCellDef>実工程</th>
+    <td mat-cell *matCellDef="let e">{{ e.area }}</td>
+  </ng-container>
+  <ng-container matColumnDef="workerIn">
+    <th mat-header-cell *matHeaderCellDef>在室人数</th>
+    <td mat-cell *matCellDef="let e">{{ e.workerIn }}</td>
+  </ng-container>
+  <ng-container matColumnDef="workerInTotal">
+    <th mat-header-cell *matHeaderCellDef>出社人数</th>
+    <td mat-cell *matCellDef="let e">{{ e.workerInTotal }}</td>
+  </ng-container>
+  <ng-container matColumnDef="percent">
+    <th mat-header-cell *matHeaderCellDef>在室率</th>
+    <td mat-cell *matCellDef="let e">{{ e.percent }}</td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+  <tr
+    mat-row
+    *matRowDef="let row; let even = even; columns: displayedColumns"
+    [ngClass]="{ 'row-color-alt': even }"
+    class="element-row"
+  ></tr>
+</table>

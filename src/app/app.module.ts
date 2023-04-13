@@ -28,6 +28,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CScrolltopComponent } from '../components/c-scrolltop/c-scrolltop.component';
 import { CPerareaGraphComponent } from '../components/c-perarea-graph/c-perarea-graph.component';
 import { CMainDashboardComponent } from '../components/c-main-dashboard/c-main-dashboard.component';
+import { CAreatotalTableComponent } from '../components/c-areatotal-table/c-areatotal-table.component';
 
 const displayErrMsg = () => {
   const Toast = Swal.mixin({
@@ -150,7 +151,8 @@ registerLocaleData(localeJa);
     CDialogCommentComponent,
     CScrolltopComponent,
     CPerareaGraphComponent,
-    CMainDashboardComponent
+    CMainDashboardComponent,
+    CAreatotalTableComponent
   ],
   imports: [
     MaterialModules,

@@ -123,8 +123,4 @@ constructor()  {
     option && myChart.setOption(option, true);
   }
   
-  refreshData(): void {
-  
-  
-  }
 }
