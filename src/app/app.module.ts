@@ -29,6 +29,7 @@ import { CScrolltopComponent } from '../components/c-scrolltop/c-scrolltop.compo
 import { CPerareaGraphComponent } from '../components/c-perarea-graph/c-perarea-graph.component';
 import { CMainDashboardComponent } from '../components/c-main-dashboard/c-main-dashboard.component';
 import { CAreatotalTableComponent } from '../components/c-areatotal-table/c-areatotal-table.component';
+import { CAreapieGraphComponent } from '../components/c-areapie-graph/c-areapie-graph.component';
 
 const displayErrMsg = () => {
   const Toast = Swal.mixin({
@@ -152,7 +153,8 @@ registerLocaleData(localeJa);
     CScrolltopComponent,
     CPerareaGraphComponent,
     CMainDashboardComponent,
-    CAreatotalTableComponent
+    CAreatotalTableComponent,
+    CAreapieGraphComponent
   ],
   imports: [
     MaterialModules,
