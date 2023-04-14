@@ -30,8 +30,7 @@ import { BoardGraphStyle } from 'src/models/enum';
   selector: 'app-c-view-board',
   templateUrl: './c-view-board.component.html',
   styleUrls: ['./c-view-board.component.sass'],
-  providers: [CViewBoardService],
-  encapsulation: ViewEncapsulation.None,
+  providers: [CViewBoardService]
 })
 export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   DEFAULTCOUNT: number = 100;
