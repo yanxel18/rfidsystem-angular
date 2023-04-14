@@ -106,9 +106,9 @@ export interface IViewEmployeeBoard {
   }
 
   export interface ITotalArea {
-    total: number | null
-    percent: number | null
-    workerIn: number | null
+    total: number
+    percent: number 
+    workerIn: number 
   }
 
   export interface IPerArea {
@@ -125,8 +125,9 @@ export interface IViewEmployeeBoard {
   }
 
   export interface ISkeletonLoader {
-    'background-color': string
-    height: string
-    'border-radius': string
-    width: string
+    'background-color'?: string
+    height?: string
+    'border-radius'?: string
+    width?: string
+    margin?: string
   }

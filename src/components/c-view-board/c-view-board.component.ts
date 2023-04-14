@@ -59,6 +59,11 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     'border-radius': '60px',
     width: '350px'
   }
+  lineChart: ISkeletonLoader = {
+    'background-color': '#e2e2e2',
+    height: '25px',
+    'border-radius': '4px', 
+  } 
   @ViewChild('titleContainer', { static: true }) public titleContainer: any;
   @ViewChild(CViewBoardNaviComponent) ViewBoardNaviComponent!: CViewBoardNaviComponent;
   constructor(

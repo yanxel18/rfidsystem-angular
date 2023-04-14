@@ -4,15 +4,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription, map } from 'rxjs';
 import { ISkeletonLoader, IPerAreaTotalStatistics } from 'src/models/viewboard-model';
 import * as moment from 'moment';
-import {LiveAnnouncer} from '@angular/cdk/a11y'; 
-import {MatSort, Sort} from '@angular/material/sort';
-import {MatTableDataSource} from '@angular/material/table';
-
 
 @Component({
   selector: 'app-c-main-dashboard',
   templateUrl: './c-main-dashboard.component.html',
   styleUrls: ['./c-main-dashboard.component.sass'],
+  providers: [CMainService]
 })
 export class CMainDashboardComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
@@ -24,6 +21,18 @@ export class CMainDashboardComponent implements OnInit, OnDestroy {
     width: '100%'
   } 
 
+  skeletonPieStyle: ISkeletonLoader = {
+    'background-color': '#e2e2e2',
+    height: '300px', 
+    width: '300px',
+    margin: '0px'
+  } 
+  skeletonTableStyle: ISkeletonLoader = {
+    'background-color': '#e2e2e2',
+    height: '25px',
+    'border-radius': '4px', 
+  } 
+
   constructor(
     private mainDashboardService: CMainService,
     private router: Router,
@@ -31,9 +40,7 @@ export class CMainDashboardComponent implements OnInit, OnDestroy {
   ) {}
 
 
-  async ngOnInit(): Promise<void> {
-     let selectedDate: string | null;
-     
+  async ngOnInit(): Promise<void> { 
     this.subscriptions.push(this.activeroute.queryParams.subscribe(params => {
       params['date']
     }));
@@ -46,7 +53,6 @@ export class CMainDashboardComponent implements OnInit, OnDestroy {
       })
     );
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-     
   }
   trackArea(index: number): number {
     return index;

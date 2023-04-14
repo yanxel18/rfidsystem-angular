@@ -80,10 +80,33 @@
   </div>
   <mat-card class="dashboard-content" fxLayout="col wrap">
     <mat-card class="table-container">
-      <app-c-areatotal-table [DataSource]="$totalAreaData"></app-c-areatotal-table>
+      <div class="table-loader" *ngIf="($totalAreaData |async) === null">
+        <ngx-skeleton-loader 
+        count="20"
+        appearance="line"
+        [theme]="skeletonTableStyle"
+        animation="progress"
+      ></ngx-skeleton-loader>
+      </div>
+      <app-c-areatotal-table *ngIf="($totalAreaData |async)" [DataSource]="$totalAreaData"></app-c-areatotal-table>
     </mat-card>
     <mat-card class="piechart-container" fxLayoutAlign="center"> 
-    <app-c-areapie-graph></app-c-areapie-graph> 
+      <div *ngIf="($totalAreaData |async) === null" class="piechart-loader"  >
+        <ngx-skeleton-loader 
+        count="1"
+        appearance="line"
+        [theme]="skeletonTableStyle"
+        animation="progress"
+      ></ngx-skeleton-loader>
+        <ngx-skeleton-loader
+        count="1"
+        appearance="circle"
+        [theme]="skeletonPieStyle"
+        animation="progress"
+      ></ngx-skeleton-loader>
+      </div>
+     
+    <app-c-areapie-graph *ngIf="($totalAreaData |async)" [DataSource]="$totalAreaData"></app-c-areapie-graph> 
     </mat-card>
   </mat-card>
 </mat-card>

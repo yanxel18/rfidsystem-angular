@@ -9,7 +9,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 @Component({
   selector: 'app-c-dialog-comment',
   templateUrl: './c-dialog-comment.component.html',
-  styleUrls: ['./c-dialog-comment.component.sass']
+  styleUrls: ['./c-dialog-comment.component.sass'],
+  providers: [CDialogCommentService]
 })
 export class CDialogCommentComponent implements OnDestroy{
   newcomment?: string | null;

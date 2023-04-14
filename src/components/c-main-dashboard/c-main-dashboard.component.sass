@@ -59,6 +59,24 @@
 .dashboard-content::-webkit-scrollbar-thumb:active
     background: rgba(0,0,0,0.9)
 
+.table-container::-webkit-scrollbar
+    -webkit-appearance: none
+    width: 7px
+.table-container::-webkit-scrollbar-track
+    border-radius: 10px
+    background: rgba(0,0,0,0.1)
+
+.table-container::-webkit-scrollbar-thumb
+    -webkit-appearance: true
+    border-radius: 10px
+    background: rgba(0,0,0,0.2)
+
+.table-container::-webkit-scrollbar-thumb:hover
+    background: rgba(0,0,0,0.4)
+
+.table-container::-webkit-scrollbar-thumb:active
+    background: rgba(0,0,0,0.9)
+
 .areavalue-box
     min-width: 200px
     flex: 1
@@ -107,7 +125,17 @@
     padding: 0px 12px 12px 12px
 
 .table-container
-    flex: 1
+    height:100%
+    width: calc(100% - 450px)
+    overflow: auto
+.table-loader
+    padding: 4px
 .piechart-container
     width: 400px
     height: 400px
+    padding-top:5px
+.piechart-loader
+    padding-top: 5px
+   
+ 
+
