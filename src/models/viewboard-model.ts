@@ -131,3 +131,11 @@ export interface IViewEmployeeBoard {
     width?: string
     margin?: string
   }
+
+  export interface IDateSelect {
+    workDate: string
+  }
+
+  export interface IDateSelectRes {
+    DateList : IDateSelect [] | []
+  }

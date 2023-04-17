@@ -1,4 +1,5 @@
 import {
+  IDateSelectRes,
   IPerAreaTotalStatistics
 
 } from './../../models/viewboard-model';
@@ -23,6 +24,12 @@ const GET_TOTALPERAREASTAT = gql`
   }
 }`
 
+const GET_DROPDOWN_LIST = gql`
+  query DateSelectList($dateFrom: String) {
+    DateList:DateSelectList(dateFrom: $dateFrom) {
+      workDate:DateSelect
+    }
+}`
 @Injectable({
   providedIn: 'root'
 })
@@ -36,6 +43,14 @@ export class CMainService {
         variables: {
           totalStatSelectedDate: selectedDate,
           areaSelectedDate: selectedDate
+        }
+    })
+  }
+  getDateList(selectedDate: String | null | undefined): QueryRef<IDateSelectRes> {
+    return this.apollo.watchQuery<IDateSelectRes>({
+        query: GET_DROPDOWN_LIST,
+        variables: { 
+          dateFrom: selectedDate
         }
     })
   }
