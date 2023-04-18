@@ -37,7 +37,7 @@ export class CMainService {
 
   constructor(private apollo: Apollo) { }
 
-  getTotalArea(selectedDate: string): QueryRef<IPerAreaTotalStatistics> {
+  getTotalArea(selectedDate: String): QueryRef<IPerAreaTotalStatistics> {
     return this.apollo.watchQuery<IPerAreaTotalStatistics>({
         query: GET_TOTALPERAREASTAT,
         variables: {

@@ -15,22 +15,22 @@ import {
   ViewChild,
   OnDestroy,
   AfterViewInit,
-  ViewEncapsulation,
 } from '@angular/core';
 import { Subscription, take } from 'rxjs';
 import { IViewEmployeeBoard } from 'src/models/viewboard-model';
 import { CViewBoardService } from './c-view-board.service';
-import { CViewBoardNaviComponent } from '../c-view-board-navi/c-view-board-navi.component'; 
+import { CViewBoardNaviComponent } from '../c-view-board-navi/c-view-board-navi.component';
 import { MatSelectChange } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { Router } from '@angular/router';
 import { BoardGraphStyle } from 'src/models/enum';
+import { AppService } from 'src/app/app.service';
 
 @Component({
   selector: 'app-c-view-board',
   templateUrl: './c-view-board.component.html',
   styleUrls: ['./c-view-board.component.sass'],
-  providers: [CViewBoardService]
+  providers: [CViewBoardService],
 })
 export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   DEFAULTCOUNT: number = 100;
@@ -50,94 +50,100 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   selectedLocation: number | null = null;
   selectedTeam: number | null = null;
   selectorFlag: boolean = false;
-  selectedAreaText: string = "すべて";
+  selectedAreaText: string = 'すべて';
   viewboardStatusRatio?: IEmployeeCountRatio;
   loaderStyle: ISkeletonLoader = {
     'background-color': '#e2e2e2',
     height: '70px',
     'border-radius': '60px',
-    width: '350px'
-  }
+    width: '350px',
+  };
   lineChart: ISkeletonLoader = {
     'background-color': '#e2e2e2',
     height: '25px',
-    'border-radius': '4px', 
-  } 
+    'border-radius': '4px',
+  };
   @ViewChild('titleContainer', { static: true }) public titleContainer: any;
-  @ViewChild(CViewBoardNaviComponent) ViewBoardNaviComponent!: CViewBoardNaviComponent;
+  @ViewChild(CViewBoardNaviComponent)
+  ViewBoardNaviComponent!: CViewBoardNaviComponent;
   constructor(
     private viewboardService: CViewBoardService,
-    private router: Router
+    private router: Router,
+    private appServ: AppService
   ) {}
- 
+
   ngOnInit(): void {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    const getpageview: string | null = localStorage?.getItem('pagecountview');
-    const getpagenum: string | null = localStorage?.getItem('pagenum');
-    const getArea: string | null = localStorage?.getItem('areaSelected');
-    const getAreaText: string | null = localStorage?.getItem('selectedAreaText');
-    const getTeam: string | null = localStorage?.getItem('teamSelected');
-    const getLoc: string | null = localStorage?.getItem('locSelected');
-    const getViewBoard: string | null = localStorage?.getItem('vgrph');
+    const getpageview: string | null = this.appServ.tempGetKey('pagecountview');
+    const getpagenum: string | null = this.appServ.tempGetKey('pagenum');
+    const getArea: string | null = this.appServ.tempGetKey('areaSelected');
+    const getAreaText: string | null =
+      this.appServ.tempGetKey('selectedAreaText');
+    const getTeam: string | null = this.appServ.tempGetKey('teamSelected');
+    const getLoc: string | null = this.appServ.tempGetKey('locSelected');
+    const getViewBoard: string | null = this.appServ.tempGetKey('vgrph');
     this.pagecountview = getpageview
       ? parseInt(getpageview)
       : this.pagecountview;
     this.skeletonLoader = new Array<number>(this.pagecountview);
     this.pagenum = getpagenum ? parseInt(getpagenum) : this.pagenum;
     this.selectedArea = getArea ? parseInt(getArea) : null;
-    this.selectedAreaText =getAreaText ? getAreaText : "すべて";
+    this.selectedAreaText = getAreaText ? getAreaText : 'すべて';
     this.selectedTeam = getTeam ? parseInt(getTeam) : null;
     this.selectedLocation = getLoc ? parseInt(getLoc) : null;
-    this.openGraph = getViewBoard ==="1" ? true: false;
+    this.openGraph = getViewBoard === '1' ? true : false;
     this.getCurrentFilteredCount();
     this.initializeBoardView();
     this.initializeGraph();
   }
-  reInitializeBoardFromList(allowed:boolean, event: MatSelectChange | null): void {
+  reInitializeBoardFromList(
+    allowed: boolean,
+    event: MatSelectChange | null
+  ): void {
     if (allowed) {
-      const val = (event?.source.selected as MatOption)?.viewValue
-      this.selectedAreaText = val ? val : "すべて";
-    } 
+      const val = (event?.source.selected as MatOption)?.viewValue;
+      this.selectedAreaText = val ? val : 'すべて';
+    }
     this.Subscriptions.forEach((s) => s.unsubscribe());
-    localStorage.setItem(
+    this.appServ.tempStoreKey(
       'areaSelected',
       this.selectedArea ? this.selectedArea.toString() : '-'
     );
-    localStorage.setItem(
+    this.appServ.tempStoreKey(
       'selectedAreaText',
       this.selectedAreaText ? this.selectedAreaText.toString() : 'すべて'
     );
-    localStorage.setItem(
+    this.appServ.tempStoreKey(
       'teamSelected',
       this.selectedTeam ? this.selectedTeam.toString() : '-'
     );
-    localStorage.setItem(
+    this.appServ.tempStoreKey(
       'locSelected',
       this.selectedLocation ? this.selectedLocation.toString() : '-'
     );
     this.pagenum = 1;
-    localStorage.setItem('pagenum', (1).toString());
+    this.appServ.tempStoreKey('pagenum', (1).toString());
     this.getCurrentFilteredCount();
     this.initializeBoardView();
     this.ViewBoardNaviComponent.rerenderpaginator();
     this.initializeGraph();
-    
-
   }
 
   private initializeGraph(): void {
     const perAreaDTO: perAreaArgs = {
       areaId: this.selectedArea,
       locationId: this.selectedLocation,
-      teamId: this.selectedTeam
-    }
-    this.Subscriptions.push(this.viewboardService.getPerAreaGraph(perAreaDTO).valueChanges.subscribe(({ data }) =>{
-      if(data) this.perAreaGraphData = data.PerAreaGraph; 
-    }));
- 
+      teamId: this.selectedTeam,
+    };
+    this.Subscriptions.push(
+      this.viewboardService
+        .getPerAreaGraph(perAreaDTO)
+        .valueChanges.subscribe(({ data }) => {
+          if (data) this.perAreaGraphData = data.PerAreaGraph;
+        })
+    );
   }
   private initializeBoardView(): void {
-
     const paramDTO: IEmployeeBoardArgs = {
       areaID: this.selectedArea,
       teamID: this.selectedTeam,
@@ -147,16 +153,15 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     };
     this.Subscriptions.push(
       this.viewboardService.getRealtimeBoardView(paramDTO).subscribe({
-        next: ( { EmployeeBoardAll}) => {   
-          if (EmployeeBoardAll.EmployeeBoardAllSub) { 
-            if(EmployeeBoardAll.EmployeeBoardAllSub.length > 0) { 
-              this.empRealTime$ = EmployeeBoardAll.EmployeeBoardAllSub; 
-            } 
-            else this.empRealTime$ = [];
+        next: ({ EmployeeBoardAll }) => {
+          if (EmployeeBoardAll.EmployeeBoardAllSub) {
+            if (EmployeeBoardAll.EmployeeBoardAllSub.length > 0) {
+              this.empRealTime$ = EmployeeBoardAll.EmployeeBoardAllSub;
+            } else this.empRealTime$ = [];
           }
           if (EmployeeBoardAll.AreaRatio) {
-            this.viewboardStatusRatio =  EmployeeBoardAll.AreaRatio;
-          } 
+            this.viewboardStatusRatio = EmployeeBoardAll.AreaRatio;
+          }
         },
 
         error: () => {
@@ -166,14 +171,13 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
         },
       })
     );
-    
   }
   selectOptionClear(): void {
     this.selectedLocation = null;
     this.selectedArea = null;
     this.selectedTeam = null;
-    this.selectedAreaText =　"すべて";
-    this.reInitializeBoardFromList(false,null);
+    this.selectedAreaText = 'すべて';
+    this.reInitializeBoardFromList(false, null);
   }
   private reInitializedBoardView(): void {
     const paramDTO: IEmployeeBoardArgs = {
@@ -186,11 +190,10 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.Subscriptions.push(
       this.viewboardService.getRealtimeBoardView(paramDTO).subscribe((data) => {
         if (data) this.viewDropList();
-      }
-       )
+      })
     );
   }
- 
+
   getCurrentFilteredCount(): void {
     const paramDTO: IEmployeeBoardArgs = {
       areaID: this.selectedArea,
@@ -217,10 +220,9 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     );
   }
 
-
   boardStyleOnClick(): string {
-    localStorage.setItem('vgrph',this.openGraph ? '1' : '0');
-    return this.openGraph ? BoardGraphStyle.IS_OPEN : BoardGraphStyle.IS_CLOSE
+    this.appServ.tempStoreKey('vgrph', this.openGraph ? '1' : '0');
+    return this.openGraph ? BoardGraphStyle.IS_OPEN : BoardGraphStyle.IS_CLOSE;
   }
   viewDropList(): void {
     this.viewboardService.getViewDropList().refetch();

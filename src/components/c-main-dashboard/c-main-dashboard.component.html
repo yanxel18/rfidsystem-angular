@@ -7,11 +7,11 @@
     <form [formGroup]="groupSelect" (keydown.enter)="$event.preventDefault()">
     <mat-form-field class="date-picker" subscriptSizing="dynamic" appearance="outline">
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-      <input class="date-field" placeholder="日付" (click)="picker.open()" formControlName="selectedDate" matInput readonly (dateChange)="loadDropDateList()" [matDatepicker]="picker"> 
-      <mat-datepicker #picker></mat-datepicker>
+      <input class="date-field" [min]="minDate" [max]="maxDate" placeholder="日付" (click)="picker.open()" formControlName="selectedDate" matInput readonly (dateChange)="loadDropDateList()" [matDatepicker]="picker"> 
+      <mat-datepicker #picker ></mat-datepicker>
     </mat-form-field>
     <mat-form-field fxFlex="40" class="time-picker" appearance="outline" subscriptSizing="dynamic"> 
-      <mat-select  (selectionChange)="getSelectedDate()" placeholder="時間"   formControlName="timeSelect">
+      <mat-select  (selectionChange)="getSelectedDate()" placeholder="時間"   formControlName="selectedTime">
         <mat-option  *ngFor="let x of ($dropDateList | async)!?.DateList; let i = index;
         trackBy: trackArea" [value]="x.workDate">{{x.workDate}}</mat-option>
       </mat-select>

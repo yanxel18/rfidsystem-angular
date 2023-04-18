@@ -139,3 +139,9 @@ export interface IViewEmployeeBoard {
   export interface IDateSelectRes {
     DateList : IDateSelect [] | []
   }
+
+  export interface IFormValues {
+    date: string
+    time: string
+    datetime: string
+  }

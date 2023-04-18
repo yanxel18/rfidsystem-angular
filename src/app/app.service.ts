@@ -5,4 +5,12 @@ import { Injectable } from '@angular/core';
 })
 export class AppService {
   constructor() {}
+
+  tempStoreKey(key: string,value: string): void {
+    localStorage.setItem(key,value)
+  }
+
+  tempGetKey(key: string): string | null{
+    return localStorage?.getItem(key)
+  }
 }
