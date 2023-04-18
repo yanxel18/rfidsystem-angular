@@ -1,35 +1,68 @@
 <mat-card class="main-dashboard-container">
-  <div class="dashboard-toolbar"    fxLayout="row wrap">
-    <div class="dashboard-toolbar-title" fxLayout="row wrap" fxLayoutAlign="center center">
-       <mat-icon>dashboard</mat-icon>ダッシュボード
+  <div class="dashboard-toolbar" fxLayout="row wrap">
+    <div
+      class="dashboard-toolbar-title"
+      fxLayout="row wrap"
+      fxLayoutAlign="center center"
+    >
+      <mat-icon>dashboard</mat-icon>ダッシュボード
     </div>
     <span class="spacer"></span>
     <form [formGroup]="groupSelect" (keydown.enter)="$event.preventDefault()">
-    <mat-form-field class="date-picker" subscriptSizing="dynamic" appearance="outline">
-      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-      <input class="date-field" [min]="minDate" [max]="maxDate" placeholder="日付" (click)="picker.open()" formControlName="selectedDate" matInput readonly (dateChange)="loadDropDateList()" [matDatepicker]="picker"> 
-      <mat-datepicker #picker ></mat-datepicker>
-    </mat-form-field>
-    <mat-form-field fxFlex="40" class="time-picker" appearance="outline" subscriptSizing="dynamic"> 
-      <mat-select  (selectionChange)="getSelectedDate()" placeholder="時間"   formControlName="selectedTime">
-        <mat-option  *ngFor="let x of ($dropDateList | async)!?.DateList; let i = index;
-        trackBy: trackArea" [value]="x.workDate">{{x.workDate}}</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-  </form>
+      <mat-form-field
+        class="date-picker"
+        subscriptSizing="dynamic"
+        appearance="outline"
+      >
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="picker"
+        ></mat-datepicker-toggle>
+        <input
+          class="date-field"
+          [min]="minDate"
+          [max]="maxDate"
+          placeholder="日付"
+          (click)="picker.open()"
+          formControlName="selectedDate"
+          matInput
+          readonly
+          (dateChange)="loadDropDateList()"
+          [matDatepicker]="picker"
+        />
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field
+        fxFlex="40"
+        class="time-picker"
+        appearance="outline"
+        subscriptSizing="dynamic"
+      >
+        <mat-select
+          (selectionChange)="getSelectedDate()"
+          placeholder="時間"
+          formControlName="selectedTime"
+        >
+          <mat-option
+            *ngFor="
+              let x of ($dropDateList | async)!?.DateList;
+              let i = index;
+              trackBy: trackArea
+            "
+            [value]="x.workDate"
+            >{{ x.workDate }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+    </form>
   </div>
   <div
-    *ngIf="$totalAreaData | async"
+    *ngIf="$pieDataSource"
     class="mat-elevation-z0 dashboard-areavalue-container"
   >
     <div
       class="mat-elevation-z0 dashboard-areavalue"
-      *ngFor="
-        let x of ($totalAreaData | async)!?.TotalArea;
-        let i = index;
-        trackBy: trackArea
-      "
+      *ngFor="let x of $pieDataSource; let i = index; trackBy: trackArea"
       fxLayout="row wrap"
       fxLayoutAlign="center"
     >
@@ -70,7 +103,7 @@
   </div>
 
   <div
-    *ngIf="!($totalAreaData | async)"
+    *ngIf="!$pieDataSource"
     class="mat-elevation-z0 skeleton-box dashboard-areavalue-container"
     fxLayout="row wrap"
     fxLayoutAlign="center"
@@ -99,33 +132,40 @@
   </div>
   <mat-card class="dashboard-content" fxLayout="col wrap">
     <mat-card class="table-container">
-      <div class="table-loader" *ngIf="($totalAreaData |async) === null">
-        <ngx-skeleton-loader 
-        count="20"
-        appearance="line"
-        [theme]="skeletonTableStyle"
-        animation="progress"
-      ></ngx-skeleton-loader>
-      </div>
-      <app-c-areatotal-table *ngIf="($totalAreaData |async)" [DataSource]="$totalAreaData"></app-c-areatotal-table>
-    </mat-card>
-    <mat-card class="piechart-container" fxLayoutAlign="center"> 
-      <div *ngIf="($totalAreaData |async) === null" class="piechart-loader"  >
-        <ngx-skeleton-loader 
-        count="1"
-        appearance="line"
-        [theme]="skeletonTableStyle"
-        animation="progress"
-      ></ngx-skeleton-loader>
+      <div class="table-loader" *ngIf="$totalAreaData === null">
         <ngx-skeleton-loader
-        count="1"
-        appearance="circle"
-        [theme]="skeletonPieStyle"
-        animation="progress"
-      ></ngx-skeleton-loader>
+          count="20"
+          appearance="line"
+          [theme]="skeletonTableStyle"
+          animation="progress"
+        ></ngx-skeleton-loader>
       </div>
-     
-    <app-c-areapie-graph *ngIf="($totalAreaData |async)" [DataSource]="$totalAreaData"></app-c-areapie-graph> 
+      <app-c-areatotal-table
+        *ngIf="$totalAreaData"
+        [DataSource]="$totalAreaData"
+        (PieDataSource)="tableEmit($event)"
+      ></app-c-areatotal-table>
+    </mat-card>
+    <mat-card class="piechart-container" fxLayoutAlign="center">
+      <div *ngIf="$pieDataSource === null" class="piechart-loader">
+        <ngx-skeleton-loader
+          count="1"
+          appearance="line"
+          [theme]="skeletonTableStyle"
+          animation="progress"
+        ></ngx-skeleton-loader>
+        <ngx-skeleton-loader
+          count="1"
+          appearance="circle"
+          [theme]="skeletonPieStyle"
+          animation="progress"
+        ></ngx-skeleton-loader>
+      </div>
+      　
+      <app-c-areapie-graph
+        *ngIf="$pieDataSource"
+        [DataSource]="$pieDataSource"
+      ></app-c-areapie-graph>
     </mat-card>
   </mat-card>
 </mat-card>

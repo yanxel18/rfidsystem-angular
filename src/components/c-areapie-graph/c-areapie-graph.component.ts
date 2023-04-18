@@ -12,7 +12,7 @@ import { PieChart, PieSeriesOption } from 'echarts/charts';
 import { LabelLayout } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 import { Observable, Subscription } from 'rxjs';
-import { IPerAreaTotalStatistics } from 'src/models/viewboard-model';
+import { IPerAreaTotalStatistics, ITotalArea } from 'src/models/viewboard-model';
 
 @Component({
   selector: 'app-c-areapie-graph',
@@ -20,20 +20,19 @@ import { IPerAreaTotalStatistics } from 'src/models/viewboard-model';
   styleUrls: ['./c-areapie-graph.component.sass'],
 })
 export class CAreapieGraphComponent implements OnChanges, OnInit, OnDestroy {
-  @Input() DataSource!: Observable<IPerAreaTotalStatistics | null>;
+  @Input() DataSource!: ITotalArea[] | null;
   subscriptions: Subscription[] = [];
-
+ 
   ngOnInit(): void {
+
     this.initializePieChart();
   }
   initializePieChart(): void {
-    this.subscriptions.push(
-      this.DataSource.subscribe((data) => {
-        if (data?.TotalArea) {
-          const newTotalAreaData = data.TotalArea.map((AreaData) => {
+        if (this.DataSource) {
+          const newTotalAreaData = this.DataSource?.map((AreaData) => {
             return [
               {
-                value: AreaData.total,
+                value: AreaData.total - AreaData.workerIn,
                 name: '出社人数',
               },
               {
@@ -108,8 +107,6 @@ export class CAreapieGraphComponent implements OnChanges, OnInit, OnDestroy {
 
           option && myChart.setOption(option);
         }
-      })
-    );
   }
   ngOnChanges(): void {
     this.initializePieChart();

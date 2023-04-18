@@ -24,6 +24,7 @@
     mat-row
     *matRowDef="let row; let even = even; columns: displayedColumns"
     [ngClass]="{ 'row-color-alt': even }"
+    (click)="getTableRow(row)"
     class="element-row"
   ></tr>
 </table>

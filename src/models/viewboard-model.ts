@@ -112,11 +112,11 @@ export interface IViewEmployeeBoard {
   }
 
   export interface IPerArea {
-    area: string | null
-    bldg: string | null
-    workerIn: number | null
-    workerInTotal: number | null
-    percent: number | null
+    area: string
+    bldg: string 
+    workerIn: number 
+    workerInTotal: number 
+    percent: number 
   }
 
   export interface IPerAreaTotalStatistics {
