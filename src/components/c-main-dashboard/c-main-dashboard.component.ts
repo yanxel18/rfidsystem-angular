@@ -68,13 +68,8 @@ export class CMainDashboardComponent implements OnInit, OnDestroy {
   getSelectedDate(): void {
     this.getPerAreaStatistics(this.getSelectedValue().datetime);
   }
-  async ngOnInit(): Promise<void> {
+  ngOnInit():void {
     this.loadDropDateList();
-    this.subscriptions.push(
-      this.activeroute.queryParams.subscribe((params) => {
-        params['date'];
-      })
-    );
     this.getPerAreaStatistics(this.getSelectedValue().datetime);
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }

@@ -49,10 +49,11 @@ constructor()  {
     >;
 
     const chartDom = document.getElementById('main')!;
+    echarts.dispose(chartDom)
     const myChart = echarts.init(chartDom);
     myChart.clear();
     window.addEventListener('resize', function () {
-      myChart.resize();
+      if(chartDom) myChart.resize();
     });
     myChart.resize({
       width: 'auto',

@@ -33,7 +33,7 @@ export class CAreapieGraphComponent implements OnChanges, OnInit, OnDestroy {
             return [
               {
                 value: AreaData.total - AreaData.workerIn,
-                name: '出社人数',
+                name: '外室人数',
               },
               {
                 value: AreaData.workerIn,
@@ -57,17 +57,10 @@ export class CAreapieGraphComponent implements OnChanges, OnInit, OnDestroy {
             | LegendComponentOption
             | PieSeriesOption
           >;
-
-          const chartDom = document.getElementById('main')!;
-          const myChart = echarts.init(chartDom);
-
-          myChart.clear();
-          window.addEventListener('resize', function () {
-            myChart.resize();
-          });
-          myChart.resize({
-            width: 'auto',
-          });
+          
+          let chartDom = document.getElementById('main')!;
+          echarts.dispose(chartDom)
+          const myChart = echarts.init(chartDom) 
           const option: EChartsOption = {
             title: {
               text: '在室率',
@@ -77,8 +70,8 @@ export class CAreapieGraphComponent implements OnChanges, OnInit, OnDestroy {
               trigger: 'item',
             },
             legend: {
-              top: '5%',
-              left: 'center',
+              orient: 'vertical',
+              left: 'left'
             },
             series: [
               {
@@ -91,21 +84,18 @@ export class CAreapieGraphComponent implements OnChanges, OnInit, OnDestroy {
                   borderWidth: 2,
                 },
                 emphasis: {
-                  focus: 'self',
-                },
-                label: {
-                  show: false,
-                  position: 'center',
-                },
-                labelLine: {
-                  show: false,
-                },
+                  itemStyle: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                  }
+                }, 
                 data: newTotalAreaData[0],
               },
             ],
           };
 
-          option && myChart.setOption(option);
+          option && myChart.setOption(option); 
         }
   }
   ngOnChanges(): void {

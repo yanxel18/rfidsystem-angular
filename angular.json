@@ -19,7 +19,8 @@
           "options": {
             "allowedCommonJsDependencies": [
               "subscriptions-transport-ws",
-              "sweetalert2"
+              "sweetalert2",
+              "moment"
             ], 
             "outputPath": "dist/rfidsystem-angular",
             "index": "src/index.html",
@@ -49,7 +50,7 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "3kb",
+                  "maximumWarning": "4kb",
                   "maximumError": "4kb"
                 }
               ],

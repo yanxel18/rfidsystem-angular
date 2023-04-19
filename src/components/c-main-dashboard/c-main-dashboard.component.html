@@ -8,6 +8,7 @@
       <mat-icon>dashboard</mat-icon>ダッシュボード
     </div>
     <span class="spacer"></span>
+    <button mat-button matTooltip="リセット" class="dashboard-refresh-button" routerLink="/main"><mat-icon>refresh</mat-icon></button>
     <form [formGroup]="groupSelect" (keydown.enter)="$event.preventDefault()">
       <mat-form-field
         class="date-picker"
