@@ -13,7 +13,7 @@ import { HttpClientModule, HttpHeaders } from '@angular/common/http';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
-import { registerLocaleData } from '@angular/common';
+import { APP_BASE_HREF, registerLocaleData } from '@angular/common';
 import localeJa from '@angular/common/locales/ja';
 import { environment } from 'src/environments/environment';
 import { CBurgerComponent } from '../components/c-burger/c-burger.component';
@@ -181,6 +181,10 @@ registerLocaleData(localeJa);
                     merge(existing, incoming) {
                       return incoming;
                     },
+                  },PerAreaGraph: {
+                    merge(existing, incoming) {
+                      return incoming;
+                    },
                   },
                 },
               },
@@ -202,6 +206,7 @@ registerLocaleData(localeJa);
       useValue: { appearance: 'outline' },
     },
     { provide: LOCALE_ID, useValue: 'ja-JP' },
+    {provide: APP_BASE_HREF, useValue:'/rfid/'}
   ],
   bootstrap: [AppComponent],
 })
