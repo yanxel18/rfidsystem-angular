@@ -69,6 +69,9 @@
 .team-select mat-option
     font-size: 12px !important
     border-radius: 30px !important
+.position-select
+    font-size: 12px !important
+    border-radius: 30px !important
 .panel-chart-title
     color: #727272 !important
 
@@ -110,7 +113,7 @@
     background-color: #32b84f 
     width: 150px
     font-weight: bold
-    color: #f0f0f0 
+    color: #ffffff 
 .filter-button
     background-color: #ffffff 
     border: 1px solid #d8d8d8
@@ -120,10 +123,14 @@
 .filter-menu-container
     height: 200px   
     padding: 0px 
-::ng-deep .mat-mdc-menu-content 
-        height: 240px !important
+::ng-deep .filtermenu-display.mat-mdc-menu-content 
+    height: 250px !important
+
+::ng-deep .filtermenu-display.mat-mdc-menu-panel
+     border-radius: 10px !important
+    
 .filter-menu-closebutton-container  
-    padding: 0px 12px 0px 12px
+    padding: 10px 14px 0px 14px
 .filter-menu-closebutton
     flex: 1 
  

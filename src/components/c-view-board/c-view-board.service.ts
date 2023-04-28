@@ -202,7 +202,6 @@ export class CViewBoardService implements OnDestroy {
     );
   }
   ngOnDestroy(): void {
-    this.boardSubscription.stopPolling();
-    // this.viewSubscription.forEach((s) => s.unsubscribe());
+    this.boardSubscription.stopPolling(); 
   }
 }

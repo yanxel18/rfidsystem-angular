@@ -52,6 +52,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   selectedArea: number | null = null;
   selectedLocation: number | null = null;
   selectedTeam: number | null = null;
+  selectedPosition: number | null = null;
   selectorFlag: boolean = false;
   selectedAreaText: string = 'すべて';
   viewboardStatusRatio?: IEmployeeCountRatio;
@@ -256,8 +257,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.initializeBoardView();
   }
 
-  ngAfterViewInit(): void {
-    this.filterMenu.openMenu();
+  ngAfterViewInit(): void { 
     this.viewDropList();
   }
   ngOnDestroy(): void {

@@ -18,84 +18,83 @@
       class="filter-button"
       [matMenuTriggerFor]="filterMenu"
       #filterMenuTrigger="matMenuTrigger"
-      matTooltip="所属、棟、班"
+      matTooltip="所属,棟,班,役職"
     >
       フィルター<mat-icon>keyboard_arrow_down</mat-icon>
     </button>
-    <mat-menu #filterMenu="matMenu" openMenu="true">
+    <mat-menu #filterMenu="matMenu" class="filtermenu-display" openMenu="true">
       <div
         (click)="$event.stopPropagation()"
         (keydown)="$event.stopPropagation()"
-        class="filter-menu-container" 
+        class="filter-menu-container"
         fxLayout="row wrap"
         fxLayoutAlign="center"
       >
- 
-          <mat-form-field class="drop-down-filter" subscriptSizing="dynamic">
-            <mat-label>所属エリア名</mat-label>
-            <mat-select
-              panelClass="area-select"
-              [(value)]="selectedArea"
-              (selectionChange)="reInitializeBoardFromList(true, $event)"
-              name="area"
-            >
-              <mat-option [value]="null">ー</mat-option>
-              <mat-option *ngFor="let list of areaList" [value]="list.areaID">
-                {{ list.areaDesc }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+        <mat-form-field class="drop-down-filter" subscriptSizing="dynamic">
+          <mat-label>所属エリア名</mat-label>
+          <mat-select
+            panelClass="area-select"
+            [(value)]="selectedArea"
+            (selectionChange)="reInitializeBoardFromList(true, $event)"
+            name="area"
+          >
+            <mat-option [value]="null">ー</mat-option>
+            <mat-option *ngFor="let list of areaList" [value]="list.areaID">
+              {{ list.areaDesc }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-          <mat-form-field class="drop-down-filter" subscriptSizing="dynamic">
-            <mat-label>号棟</mat-label>
-            <mat-select
-              panelClass="bldg-select"
-              [(value)]="selectedLocation"
-              (selectionChange)="reInitializeBoardFromList(false, $event)"
-              name="loc"
-            >
-              <mat-option [value]="null">ー</mat-option>
-              <mat-option
-                *ngFor="let list of locationList"
-                [value]="list.locID"
-              >
-                {{ list.buildloc }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+        <mat-form-field class="drop-down-filter" subscriptSizing="dynamic">
+          <mat-label>号棟</mat-label>
+          <mat-select
+            panelClass="bldg-select"
+            [(value)]="selectedLocation"
+            (selectionChange)="reInitializeBoardFromList(false, $event)"
+            name="loc"
+          >
+            <mat-option [value]="null">ー</mat-option>
+            <mat-option *ngFor="let list of locationList" [value]="list.locID">
+              {{ list.buildloc }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-          <mat-form-field class="drop-down-filter" subscriptSizing="dynamic">
-            <mat-label>班</mat-label>
-            <mat-select
-              panelClass="team-select"
-              [(value)]="selectedTeam"
-              (selectionChange)="reInitializeBoardFromList(false, $event)"
-              name="team"
-            >
-              <mat-option [value]="null">ー</mat-option>
-              <mat-option *ngFor="let list of teamList" [value]="list.teamID">
-                {{ list.teamName }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field> 
+        <mat-form-field class="drop-down-filter" subscriptSizing="dynamic">
+          <mat-label>班</mat-label>
+          <mat-select
+            panelClass="team-select"
+            [(value)]="selectedTeam"
+            (selectionChange)="reInitializeBoardFromList(false, $event)"
+            name="team"
+          >
+            <mat-option [value]="null">ー</mat-option>
+            <mat-option *ngFor="let list of teamList" [value]="list.teamID">
+              {{ list.teamName }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-          <mat-form-field class="drop-down-filter" subscriptSizing="dynamic">
-            <mat-label>班</mat-label>
-            <mat-select
-              panelClass="team-select"
-              [(value)]="selectedTeam"
-              (selectionChange)="reInitializeBoardFromList(false, $event)"
-              name="team"
-            >
-              <mat-option [value]="null">ー</mat-option>
-              <mat-option *ngFor="let list of teamList" [value]="list.teamID">
-                {{ list.teamName }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field> 
+        <mat-form-field class="drop-down-filter" subscriptSizing="dynamic">
+          <mat-label>役職</mat-label>
+          <mat-select
+            panelClass="position-select"
+            [(value)]="selectedPosition"
+            (selectionChange)="reInitializeBoardFromList(false, $event)"
+            name="pos"
+          >
+            <mat-option [value]="null">ー</mat-option>
+            <mat-option *ngFor="let list of positionList" [value]="list.posID">
+              {{ list.posName }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
-      <div class="filter-menu-closebutton-container"   fxLayoutAlign="center">
-        <button color="primary" class="filter-menu-closebutton" mat-flat-button>閉じる</button>
+      <mat-divider></mat-divider>
+      <div class="filter-menu-closebutton-container" fxLayoutAlign="center">
+        <button color="primary" class="filter-menu-closebutton" mat-flat-button>
+          閉じる
+        </button>
       </div>
     </mat-menu>
     <button
