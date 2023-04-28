@@ -49,6 +49,7 @@ export interface IViewEmployeeBoard {
     areaID?: number | null
     teamID?: number | null
     locID?: number | null
+    posID?: number | null
     pageoffset?: number | null
     pagenum?: number | null
   }
@@ -103,6 +104,7 @@ export interface IViewEmployeeBoard {
     areaId: number | null
     locationId: number | null
     teamId: number | null
+    posID: number | null
   }
 
   export interface IPerAreaGraphResponse {

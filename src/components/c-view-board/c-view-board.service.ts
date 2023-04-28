@@ -19,6 +19,7 @@ const GET_VIEWBOARD_SUBSCRIBE = gql`
     $areaID: Int
     $teamID: Int
     $locID: Int
+    $posID: Int
     $pageoffset: Int
     $pagenum: Int
   ) {
@@ -26,6 +27,7 @@ const GET_VIEWBOARD_SUBSCRIBE = gql`
       areaID: $areaID
       teamID: $teamID
       locID: $locID
+      posID: $posID
       pageoffset: $pageoffset
       pagenum: $pagenum
     ) {
@@ -60,6 +62,7 @@ const GET_VIEWBOARD_TEMPLATE = gql`
     $areaId: Int
     $teamID: Int
     $locID: Int
+    $posID: Int
     $pageoffset: Int
     $pagenum: Int
   ) {
@@ -67,6 +70,7 @@ const GET_VIEWBOARD_TEMPLATE = gql`
       areaID: $areaId
       teamID: $teamID
       locID: $locID
+      posID: $posID
       pageoffset: $pageoffset
       pagenum: $pagenum
     ) {
@@ -98,8 +102,8 @@ const GET_VIEWBOARD_TEMPLATE = gql`
 `;
 
 const GET_CURRENT_EMPCOUNT = gql`
-  query Query($areaID: Int, $teamID: Int, $locID: Int) {
-    EmpBoardMaxCountFilter(areaID: $areaID, teamID: $teamID, locID: $locID)
+  query Query($areaID: Int, $teamID: Int, $locID: Int, $posID: Int) {
+    EmpBoardMaxCountFilter(areaID: $areaID, teamID: $teamID, locID: $locID, posID: $posID)
   }
 `;
 const GET_VIEWDROPLIST = gql`
@@ -149,6 +153,7 @@ export class CViewBoardService implements OnDestroy {
         areaID: param.areaID,
         teamID: param.teamID,
         locID: param.locID,
+        posID: param.posID,
       },
     });
   }
@@ -182,6 +187,7 @@ export class CViewBoardService implements OnDestroy {
         areaID: param.areaID,
         teamID: param.teamID,
         locID: param.locID,
+        posID: param.posID,
         pageoffset: param.pageoffset,
         pagenum: param.pagenum,
       },

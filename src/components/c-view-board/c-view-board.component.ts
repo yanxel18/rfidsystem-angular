@@ -86,6 +86,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
       this.appServ.tempGetKey('selectedAreaText');
     const getTeam: string | null = this.appServ.tempGetKey('teamSelected');
     const getLoc: string | null = this.appServ.tempGetKey('locSelected');
+    const getPos: string | null = this.appServ.tempGetKey('posSelected');
     const getViewBoard: string | null = this.appServ.tempGetKey('vgrph');
     this.pagecountview = getpageview
       ? parseInt(getpageview)
@@ -96,6 +97,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.selectedAreaText = getAreaText ? getAreaText : 'すべて';
     this.selectedTeam = getTeam ? parseInt(getTeam) : null;
     this.selectedLocation = getLoc ? parseInt(getLoc) : null;
+    this.selectedPosition = getPos? parseInt(getPos) : null;
     this.openGraph = getViewBoard === '1' ? true : false;
     this.getCurrentFilteredCount();
     this.initializeBoardView();
@@ -126,6 +128,10 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
       'locSelected',
       this.selectedLocation ? this.selectedLocation.toString() : '-'
     );
+    this.appServ.tempStoreKey(
+      'posSelected',
+      this.selectedPosition ? this.selectedPosition.toString() : '-'
+    );
     this.pagenum = 1;
     this.appServ.tempStoreKey('pagenum', (1).toString());
     this.getCurrentFilteredCount();
@@ -139,6 +145,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
       areaId: this.selectedArea,
       locationId: this.selectedLocation,
       teamId: this.selectedTeam,
+      posID: this.selectedPosition
     };
     this.Subscriptions.push(
       this.viewboardService
@@ -153,9 +160,12 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
       areaID: this.selectedArea,
       teamID: this.selectedTeam,
       locID: this.selectedLocation,
+      posID: this.selectedPosition,
       pageoffset: this.pagecountview,
       pagenum: this.pagenum,
     };
+
+    console.log(paramDTO)
     this.Subscriptions.push(
       this.viewboardService.getRealtimeBoardView(paramDTO).subscribe({
         next: ({ EmployeeBoardAll }) => {
@@ -181,6 +191,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.selectedLocation = null;
     this.selectedArea = null;
     this.selectedTeam = null;
+    this.selectedPosition = null;
     this.selectedAreaText = 'すべて';
     this.reInitializeBoardFromList(false, null);
   }
@@ -189,6 +200,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
       areaID: this.selectedArea,
       teamID: this.selectedTeam,
       locID: this.selectedLocation,
+      posID: this.selectedPosition,
       pageoffset: this.pagecountview,
       pagenum: this.pagenum,
     };
@@ -204,6 +216,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
       areaID: this.selectedArea,
       teamID: this.selectedTeam,
       locID: this.selectedLocation,
+      posID: this.selectedPosition
     };
     this.viewboardService.getFilteredCount(paramDTO).refetch();
     this.Subscriptions.push(
@@ -216,7 +229,8 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
             if (
               !this.selectedArea &&
               !this.selectedLocation &&
-              !this.selectedTeam
+              !this.selectedTeam &&
+              !this.selectedPosition
             )
               this.selectorFlag = false;
             else this.selectorFlag = true;
