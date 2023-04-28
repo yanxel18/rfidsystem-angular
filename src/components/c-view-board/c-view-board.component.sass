@@ -39,18 +39,16 @@
     max-width: 630px
     min-width: 630px
     height: 60px
-.droplist-container
-    padding-top: 10px
-    flex: 1
+.droplist-container 
+    padding-right: 14px
+    min-width: 300px  
     column-gap: 10px
-    padding-right: 20px
-    min-width: 600px
-    height: 60px
 .main-bulletin-container
     margin: 0px 10px 10px 10px
     padding: 10px
     display: flex
-
+.spacer
+    flex: 1 
 .per-emp-card
     width: 350px
     height: 70px
@@ -58,12 +56,7 @@
 
 .card-area-view
     column-gap: 4px
-    border-radius: 20px !important
-
-.droplist-container  mat-form-field
-    width: 150px !important
-    height: 20px !important
-
+    border-radius: 20px !important 
 .area-select mat-option
     color: red !important
     font-size: 12px !important
@@ -78,11 +71,62 @@
     border-radius: 30px !important
 .panel-chart-title
     color: #727272 !important
-.clear-button-container
-    height: 57px
+
+.clear-button-2
+    background-color: #0073c0
+    color: #ffffff
+    width: 40px !important
+    height: 40px !important
+    padding: 0px !important
+    display: inline-flex !important
+    align-items: center
+    justify-content: center
+    & > *[role=img] 
+        width: 24px
+        height: 24px
+        font-size: 24px
+        svg 
+            width: 24px
+            height: 24px
+    ::ng-deep .mat-mdc-button-touch-target 
+        width: 40px !important
+        height: 40px !important  
+
+.drop-down-filter
+    height: 40px !important
+    font-size: 18px !important
+    text-align: center !important  
+    width: 250px
+    ::ng-deep .mat-mdc-text-field-wrapper
+        height:  40px !important
+        background-color: #ffffff 
+        border-radius: 4px
+    ::ng-deep .mat-mdc-form-field-infix 
+        padding-top: 8px !important 
+        padding-bottom: 15px important
+        width: 120px
+
 .clear-button
-    background-color: #0077e6 !important
-    color: #ffffff !important
+    background-color: #32b84f 
+    width: 150px
+    font-weight: bold
+    color: #f0f0f0 
+.filter-button
+    background-color: #ffffff 
+    border: 1px solid #d8d8d8
+    width: 150px
+    font-weight: bold
+    color: #5c5c5c 
+.filter-menu-container
+    height: 200px   
+    padding: 0px 
+::ng-deep .mat-mdc-menu-content 
+        height: 240px !important
+.filter-menu-closebutton-container  
+    padding: 0px 12px 0px 12px
+.filter-menu-closebutton
+    flex: 1 
+ 
 .order-button-container
     height: 57px
 .order-button

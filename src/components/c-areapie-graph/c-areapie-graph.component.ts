@@ -11,8 +11,8 @@ import {
 import { PieChart, PieSeriesOption } from 'echarts/charts';
 import { LabelLayout } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
-import { Observable, Subscription } from 'rxjs';
-import { IPerAreaTotalStatistics, ITotalArea } from 'src/models/viewboard-model';
+import { Subscription } from 'rxjs';
+import { ITotalArea } from 'src/models/viewboard-model';
 
 @Component({
   selector: 'app-c-areapie-graph',

@@ -76,12 +76,16 @@ export interface IViewEmployeeBoard {
     teamID?: number;
     teamName?: string;
   }
-   
+  export interface IPositionList {
+    posID?: number
+    posName?: string
+  }
   export interface IViewDropList {
     ViewDropList: {
       IAreaList: IAreaList[] ;
       ILocationList: ILocationList[] ;
       ITeamList: ITeamList[];
+      IPositionList: IPositionList[] | [] 
     } 
   }
   

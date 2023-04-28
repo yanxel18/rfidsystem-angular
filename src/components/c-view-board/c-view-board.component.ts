@@ -5,6 +5,7 @@ import {
   ILocationList,
   IPageValues,
   IPerAreaGraph,
+  IPositionList,
   ISkeletonLoader,
   ITeamList,
   perAreaArgs,
@@ -25,6 +26,7 @@ import { MatOption } from '@angular/material/core';
 import { Router } from '@angular/router';
 import { BoardGraphStyle } from 'src/models/enum';
 import { AppService } from 'src/app/app.service';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
   selector: 'app-c-view-board',
@@ -44,6 +46,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   areaList!: IAreaList[];
   locationList!: ILocationList[];
   teamList!: ITeamList[];
+  positionList! : IPositionList[];
   openGraph: boolean = false;
   perAreaGraphData!: IPerAreaGraph[];
   selectedArea: number | null = null;
@@ -66,6 +69,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('titleContainer', { static: true }) public titleContainer: any;
   @ViewChild(CViewBoardNaviComponent)
   ViewBoardNaviComponent!: CViewBoardNaviComponent;
+  @ViewChild('filterMenuTrigger') filterMenu!: MatMenuTrigger;
   constructor(
     private viewboardService: CViewBoardService,
     private router: Router,
@@ -231,10 +235,11 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
         .getViewDropList()
         .valueChanges.subscribe(({ data }) => {
           if (data) {
-            const { IAreaList, ILocationList, ITeamList } = data.ViewDropList;
+            const { IAreaList, ILocationList, ITeamList, IPositionList } = data.ViewDropList;
             this.areaList = IAreaList;
             this.locationList = ILocationList;
             this.teamList = ITeamList;
+            this.positionList = IPositionList;
           }
         })
     );
@@ -252,6 +257,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.filterMenu.openMenu();
     this.viewDropList();
   }
   ngOnDestroy(): void {

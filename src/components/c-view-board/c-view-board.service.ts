@@ -117,6 +117,10 @@ const GET_VIEWDROPLIST = gql`
         teamID
         teamName
       }
+      IPositionList {
+        posID
+        posName
+      }
     }
   }
 `;

@@ -11,95 +11,125 @@
       (OutPageSelect)="getPageNum($event)"
     ></app-c-view-board-navi>
   </div>
-  <div class="droplist-container " fxLayout="row wrap"fxLayoutAlign="end">
-    <mat-form-field>
-      <mat-label>所属エリア名</mat-label>
-      <mat-select
-        panelClass="area-select"
-        [(value)]="selectedArea"
-        (selectionChange)="reInitializeBoardFromList(true, $event)"
-        name="area"
-      >
-        <mat-option [value]="null">ー</mat-option>
-        <mat-option *ngFor="let list of areaList" [value]="list.areaID">
-          {{ list.areaDesc }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field>
-      <mat-label>号棟</mat-label>
-      <mat-select
-        panelClass="bldg-select"
-        [(value)]="selectedLocation"
-        (selectionChange)="reInitializeBoardFromList(false, $event)"
-        name="loc"
-      >
-        <mat-option [value]="null">ー</mat-option>
-        <mat-option *ngFor="let list of locationList" [value]="list.locID">
-          {{ list.buildloc }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field>
-      <mat-label>班</mat-label>
-      <mat-select
-        panelClass="team-select"
-        [(value)]="selectedTeam"
-        (selectionChange)="reInitializeBoardFromList(false, $event)"
-        name="team"
-      >
-        <mat-option [value]="null">ー</mat-option>
-        <mat-option *ngFor="let list of teamList" [value]="list.teamID">
-          {{ list.teamName }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <div
-      class="clear-button-container"
-      fxLayout="row wrap"
-      fxLayoutAlign="center center"
+  <span class="spacer"></span>
+  <div class="droplist-container" fxLayoutAlign="end center">
+    <button
+      mat-flat-button
+      class="filter-button"
+      [matMenuTriggerFor]="filterMenu"
+      #filterMenuTrigger="matMenuTrigger"
+      matTooltip="所属、棟、班"
     >
-      <button
-        mat-icon-button
-        class="clear-button"
-        (click)="selectOptionClear()"
-        matTooltip="リセット"
+      フィルター<mat-icon>keyboard_arrow_down</mat-icon>
+    </button>
+    <mat-menu #filterMenu="matMenu" openMenu="true">
+      <div
+        (click)="$event.stopPropagation()"
+        (keydown)="$event.stopPropagation()"
+        class="filter-menu-container" 
+        fxLayout="row wrap"
+        fxLayoutAlign="center"
       >
-        <mat-icon>autorenew</mat-icon>
-      </button>
-    </div>
-    <!-- <div class="order-button-container" fxLayout="row wrap" fxLayoutAlign="center center">
-              <button mat-icon-button  class="order-button"  matTooltip="並び変え">
-                <mat-icon>sort_by_alpha</mat-icon>
-              </button>
-            </div> -->
+ 
+          <mat-form-field class="drop-down-filter" subscriptSizing="dynamic">
+            <mat-label>所属エリア名</mat-label>
+            <mat-select
+              panelClass="area-select"
+              [(value)]="selectedArea"
+              (selectionChange)="reInitializeBoardFromList(true, $event)"
+              name="area"
+            >
+              <mat-option [value]="null">ー</mat-option>
+              <mat-option *ngFor="let list of areaList" [value]="list.areaID">
+                {{ list.areaDesc }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="drop-down-filter" subscriptSizing="dynamic">
+            <mat-label>号棟</mat-label>
+            <mat-select
+              panelClass="bldg-select"
+              [(value)]="selectedLocation"
+              (selectionChange)="reInitializeBoardFromList(false, $event)"
+              name="loc"
+            >
+              <mat-option [value]="null">ー</mat-option>
+              <mat-option
+                *ngFor="let list of locationList"
+                [value]="list.locID"
+              >
+                {{ list.buildloc }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="drop-down-filter" subscriptSizing="dynamic">
+            <mat-label>班</mat-label>
+            <mat-select
+              panelClass="team-select"
+              [(value)]="selectedTeam"
+              (selectionChange)="reInitializeBoardFromList(false, $event)"
+              name="team"
+            >
+              <mat-option [value]="null">ー</mat-option>
+              <mat-option *ngFor="let list of teamList" [value]="list.teamID">
+                {{ list.teamName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field> 
+
+          <mat-form-field class="drop-down-filter" subscriptSizing="dynamic">
+            <mat-label>班</mat-label>
+            <mat-select
+              panelClass="team-select"
+              [(value)]="selectedTeam"
+              (selectionChange)="reInitializeBoardFromList(false, $event)"
+              name="team"
+            >
+              <mat-option [value]="null">ー</mat-option>
+              <mat-option *ngFor="let list of teamList" [value]="list.teamID">
+                {{ list.teamName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field> 
+      </div>
+      <div class="filter-menu-closebutton-container"   fxLayoutAlign="center">
+        <button color="primary" class="filter-menu-closebutton" mat-flat-button>閉じる</button>
+      </div>
+    </mat-menu>
+    <button
+      mat-flat-button
+      class="clear-button"
+      (click)="selectOptionClear()"
+      matTooltip="リセット"
+    >
+      <mat-icon>autorenew</mat-icon>
+      リセット
+    </button>
   </div>
 </div>
 <div
-class="mat-elevation-z0 employee-ratio-container"
-fxLayoutAlign="center"
-fxLayout="row wrap"
+  class="mat-elevation-z0 employee-ratio-container"
+  fxLayoutAlign="center"
+  fxLayout="row wrap"
 >
-<span class="area-display"
-  >所属エリア: <b>{{ selectedAreaText }}</b></span
->
-<span class="area-percent-display"
-  >在室率: <b>{{ viewboardStatusRatio?.currentPercent }}</b></span
->
-<span class="area-currentin-display"
-  >在室人数:
-  <b
-    >{{ viewboardStatusRatio?.currentWorkerCount }}/{{
-      viewboardStatusRatio?.totalWorkerCount
-    }}</b
-  ></span
->
+  <span class="area-display"
+    >所属エリア: <b>{{ selectedAreaText }}</b></span
+  >
+  <span class="area-percent-display"
+    >在室率: <b>{{ viewboardStatusRatio?.currentPercent }}</b></span
+  >
+  <span class="area-currentin-display"
+    >在室人数:
+    <b
+      >{{ viewboardStatusRatio?.currentWorkerCount }}/{{
+        viewboardStatusRatio?.totalWorkerCount
+      }}</b
+    ></span
+  >
 </div>
 <div class="board-view-main-container i" [ngClass]="boardStyleOnClick()">
-
-
   <div class="mat-elevation-z0 main-bulletin-container" fxLayout="column">
     <div class="card-area-view" fxLayout="row wrap" fxLayoutAlign="center">
       <div
@@ -134,32 +164,40 @@ fxLayout="row wrap"
         <ngx-skeleton-loader
           count="1"
           appearance="line"
-          [theme]=loaderStyle
+          [theme]="loaderStyle"
           animation="progress"
         ></ngx-skeleton-loader>
       </div>
     </div>
   </div>
-
 </div>
 
-<mat-expansion-panel (opened)="openGraph = true"
-(closed)="openGraph = false" class="mat-elevation-z5" [expanded]="openGraph">
+<mat-expansion-panel
+  (opened)="openGraph = true"
+  (closed)="openGraph = false"
+  class="mat-elevation-z5"
+  [expanded]="openGraph"
+>
   <mat-expansion-panel-header>
-    <mat-panel-title class="panel-chart-title"><mat-icon> show_chart</mat-icon>
+    <mat-panel-title class="panel-chart-title"
+      ><mat-icon> show_chart</mat-icon>
       <b>在室率推移</b>
-    </mat-panel-title> 
+    </mat-panel-title>
     <mat-panel-description>
-      ※グラフを表示するには「所属エリア名」,「号棟」, 「班」でフィルタリングしてください。
+      ※グラフを表示するには「所属エリア名」,「号棟」,
+      「班」でフィルタリングしてください。
     </mat-panel-description>
   </mat-expansion-panel-header>
- <div  *ngIf="!perAreaGraphData" class="graph-loading" >
-  <ngx-skeleton-loader 
-  count="6"
-  appearance="line"
-  [theme]="lineChart"
-  animation="progress"
-></ngx-skeleton-loader>
-</div>  
-    <app-c-perarea-graph *ngIf="perAreaGraphData" [rawData]="perAreaGraphData"></app-c-perarea-graph>
-  </mat-expansion-panel>
+  <div *ngIf="!perAreaGraphData" class="graph-loading">
+    <ngx-skeleton-loader
+      count="6"
+      appearance="line"
+      [theme]="lineChart"
+      animation="progress"
+    ></ngx-skeleton-loader>
+  </div>
+  <app-c-perarea-graph
+    *ngIf="perAreaGraphData"
+    [rawData]="perAreaGraphData"
+  ></app-c-perarea-graph>
+</mat-expansion-panel>

@@ -25,7 +25,7 @@ export class CDialogCommentComponent implements OnDestroy{
     this.newcomment = this.receivedData.comment;
     this.empID = this.receivedData.empID;
     this.commentFormGroup = new FormGroup({
-      comment : new FormControl(this.newcomment)
+      comment : new FormControl<string | null>(this.newcomment)
     })
   }
  
