@@ -16,6 +16,7 @@ import {
   ViewChild,
   OnDestroy,
   AfterViewInit,
+  ElementRef,
 } from '@angular/core';
 import { Subscription, take } from 'rxjs';
 import { IViewEmployeeBoard } from 'src/models/viewboard-model';
@@ -25,8 +26,7 @@ import { MatSelectChange } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { Router } from '@angular/router';
 import { BoardGraphStyle } from 'src/models/enum';
-import { AppService } from 'src/app/app.service';
-import { MatMenuTrigger } from '@angular/material/menu';
+import { AppService } from 'src/app/app.service'; 
 
 @Component({
   selector: 'app-c-view-board',
@@ -55,7 +55,11 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   selectedPosition: number | null = null;
   selectorFlag: boolean = false;
   selectedAreaText: string = 'すべて';
+  searchValue: string | null = null;
   viewboardStatusRatio?: IEmployeeCountRatio;
+
+
+
   loaderStyle: ISkeletonLoader = {
     'background-color': '#e2e2e2',
     height: '70px',
@@ -70,7 +74,8 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('titleContainer', { static: true }) public titleContainer: any;
   @ViewChild(CViewBoardNaviComponent)
   ViewBoardNaviComponent!: CViewBoardNaviComponent;
-  @ViewChild('filterMenuTrigger') filterMenu!: MatMenuTrigger;
+  @ViewChild('searchbar') searchbar!: ElementRef; 
+  toggleSearch: boolean = false;
   constructor(
     private viewboardService: CViewBoardService,
     private router: Router,
@@ -133,14 +138,23 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
       this.selectedPosition ? this.selectedPosition.toString() : '-'
     );
     this.pagenum = 1;
-    this.appServ.tempStoreKey('pagenum', (1).toString());
+    this.appServ.tempStoreKey('pagenum', this.pagenum.toString());
     this.getCurrentFilteredCount();
     this.initializeBoardView();
     this.ViewBoardNaviComponent.rerenderpaginator();
     this.initializeGraph();
   }
 
-  private initializeGraph(): void {
+  openSearch(): void {
+    this.toggleSearch = true;
+    this.searchbar.nativeElement.focus();
+  }
+  searchClose(): void {
+    this.searchValue = null;  
+    this.toggleSearch = false; 
+    this.reInitializeBoardFromList(false, null);
+  }
+  initializeGraph(): void {
     const perAreaDTO: perAreaArgs = {
       areaId: this.selectedArea,
       locationId: this.selectedLocation,
@@ -155,8 +169,9 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
         })
     );
   }
-  private initializeBoardView(): void {
+  initializeBoardView(): void {
     const paramDTO: IEmployeeBoardArgs = {
+      search: this.searchValue,
       areaID: this.selectedArea,
       teamID: this.selectedTeam,
       locID: this.selectedLocation,
@@ -164,8 +179,6 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
       pageoffset: this.pagecountview,
       pagenum: this.pagenum,
     };
-
-    console.log(paramDTO)
     this.Subscriptions.push(
       this.viewboardService.getRealtimeBoardView(paramDTO).subscribe({
         next: ({ EmployeeBoardAll }) => {
@@ -195,8 +208,9 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.selectedAreaText = 'すべて';
     this.reInitializeBoardFromList(false, null);
   }
-  private reInitializedBoardView(): void {
+  reInitializedBoardView(): void {
     const paramDTO: IEmployeeBoardArgs = {
+      search: this.searchValue,
       areaID: this.selectedArea,
       teamID: this.selectedTeam,
       locID: this.selectedLocation,
@@ -213,6 +227,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getCurrentFilteredCount(): void {
     const paramDTO: IEmployeeBoardArgs = {
+      search: this.searchValue,
       areaID: this.selectedArea,
       teamID: this.selectedTeam,
       locID: this.selectedLocation,
@@ -239,7 +254,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     );
   }
 
-  boardStyleOnClick(): string {
+  lineGraphStyle(): string {
     this.appServ.tempStoreKey('vgrph', this.openGraph ? '1' : '0');
     return this.openGraph ? BoardGraphStyle.IS_OPEN : BoardGraphStyle.IS_CLOSE;
   }
@@ -269,8 +284,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.skeletonLoader = new Array<number>(this.pagecountview);
     this.Subscriptions.forEach((s) => s.unsubscribe());
     this.initializeBoardView();
-  }
-
+  } 
   ngAfterViewInit(): void { 
     this.viewDropList();
   }

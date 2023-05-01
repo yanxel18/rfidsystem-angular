@@ -22,6 +22,7 @@ const GET_VIEWBOARD_SUBSCRIBE = gql`
     $posID: Int
     $pageoffset: Int
     $pagenum: Int
+    $search: String
   ) {
     EmployeeBoardAllSub(
       areaID: $areaID
@@ -30,6 +31,7 @@ const GET_VIEWBOARD_SUBSCRIBE = gql`
       posID: $posID
       pageoffset: $pageoffset
       pagenum: $pagenum
+      search: $search
     ) {
       EmployeeBoardAllSub {
         empID
@@ -65,6 +67,7 @@ const GET_VIEWBOARD_TEMPLATE = gql`
     $posID: Int
     $pageoffset: Int
     $pagenum: Int
+    $search: String
   ) {
     EmployeeBoardAll(
       areaID: $areaId
@@ -73,6 +76,7 @@ const GET_VIEWBOARD_TEMPLATE = gql`
       posID: $posID
       pageoffset: $pageoffset
       pagenum: $pagenum
+      search: $search
     ) {
       EmployeeBoardAllSub {
         empID
@@ -102,8 +106,8 @@ const GET_VIEWBOARD_TEMPLATE = gql`
 `;
 
 const GET_CURRENT_EMPCOUNT = gql`
-  query Query($areaID: Int, $teamID: Int, $locID: Int, $posID: Int) {
-    EmpBoardMaxCountFilter(areaID: $areaID, teamID: $teamID, locID: $locID, posID: $posID)
+  query Query($areaID: Int, $teamID: Int, $locID: Int, $posID: Int,$search: String) {
+    EmpBoardMaxCountFilter(areaID: $areaID, teamID: $teamID, locID: $locID, posID: $posID,search: $search)
   }
 `;
 const GET_VIEWDROPLIST = gql`
@@ -150,6 +154,7 @@ export class CViewBoardService implements OnDestroy {
     return this.apollo.watchQuery<IFilteredCountRes>({
       query: GET_CURRENT_EMPCOUNT,
       variables: {
+        search: param.search,
         areaID: param.areaID,
         teamID: param.teamID,
         locID: param.locID,
@@ -184,6 +189,7 @@ export class CViewBoardService implements OnDestroy {
     this.boardSubscription.subscribeToMore({
       document: GET_VIEWBOARD_SUBSCRIBE,
       variables: {
+        search: param.search,
         areaID: param.areaID,
         teamID: param.teamID,
         locID: param.locID,

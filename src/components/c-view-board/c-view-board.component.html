@@ -12,7 +12,51 @@
     ></app-c-view-board-navi>
   </div>
   <span class="spacer"></span>
+
+  <mat-toolbar
+    class="search-block mat-elevation-z4"
+    [class.active]="toggleSearch"
+  >
+    <mat-toolbar-row class="toolbar-row">
+      <button
+        class="search-icon"
+        mat-icon-button
+        aria-label="close"
+        matTooltip="閉じる"
+        (click)="searchClose()"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+      <mat-form-field
+        class="example-full-width"
+        class="search-control"
+        subscriptSizing="dynamic"
+      >
+        <input
+          matInput
+          placeholder="名: 太陽　太郎"
+          [(ngModel)]="searchValue"
+          #searchbar
+          (keydown.enter)="reInitializeBoardFromList(false, null)"
+          maxlength="40" 
+        />
+        <button matSuffix mat-icon-button (click)="reInitializeBoardFromList(false, null)">
+          <mat-icon>search</mat-icon>
+        </button>
+      </mat-form-field>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
   <div class="droplist-container" fxLayoutAlign="end center">
+    <button
+      class="search-button"
+      matTooltip="検索"
+      mat-flat-button
+      (click)="openSearch()"
+    >
+      <mat-icon>search</mat-icon>
+      検索
+    </button>
     <button
       mat-flat-button
       class="filter-button"
@@ -22,7 +66,12 @@
     >
       フィルター<mat-icon>keyboard_arrow_down</mat-icon>
     </button>
-    <mat-menu #filterMenu="matMenu" class="filtermenu-display" openMenu="true">
+    <mat-menu
+      #filterMenu="matMenu"
+      xPosition="before"
+      class="filtermenu-display"
+      openMenu="true"
+    >
       <div
         (click)="$event.stopPropagation()"
         (keydown)="$event.stopPropagation()"
@@ -111,8 +160,8 @@
 <div
   class="mat-elevation-z0 employee-ratio-container"
   fxLayoutAlign="center"
-  fxLayout="row wrap"
->
+  fxLayout="row wrap" 
+><div *ngIf="!searchValue">
   <span class="area-display"
     >所属エリア: <b>{{ selectedAreaText }}</b></span
   >
@@ -126,9 +175,9 @@
         viewboardStatusRatio?.totalWorkerCount
       }}</b
     ></span
-  >
+  ></div>
 </div>
-<div class="board-view-main-container i" [ngClass]="boardStyleOnClick()">
+<div class="board-view-main-container i" [ngClass]="lineGraphStyle()">
   <div class="mat-elevation-z0 main-bulletin-container" fxLayout="column">
     <div class="card-area-view" fxLayout="row wrap" fxLayoutAlign="center">
       <div

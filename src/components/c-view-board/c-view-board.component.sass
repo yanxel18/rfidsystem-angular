@@ -29,6 +29,7 @@
     display: flex
     background-color: #ffffff
 .employee-ratio-container
+    height:30px
     margin: 5px 0px 2px 0px
     display: flex
     background-color: #ffffff
@@ -75,7 +76,7 @@
 .panel-chart-title
     color: #727272 !important
 
-.clear-button-2
+.clear-button-2 //unused! but for reference
     background-color: #0073c0
     color: #ffffff
     width: 40px !important
@@ -120,14 +121,22 @@
     width: 150px
     font-weight: bold
     color: #5c5c5c 
+.search-button
+    background-color: #ffffff 
+    border: 1px solid #d8d8d8
+    width: 150px
+    font-weight: bold
+    color: #5c5c5c
 .filter-menu-container
     height: 200px   
-    padding: 0px 
-::ng-deep .filtermenu-display.mat-mdc-menu-content 
-    height: 250px !important
+    padding: 10px 0px 0px 0px
+ 
 
 ::ng-deep .filtermenu-display.mat-mdc-menu-panel
-     border-radius: 10px !important
+    margin-top: 6px !important
+    border-radius: 14px !important
+    .mat-mdc-menu-content 
+        height: 250px !important
     
 .filter-menu-closebutton-container  
     padding: 10px 14px 0px 14px
@@ -160,3 +169,31 @@
 
 .expansion-panel-graph
     height: 400px
+
+.searchbar-container
+    width: 300px
+    position: relative
+    border:1px solid red
+header
+    position: fixed
+    top: 50
+    z-index: 11
+    transition: all 250ms ease-in-out
+    border-top-left-radius: 6px
+    border-bottom-left-radius: 6px
+.toolbar-row
+    padding: 0px 5px    
+.main-header
+    @extend header
+    &.hidden
+        opacity: 0
+  
+.search-block
+    width: 0%
+    right: 0
+    @extend header
+    background: #fff
+    &.active
+        width: 490px
+    .search-control
+        flex: 1

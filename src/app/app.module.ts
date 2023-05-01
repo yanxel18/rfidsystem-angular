@@ -30,7 +30,7 @@ import { CPerareaGraphComponent } from '../components/c-perarea-graph/c-perarea-
 import { CMainDashboardComponent } from '../components/c-main-dashboard/c-main-dashboard.component';
 import { CAreatotalTableComponent } from '../components/c-areatotal-table/c-areatotal-table.component';
 import { CAreapieGraphComponent } from '../components/c-areapie-graph/c-areapie-graph.component';
-
+import { NgxTrimDirectiveModule } from 'ngx-trim-directive';
 const displayErrMsg = () => {
   const Toast = Swal.mixin({
     showConfirmButton: false,
@@ -167,6 +167,7 @@ registerLocaleData(localeJa);
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,
+    NgxTrimDirectiveModule
   ],
   providers: [
     {
