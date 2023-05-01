@@ -161,9 +161,9 @@
   class="mat-elevation-z0 employee-ratio-container"
   fxLayoutAlign="center"
   fxLayout="row wrap" 
-><div *ngIf="!searchValue">
+><div>
   <span class="area-display"
-    >所属エリア: <b>{{ selectedAreaText }}</b></span
+  *ngIf="!searchValue && !toggleSearch">所属エリア: <b>{{ selectedAreaText }}</b></span
   >
   <span class="area-percent-display"
     >在室率: <b>{{ viewboardStatusRatio?.currentPercent }}</b></span
