@@ -91,6 +91,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     const getLoc: string | null = this.appServ.tempGetKey('locSelected');
     const getPos: string | null = this.appServ.tempGetKey('posSelected');
     const getViewBoard: string | null = this.appServ.tempGetKey('vgrph');
+    const getSort: string | null = this.appServ.tempGetKey('order');
     this.pagecountview = getpageview
       ? parseInt(getpageview)
       : this.pagecountview;
@@ -101,6 +102,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.selectedTeam = getTeam ? parseInt(getTeam) : null;
     this.selectedLocation = getLoc ? parseInt(getLoc) : null;
     this.selectedPosition = getPos ? parseInt(getPos) : null;
+    this.selectedOrder = getSort ? parseInt(getSort) : null;
     this.openGraph = getViewBoard === '1' ? true : false;
     this.getCurrentFilteredCount();
     this.initializeBoardView();
@@ -135,6 +137,10 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
       'posSelected',
       this.selectedPosition ? this.selectedPosition.toString() : '-'
     );
+    this.appServ.tempStoreKey(
+      'order',
+      this.selectedOrder ? this.selectedOrder.toString() : '0'
+    )
     this.pagenum = 1;
     this.appServ.tempStoreKey('pagenum', this.pagenum.toString());
     this.getCurrentFilteredCount();
