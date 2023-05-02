@@ -53,6 +53,7 @@ export interface IViewEmployeeBoard {
     posID?: number | null
     pageoffset?: number | null
     pagenum?: number | null
+    order?: number | null
   }
 
   export interface IPageValues {

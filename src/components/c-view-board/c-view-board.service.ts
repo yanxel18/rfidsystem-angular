@@ -23,6 +23,7 @@ const GET_VIEWBOARD_SUBSCRIBE = gql`
     $pageoffset: Int
     $pagenum: Int
     $search: String
+    $order: Int
   ) {
     EmployeeBoardAllSub(
       areaID: $areaID
@@ -32,6 +33,7 @@ const GET_VIEWBOARD_SUBSCRIBE = gql`
       pageoffset: $pageoffset
       pagenum: $pagenum
       search: $search
+      order: $order
     ) {
       EmployeeBoardAllSub {
         empID
@@ -68,6 +70,7 @@ const GET_VIEWBOARD_TEMPLATE = gql`
     $pageoffset: Int
     $pagenum: Int
     $search: String
+    $order: Int
   ) {
     EmployeeBoardAll(
       areaID: $areaId
@@ -77,6 +80,7 @@ const GET_VIEWBOARD_TEMPLATE = gql`
       pageoffset: $pageoffset
       pagenum: $pagenum
       search: $search
+      order: $order
     ) {
       EmployeeBoardAllSub {
         empID
@@ -106,8 +110,22 @@ const GET_VIEWBOARD_TEMPLATE = gql`
 `;
 
 const GET_CURRENT_EMPCOUNT = gql`
-  query Query($areaID: Int, $teamID: Int, $locID: Int, $posID: Int,$search: String) {
-    EmpBoardMaxCountFilter(areaID: $areaID, teamID: $teamID, locID: $locID, posID: $posID,search: $search)
+  query Query(
+    $areaID: Int
+    $teamID: Int
+    $locID: Int
+    $posID: Int
+    $search: String
+    $order: Int
+  ) {
+    EmpBoardMaxCountFilter(
+      areaID: $areaID
+      teamID: $teamID
+      locID: $locID
+      posID: $posID
+      search: $search
+      order: $order
+    )
   }
 `;
 const GET_VIEWDROPLIST = gql`
@@ -159,6 +177,7 @@ export class CViewBoardService implements OnDestroy {
         teamID: param.teamID,
         locID: param.locID,
         posID: param.posID,
+        order: param.order,
       },
     });
   }
@@ -194,6 +213,7 @@ export class CViewBoardService implements OnDestroy {
         teamID: param.teamID,
         locID: param.locID,
         posID: param.posID,
+        order: param.order,
         pageoffset: param.pageoffset,
         pagenum: param.pagenum,
       },
@@ -214,6 +234,6 @@ export class CViewBoardService implements OnDestroy {
     );
   }
   ngOnDestroy(): void {
-    this.boardSubscription.stopPolling(); 
+    this.boardSubscription.stopPolling();
   }
 }

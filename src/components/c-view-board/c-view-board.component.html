@@ -23,7 +23,7 @@
         mat-icon-button
         aria-label="close"
         matTooltip="閉じる"
-        (click)="searchClose()"
+        (click)="searchClose();searchStart=false"
       >
         <mat-icon>close</mat-icon>
       </button>
@@ -37,10 +37,14 @@
           placeholder="名: 太陽　太郎"
           [(ngModel)]="searchValue"
           #searchbar
-          (keydown.enter)="reInitializeBoardFromList(false, null)"
-          maxlength="40" 
+          (keydown.enter)="reInitializeBoardFromList(false, null); searchStart = true"
+          maxlength="40"
         />
-        <button matSuffix mat-icon-button (click)="reInitializeBoardFromList(false, null)">
+        <button
+          matSuffix
+          mat-icon-button
+          (click)="reInitializeBoardFromList(false, null); searchStart = true"
+        >
           <mat-icon>search</mat-icon>
         </button>
       </mat-form-field>
@@ -49,14 +53,37 @@
 
   <div class="droplist-container" fxLayoutAlign="end center">
     <button
+    class="search-button"
+    matTooltip="検索"
+    mat-flat-button
+    (click)="openSearch()"
+  >
+    <mat-icon>search</mat-icon>
+    検索
+  </button>
+    <button
       class="search-button"
-      matTooltip="検索"
+      matTooltip=""
       mat-flat-button
-      (click)="openSearch()"
+      [matMenuTriggerFor]="sort"
     >
-      <mat-icon>search</mat-icon>
-      検索
+    <mat-icon>sort</mat-icon>
+      並び変え
     </button>
+    <mat-menu #sort="matMenu" xPosition="before" class="sortmenu-display">
+      <button mat-menu-item (click)="sortCard(1)">
+        <mat-icon>arrow_drop_up</mat-icon> 
+        <span>昇順</span>
+      </button>
+      <button mat-menu-item  (click)="sortCard(2)">  
+        <mat-icon>arrow_drop_down</mat-icon>
+        <span>降順</span>
+      </button>
+      <button mat-menu-item (click)="sortCard(0)">
+        <mat-icon>list_alt</mat-icon>
+        <span>デフォルト</span>
+      </button>
+    </mat-menu>
     <button
       mat-flat-button
       class="filter-button"
@@ -160,22 +187,24 @@
 <div
   class="mat-elevation-z0 employee-ratio-container"
   fxLayoutAlign="center"
-  fxLayout="row wrap" 
-><div>
-  <span class="area-display"
-  *ngIf="!searchValue && !toggleSearch">所属エリア: <b>{{ selectedAreaText }}</b></span
-  >
-  <span class="area-percent-display"
-    >在室率: <b>{{ viewboardStatusRatio?.currentPercent }}</b></span
-  >
-  <span class="area-currentin-display"
-    >在室人数:
-    <b
-      >{{ viewboardStatusRatio?.currentWorkerCount }}/{{
-        viewboardStatusRatio?.totalWorkerCount
-      }}</b
-    ></span
-  ></div>
+  fxLayout="row wrap"
+>
+  <div>
+    <span class="area-display" *ngIf="!searchStart"
+      >所属エリア: <b>{{ selectedAreaText }}</b></span
+    >
+    <span class="area-percent-display"
+      >在室率: <b>{{ viewboardStatusRatio?.currentPercent }}</b></span
+    >
+    <span class="area-currentin-display"
+      >在室人数:
+      <b
+        >{{ viewboardStatusRatio?.currentWorkerCount }}/{{
+          viewboardStatusRatio?.totalWorkerCount
+        }}</b
+      ></span
+    >
+  </div>
 </div>
 <div class="board-view-main-container i" [ngClass]="lineGraphStyle()">
   <div class="mat-elevation-z0 main-bulletin-container" fxLayout="column">

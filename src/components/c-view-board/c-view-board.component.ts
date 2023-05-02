@@ -26,7 +26,7 @@ import { MatSelectChange } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { Router } from '@angular/router';
 import { BoardGraphStyle } from 'src/models/enum';
-import { AppService } from 'src/app/app.service'; 
+import { AppService } from 'src/app/app.service';
 
 @Component({
   selector: 'app-c-view-board',
@@ -46,20 +46,19 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   areaList!: IAreaList[];
   locationList!: ILocationList[];
   teamList!: ITeamList[];
-  positionList! : IPositionList[];
+  positionList!: IPositionList[];
   openGraph: boolean = false;
   perAreaGraphData!: IPerAreaGraph[];
   selectedArea: number | null = null;
   selectedLocation: number | null = null;
   selectedTeam: number | null = null;
   selectedPosition: number | null = null;
-  selectorFlag: boolean = false;
   selectedAreaText: string = 'すべて';
+  selectedOrder: number | null = null;
   searchValue: string | null = null;
+  searchStart: boolean = false;
   viewboardStatusRatio?: IEmployeeCountRatio;
-
-
-
+  toggleSearch: boolean = false;
   loaderStyle: ISkeletonLoader = {
     'background-color': '#e2e2e2',
     height: '70px',
@@ -71,11 +70,10 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     height: '25px',
     'border-radius': '4px',
   };
-  @ViewChild('titleContainer', { static: true }) public titleContainer: any;
   @ViewChild(CViewBoardNaviComponent)
   ViewBoardNaviComponent!: CViewBoardNaviComponent;
-  @ViewChild('searchbar') searchbar!: ElementRef; 
-  toggleSearch: boolean = false;
+  @ViewChild('searchbar') searchbar!: ElementRef;
+
   constructor(
     private viewboardService: CViewBoardService,
     private router: Router,
@@ -102,7 +100,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.selectedAreaText = getAreaText ? getAreaText : 'すべて';
     this.selectedTeam = getTeam ? parseInt(getTeam) : null;
     this.selectedLocation = getLoc ? parseInt(getLoc) : null;
-    this.selectedPosition = getPos? parseInt(getPos) : null;
+    this.selectedPosition = getPos ? parseInt(getPos) : null;
     this.openGraph = getViewBoard === '1' ? true : false;
     this.getCurrentFilteredCount();
     this.initializeBoardView();
@@ -150,8 +148,8 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.searchbar.nativeElement.focus();
   }
   searchClose(): void {
-    this.searchValue = null;  
-    this.toggleSearch = false; 
+    this.searchValue = null;
+    this.toggleSearch = false;
     this.reInitializeBoardFromList(false, null);
   }
   initializeGraph(): void {
@@ -159,7 +157,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
       areaId: this.selectedArea,
       locationId: this.selectedLocation,
       teamId: this.selectedTeam,
-      posID: this.selectedPosition
+      posID: this.selectedPosition,
     };
     this.Subscriptions.push(
       this.viewboardService
@@ -175,6 +173,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
       areaID: this.selectedArea,
       teamID: this.selectedTeam,
       locID: this.selectedLocation,
+      order: this.selectedOrder,
       posID: this.selectedPosition,
       pageoffset: this.pagecountview,
       pagenum: this.pagenum,
@@ -200,6 +199,10 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
       })
     );
   }
+  sortCard(sortVal: number): void {
+    this.selectedOrder = sortVal;
+    this.reInitializeBoardFromList(false, null)
+  }
   selectOptionClear(): void {
     this.selectedLocation = null;
     this.selectedArea = null;
@@ -214,6 +217,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
       areaID: this.selectedArea,
       teamID: this.selectedTeam,
       locID: this.selectedLocation,
+      order: this.selectedOrder,
       posID: this.selectedPosition,
       pageoffset: this.pagecountview,
       pagenum: this.pagenum,
@@ -230,8 +234,9 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
       search: this.searchValue,
       areaID: this.selectedArea,
       teamID: this.selectedTeam,
+      order: this.selectedOrder,
       locID: this.selectedLocation,
-      posID: this.selectedPosition
+      posID: this.selectedPosition,
     };
     this.viewboardService.getFilteredCount(paramDTO).refetch();
     this.Subscriptions.push(
@@ -241,14 +246,6 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
         .subscribe(({ data }) => {
           if (data) {
             this.empMaxCount = data.EmpBoardMaxCountFilter;
-            if (
-              !this.selectedArea &&
-              !this.selectedLocation &&
-              !this.selectedTeam &&
-              !this.selectedPosition
-            )
-              this.selectorFlag = false;
-            else this.selectorFlag = true;
           }
         })
     );
@@ -265,7 +262,8 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
         .getViewDropList()
         .valueChanges.subscribe(({ data }) => {
           if (data) {
-            const { IAreaList, ILocationList, ITeamList, IPositionList } = data.ViewDropList;
+            const { IAreaList, ILocationList, ITeamList, IPositionList } =
+              data.ViewDropList;
             this.areaList = IAreaList;
             this.locationList = ILocationList;
             this.teamList = ITeamList;
@@ -284,8 +282,8 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.skeletonLoader = new Array<number>(this.pagecountview);
     this.Subscriptions.forEach((s) => s.unsubscribe());
     this.initializeBoardView();
-  } 
-  ngAfterViewInit(): void { 
+  }
+  ngAfterViewInit(): void {
     this.viewDropList();
   }
   ngOnDestroy(): void {

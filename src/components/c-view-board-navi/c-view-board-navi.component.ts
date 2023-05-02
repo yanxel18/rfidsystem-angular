@@ -43,7 +43,7 @@ export class CViewBoardNaviComponent implements OnInit, AfterViewInit {
     };  
 
   }
-  handlePageEvent(e: PageEvent) { 
+  handlePageEvent(e: PageEvent): void { 
     localStorage.setItem('pagecountview',(e.pageSize).toString());
     localStorage.setItem('pagenum',(e.pageIndex + 1).toString()); 
     this.OutPageSelect.emit({
@@ -61,7 +61,7 @@ export class CViewBoardNaviComponent implements OnInit, AfterViewInit {
       this.paginator.pageIndex = 0;
     }, 0);
   }
-  setPageSizeOptions(setPageSizeOptionsInput: string) {
+  setPageSizeOptions(setPageSizeOptionsInput: string): void {
     if (setPageSizeOptionsInput) {
       this.pageSizeOptions = setPageSizeOptionsInput.split(',').map(str => +str);
     }

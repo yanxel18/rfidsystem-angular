@@ -112,26 +112,36 @@
 
 .clear-button
     background-color: #32b84f 
-    width: 150px
+    width: 140px
     font-weight: bold
     color: #ffffff 
 .filter-button
     background-color: #ffffff 
     border: 1px solid #d8d8d8
-    width: 150px
+    width: 140px
     font-weight: bold
     color: #5c5c5c 
 .search-button
     background-color: #ffffff 
     border: 1px solid #d8d8d8
-    width: 150px
+    width: 140px
+    font-weight: bold
+    color: #5c5c5c
+.sort-button
+    background-color: #ffffff 
+    border: 1px solid #d8d8d8
+    width: 140px
     font-weight: bold
     color: #5c5c5c
 .filter-menu-container
     height: 200px   
     padding: 10px 0px 0px 0px
  
-
+::ng-deep .sortmenu-display.mat-mdc-menu-panel
+    margin-top: 6px !important
+    border-radius: 14px !important
+    .mat-mdc-menu-content 
+        height: 145px !important
 ::ng-deep .filtermenu-display.mat-mdc-menu-panel
     margin-top: 6px !important
     border-radius: 14px !important
@@ -194,6 +204,6 @@ header
     @extend header
     background: #fff
     &.active
-        width: 490px
+        width: 605px
     .search-control
         flex: 1

@@ -91,7 +91,7 @@ const newHttpLink = (link: HttpLink): ApolloLink => {
   });
   const ws = new WebSocketLink(wsLink);
   wsLink.onConnected(() => successMsg('サーバーに接続済み。'));
-  wsLink.onDisconnected((err) => displayErrMsg());
+  wsLink.onDisconnected(() => displayErrMsg());
   wsLink.onReconnected(() => successMsgOnRecon('サーバーに再接続済み。'));
   const httpLink = link.create({
     uri,
@@ -110,7 +110,7 @@ const newHttpLink = (link: HttpLink): ApolloLink => {
   const errorlink = (): ApolloLink => {
     return onError(({ graphQLErrors, networkError, operation, forward }) => {
       if (graphQLErrors)
-        graphQLErrors.map(({ extensions, message }) => { 
+        graphQLErrors.map(({ message }) => { 
           errorMSG(message);
           return forward(operation);
         });
@@ -179,11 +179,11 @@ registerLocaleData(localeJa);
               Query: {
                 fields: {
                   EmployeeBoardAll: {
-                    merge(existing, incoming) {
+                    merge(_, incoming) {
                       return incoming;
                     },
                   },PerAreaGraph: {
-                    merge(existing, incoming) {
+                    merge(_, incoming) {
                       return incoming;
                     },
                   },
