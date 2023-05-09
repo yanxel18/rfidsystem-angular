@@ -5,7 +5,7 @@
 >
   <div class="page-navi">
     <app-c-view-board-navi
-      [InputMaxCount]="empMaxCount$ |async "
+      [InputMaxCount]=" (empMaxCount$ |async) "
       [InputPageView]="pagecountview"
       [InputPageNum]="pagenum"
       (OutPageSelect)="getPageNum($event)"
@@ -248,7 +248,7 @@
 <mat-expansion-panel
   (opened)="openGraph = true"
   (closed)="openGraph = false"
-  class="mat-elevation-z5"
+  class="mat-elevation-z5 graph-expansion-container"
   [expanded]="openGraph"
 >
   <mat-expansion-panel-header>
@@ -261,16 +261,16 @@
       「班」でフィルタリングしてください。
     </mat-panel-description>
   </mat-expansion-panel-header>
-  <div *ngIf="!perAreaGraphData" class="graph-loading">
+  <div *ngIf="!(perAreaGraphData$ | async)" class="graph-loading">
     <ngx-skeleton-loader
-      count="6"
+      count="4"
       appearance="line"
       [theme]="lineChart"
       animation="progress"
     ></ngx-skeleton-loader>
   </div>
   <app-c-perarea-graph
-    *ngIf="perAreaGraphData"
-    [rawData]="perAreaGraphData"
+    *ngIf="perAreaGraphData$"
+    [rawData]="perAreaGraphData$ |async"
   ></app-c-perarea-graph>
 </mat-expansion-panel>

@@ -47,7 +47,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   teamList$!: Observable<ITeamList[]>;
   positionList$!: Observable<IPositionList[]>;
   openGraph: boolean = false;
-  perAreaGraphData!: IPerAreaGraph[];
+  perAreaGraphData$!: Observable<IPerAreaGraph[]>;
   selectedArea: number | null = null;
   selectedLocation: number | null = null;
   selectedTeam: number | null = null;
@@ -158,13 +158,8 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.reInitializeBoardFromList(false, null);
   }
   initializeGraph(): void {
-    this.Subscriptions.push(
-      this.viewboardService
-        .getPerAreaGraph(this.ViewBoardParam)
-        .valueChanges.subscribe(({ data }) => {
-          if (data) this.perAreaGraphData = data.PerAreaGraph;
-        })
-    );
+    this.perAreaGraphData$ = this.viewboardService.getPerAreaGraph(this.ViewBoardParam).valueChanges
+    .pipe(map(({data})=> {return data.PerAreaGraph ? data.PerAreaGraph : []}))
   }
   initializeBoardView(): void {
     this.Subscriptions.push(
@@ -237,22 +232,22 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
       );
     this.areaList$ = dropDownlist.pipe(
       map((data) => {
-        return data.IAreaList;
+        return data ? data.IAreaList : [];
       })
     );
     this.locationList$ = dropDownlist.pipe(
       map((data) => {
-        return data.ILocationList;
+        return data ?  data.ILocationList : [];
       })
     );
     this.teamList$ = dropDownlist.pipe(
       map((data) => {
-        return data.ITeamList;
+        return data ? data.ITeamList : [];
       })
     );
     this.positionList$ = dropDownlist.pipe(
       map((data) => {
-        return data.IPositionList;
+        return data ? data.IPositionList : [];
       })
     );
   }

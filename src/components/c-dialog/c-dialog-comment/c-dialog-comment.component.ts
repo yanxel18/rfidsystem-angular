@@ -27,9 +27,7 @@ export class CDialogCommentComponent implements OnDestroy{
     this.commentFormGroup = new FormGroup({
       comment : new FormControl<string | null>(this.newcomment)
     })
-  }
- 
- 
+  } 
   updateComment(): void { 
     const val:INewComment  = this.commentFormGroup.value; 
     if (this.empID){
@@ -42,9 +40,8 @@ export class CDialogCommentComponent implements OnDestroy{
           if (data.UpdateEmployeeComment.status){
             this.closeDialog();
           }
-        } 
-        
-      }))
+        }  
+      }));
     }
 
   }

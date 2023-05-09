@@ -25,7 +25,7 @@ import { CanvasRenderer } from 'echarts/renderers';
   styleUrls: ['./c-perarea-graph.component.sass'],
 })
 export class CPerareaGraphComponent implements OnChanges {
-  @Input() rawData!: IPerAreaGraph[];
+  @Input() rawData!: IPerAreaGraph[] | null;
 constructor()  {
 }
   ngOnChanges(): void {
@@ -84,9 +84,9 @@ constructor()  {
       xAxis: {
         type: 'category',
         boundaryGap: false,
-        data: this.rawData.map((data) => {
+        data: this.rawData ? this.rawData.map((data) => {
           return data.x;
-        }),
+        }) : [],
       },
       yAxis: {
         axisLabel: {
@@ -102,9 +102,9 @@ constructor()  {
           type: 'line',
           smooth: true,
           stack: 'Total',
-          data: this.rawData.map((data) => {
+          data: this.rawData ? this.rawData.map((data) => {
             return data.y;
-          }),
+          }) : [],
           markLine: {
             silent: true,
             lineStyle: {
