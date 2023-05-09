@@ -101,13 +101,7 @@ export interface IViewEmployeeBoard {
     x: string 
     y: number 
   }
-
-  export interface perAreaArgs {
-    areaId: number | null
-    locationId: number | null
-    teamId: number | null
-    posID: number | null
-  }
+ 
 
   export interface IPerAreaGraphResponse {
     PerAreaGraph : IPerAreaGraph []

@@ -5,7 +5,7 @@
 >
   <div class="page-navi">
     <app-c-view-board-navi
-      [InputMaxCount]="empMaxCount"
+      [InputMaxCount]="empMaxCount$ |async "
       [InputPageView]="pagecountview"
       [InputPageNum]="pagenum"
       (OutPageSelect)="getPageNum($event)"
@@ -54,7 +54,6 @@
   <div class="droplist-container" fxLayoutAlign="end center">
     <button
     class="search-button"
-    matTooltip="検索"
     mat-flat-button
     (click)="openSearch()"
   >
@@ -63,7 +62,6 @@
   </button>
     <button
       class="search-button"
-      matTooltip=""
       mat-flat-button
       [matMenuTriggerFor]="sort"
     >
@@ -89,7 +87,6 @@
       class="filter-button"
       [matMenuTriggerFor]="filterMenu"
       #filterMenuTrigger="matMenuTrigger"
-      matTooltip="所属,棟,班,役職"
     >
       フィルター<mat-icon>keyboard_arrow_down</mat-icon>
     </button>
@@ -115,7 +112,7 @@
             name="area"
           >
             <mat-option [value]="null">ー</mat-option>
-            <mat-option *ngFor="let list of areaList" [value]="list.areaID">
+            <mat-option *ngFor="let list of areaList$ | async" [value]="list.areaID">
               {{ list.areaDesc }}
             </mat-option>
           </mat-select>
@@ -130,7 +127,7 @@
             name="loc"
           >
             <mat-option [value]="null">ー</mat-option>
-            <mat-option *ngFor="let list of locationList" [value]="list.locID">
+            <mat-option *ngFor="let list of locationList$ | async" [value]="list.locID">
               {{ list.buildloc }}
             </mat-option>
           </mat-select>
@@ -145,7 +142,7 @@
             name="team"
           >
             <mat-option [value]="null">ー</mat-option>
-            <mat-option *ngFor="let list of teamList" [value]="list.teamID">
+            <mat-option *ngFor="let list of teamList$ | async" [value]="list.teamID">
               {{ list.teamName }}
             </mat-option>
           </mat-select>
@@ -160,7 +157,7 @@
             name="pos"
           >
             <mat-option [value]="null">ー</mat-option>
-            <mat-option *ngFor="let list of positionList" [value]="list.posID">
+            <mat-option *ngFor="let list of positionList$ | async" [value]="list.posID">
               {{ list.posName }}
             </mat-option>
           </mat-select>
@@ -177,7 +174,6 @@
       mat-flat-button
       class="clear-button"
       (click)="selectOptionClear()"
-      matTooltip="リセット"
     >
       <mat-icon>autorenew</mat-icon>
       リセット
@@ -212,7 +208,7 @@
       <div
         class="per-emp-card"
         *ngFor="
-          let data of empRealTime$;
+          let data of empRealTime;
           let i = index;
           trackBy: trackCardIndex
         "
@@ -224,14 +220,14 @@
       fxLayout="row wrap"
       fxLayoutAlign="center"
       class="data-not-found-msg"
-      *ngIf="!empRealTime$ || empRealTime$.length === 0"
+      *ngIf="!empRealTime || empRealTime.length === 0"
     >
       <h3>データがありません。</h3>
     </div>
     <div
       class="card-area-view"
       fxLayout="row wrap"
-      *ngIf="!empRealTime$ || empRealTime$.length === 0"
+      *ngIf="!empRealTime || empRealTime.length === 0"
       fxLayoutAlign="center"
     >
       <div

@@ -2,8 +2,7 @@ import {
   EmployeeBoardWithRatio,
   IFilteredCountRes,
   IPerAreaGraphResponse,
-  IViewDropList,
-  perAreaArgs,
+  IViewDropList
 } from './../../models/viewboard-model';
 import { Injectable, OnDestroy } from '@angular/core';
 import { Apollo, QueryRef } from 'apollo-angular';
@@ -151,8 +150,8 @@ const GET_VIEWDROPLIST = gql`
   }
 `;
 const GET_PERAREA_GRAPH = gql`
-  query Query($areaId: Int, $locationId: Int, $teamId: Int) {
-    PerAreaGraph(areaID: $areaId, locationID: $locationId, teamID: $teamId) {
+  query Query($areaID: Int, $locID: Int, $teamID: Int) {
+    PerAreaGraph(areaID: $areaID, locID: $locID, teamID: $teamID) {
       x: DateSelect
       y: WorkerRate
     }
@@ -182,13 +181,13 @@ export class CViewBoardService implements OnDestroy {
     });
   }
 
-  getPerAreaGraph(param: perAreaArgs): QueryRef<IPerAreaGraphResponse> {
+  getPerAreaGraph(param: IEmployeeBoardArgs): QueryRef<IPerAreaGraphResponse> {
     return this.apollo.watchQuery<IPerAreaGraphResponse>({
       query: GET_PERAREA_GRAPH,
       variables: {
-        areaId: param.areaId,
-        locationId: param.locationId,
-        teamId: param.teamId,
+        areaID: param.areaID,
+        locID: param.locID,
+        teamID: param.teamID,
       },
       pollInterval: 1000 * 60 * 5,
     });

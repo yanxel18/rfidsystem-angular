@@ -8,7 +8,7 @@ import {
   IPositionList,
   ISkeletonLoader,
   ITeamList,
-  perAreaArgs,
+  IViewDropList,
 } from './../../models/viewboard-model';
 import {
   Component,
@@ -18,7 +18,7 @@ import {
   AfterViewInit,
   ElementRef,
 } from '@angular/core';
-import { Subscription, take } from 'rxjs';
+import { Observable, Subscription, map, take } from 'rxjs';
 import { IViewEmployeeBoard } from 'src/models/viewboard-model';
 import { CViewBoardService } from './c-view-board.service';
 import { CViewBoardNaviComponent } from '../c-view-board-navi/c-view-board-navi.component';
@@ -27,7 +27,6 @@ import { MatOption } from '@angular/material/core';
 import { Router } from '@angular/router';
 import { BoardGraphStyle } from 'src/models/enum';
 import { AppService } from 'src/app/app.service';
-
 @Component({
   selector: 'app-c-view-board',
   templateUrl: './c-view-board.component.html',
@@ -36,17 +35,17 @@ import { AppService } from 'src/app/app.service';
 })
 export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   DEFAULTCOUNT: number = 100;
-  empRealTime$!: IViewEmployeeBoard[];
+  empRealTime!: IViewEmployeeBoard[];
   checkDataSubscription!: Subscription;
-  empMaxCount: number = 0;
+  empMaxCount$!: Observable<number>;
   pagecountview: number = this.DEFAULTCOUNT;
   pagenum: number = 1;
   skeletonLoader: Array<number> = [this.DEFAULTCOUNT];
   Subscriptions: Subscription[] = [];
-  areaList!: IAreaList[];
-  locationList!: ILocationList[];
-  teamList!: ITeamList[];
-  positionList!: IPositionList[];
+  areaList$!: Observable<IAreaList[]>;
+  locationList$!: Observable<ILocationList[]>;
+  teamList$!: Observable<ITeamList[]>;
+  positionList$!: Observable<IPositionList[]>;
   openGraph: boolean = false;
   perAreaGraphData!: IPerAreaGraph[];
   selectedArea: number | null = null;
@@ -140,7 +139,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.appServ.tempStoreKey(
       'order',
       this.selectedOrder ? this.selectedOrder.toString() : '0'
-    )
+    );
     this.pagenum = 1;
     this.appServ.tempStoreKey('pagenum', this.pagenum.toString());
     this.getCurrentFilteredCount();
@@ -159,55 +158,39 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.reInitializeBoardFromList(false, null);
   }
   initializeGraph(): void {
-    const perAreaDTO: perAreaArgs = {
-      areaId: this.selectedArea,
-      locationId: this.selectedLocation,
-      teamId: this.selectedTeam,
-      posID: this.selectedPosition,
-    };
     this.Subscriptions.push(
       this.viewboardService
-        .getPerAreaGraph(perAreaDTO)
+        .getPerAreaGraph(this.ViewBoardParam)
         .valueChanges.subscribe(({ data }) => {
           if (data) this.perAreaGraphData = data.PerAreaGraph;
         })
     );
   }
   initializeBoardView(): void {
-    const paramDTO: IEmployeeBoardArgs = {
-      search: this.searchValue,
-      areaID: this.selectedArea,
-      teamID: this.selectedTeam,
-      locID: this.selectedLocation,
-      order: this.selectedOrder,
-      posID: this.selectedPosition,
-      pageoffset: this.pagecountview,
-      pagenum: this.pagenum,
-    };
     this.Subscriptions.push(
-      this.viewboardService.getRealtimeBoardView(paramDTO).subscribe({
-        next: ({ EmployeeBoardAll }) => {
-          if (EmployeeBoardAll.EmployeeBoardAllSub) {
-            if (EmployeeBoardAll.EmployeeBoardAllSub.length > 0) {
-              this.empRealTime$ = EmployeeBoardAll.EmployeeBoardAllSub;
-            } else this.empRealTime$ = [];
-          }
-          if (EmployeeBoardAll.AreaRatio) {
-            this.viewboardStatusRatio = EmployeeBoardAll.AreaRatio;
-          }
-        },
-
-        error: () => {
-          this.Subscriptions.forEach((s) => s.unsubscribe());
-          this.initializeBoardView();
-          this.reInitializedBoardView();
-        },
-      })
+      this.viewboardService
+        .getRealtimeBoardView(this.ViewBoardParam)
+        .subscribe({
+          next: ({ EmployeeBoardAll }) => {
+            if (EmployeeBoardAll.EmployeeBoardAllSub) {
+              if (EmployeeBoardAll.EmployeeBoardAllSub.length > 0) {
+                this.empRealTime = EmployeeBoardAll.EmployeeBoardAllSub;
+              } else this.empRealTime = [];
+            }
+            if (EmployeeBoardAll.AreaRatio)
+              this.viewboardStatusRatio = EmployeeBoardAll.AreaRatio;
+          },
+          error: () => {
+            this.Subscriptions.forEach((s) => s.unsubscribe());
+            this.initializeBoardView();
+            this.reInitializedBoardView();
+          },
+        })
     );
   }
   sortCard(sortVal: number): void {
     this.selectedOrder = sortVal;
-    this.reInitializeBoardFromList(false, null)
+    this.reInitializeBoardFromList(false, null);
   }
   selectOptionClear(): void {
     this.selectedLocation = null;
@@ -218,7 +201,64 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.reInitializeBoardFromList(false, null);
   }
   reInitializedBoardView(): void {
-    const paramDTO: IEmployeeBoardArgs = {
+    this.Subscriptions.push(
+      this.viewboardService
+        .getRealtimeBoardView(this.ViewBoardParam)
+        .subscribe((data) => {
+          if (data) this.viewDropList();
+        })
+    );
+  }
+
+  getCurrentFilteredCount(): void {
+    this.viewboardService.getFilteredCount(this.ViewBoardParam).refetch();
+    this.empMaxCount$ = this.viewboardService
+      .getFilteredCount(this.ViewBoardParam)
+      .valueChanges.pipe(take(1))
+      .pipe(
+        map(({ data }) => {
+          return data.EmpBoardMaxCountFilter ? data.EmpBoardMaxCountFilter : 0;
+        })
+      ); 
+  }
+
+  lineGraphStyle(): string {
+    this.appServ.tempStoreKey('vgrph', this.openGraph ? '1' : '0');
+    return this.openGraph ? BoardGraphStyle.IS_OPEN : BoardGraphStyle.IS_CLOSE;
+  }
+  viewDropList(): void {
+    this.viewboardService.getViewDropList().refetch();
+    const dropDownlist = this.viewboardService
+      .getViewDropList()
+      .valueChanges.pipe(
+        map(({ data }) => {
+          return data.ViewDropList;
+        })
+      );
+    this.areaList$ = dropDownlist.pipe(
+      map((data) => {
+        return data.IAreaList;
+      })
+    );
+    this.locationList$ = dropDownlist.pipe(
+      map((data) => {
+        return data.ILocationList;
+      })
+    );
+    this.teamList$ = dropDownlist.pipe(
+      map((data) => {
+        return data.ITeamList;
+      })
+    );
+    this.positionList$ = dropDownlist.pipe(
+      map((data) => {
+        return data.IPositionList;
+      })
+    );
+  }
+
+  get ViewBoardParam(): IEmployeeBoardArgs {
+    const formInfo: IEmployeeBoardArgs = {
       search: this.searchValue,
       areaID: this.selectedArea,
       teamID: this.selectedTeam,
@@ -228,61 +268,13 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
       pageoffset: this.pagecountview,
       pagenum: this.pagenum,
     };
-    this.Subscriptions.push(
-      this.viewboardService.getRealtimeBoardView(paramDTO).subscribe((data) => {
-        if (data) this.viewDropList();
-      })
-    );
-  }
-
-  getCurrentFilteredCount(): void {
-    const paramDTO: IEmployeeBoardArgs = {
-      search: this.searchValue,
-      areaID: this.selectedArea,
-      teamID: this.selectedTeam,
-      order: this.selectedOrder,
-      locID: this.selectedLocation,
-      posID: this.selectedPosition,
-    };
-    this.viewboardService.getFilteredCount(paramDTO).refetch();
-    this.Subscriptions.push(
-      this.viewboardService
-        .getFilteredCount(paramDTO)
-        .valueChanges.pipe(take(1))
-        .subscribe(({ data }) => {
-          if (data) {
-            this.empMaxCount = data.EmpBoardMaxCountFilter;
-          }
-        })
-    );
-  }
-
-  lineGraphStyle(): string {
-    this.appServ.tempStoreKey('vgrph', this.openGraph ? '1' : '0');
-    return this.openGraph ? BoardGraphStyle.IS_OPEN : BoardGraphStyle.IS_CLOSE;
-  }
-  viewDropList(): void {
-    this.viewboardService.getViewDropList().refetch();
-    this.Subscriptions.push(
-      this.viewboardService
-        .getViewDropList()
-        .valueChanges.subscribe(({ data }) => {
-          if (data) {
-            const { IAreaList, ILocationList, ITeamList, IPositionList } =
-              data.ViewDropList;
-            this.areaList = IAreaList;
-            this.locationList = ILocationList;
-            this.teamList = ITeamList;
-            this.positionList = IPositionList;
-          }
-        })
-    );
+    return formInfo;
   }
   trackCardIndex(index: number): number {
     return index;
   }
   getPageNum(data: IPageValues): void {
-    this.empRealTime$ = [];
+    this.empRealTime = [];
     this.pagecountview = data.pageSize;
     this.pagenum = data.pageIndex;
     this.skeletonLoader = new Array<number>(this.pagecountview);
