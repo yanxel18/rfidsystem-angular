@@ -11,6 +11,6 @@ export class AppService {
   }
 
   tempGetKey(key: string): string | null{
-    return localStorage?.getItem(key)
+    return localStorage.getItem(key)
   }
 }

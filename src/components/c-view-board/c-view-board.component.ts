@@ -1,5 +1,6 @@
 import {
   IAreaList,
+  IDivisionList,
   IEmployeeBoardArgs,
   IEmployeeCountRatio,
   ILocationList,
@@ -7,8 +8,7 @@ import {
   IPerAreaGraph,
   IPositionList,
   ISkeletonLoader,
-  ITeamList,
-  IViewDropList,
+  ITeamList
 } from './../../models/viewboard-model';
 import {
   Component,
@@ -46,6 +46,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   locationList$!: Observable<ILocationList[]>;
   teamList$!: Observable<ITeamList[]>;
   positionList$!: Observable<IPositionList[]>;
+  divisionList$!: Observable<IDivisionList[]>;
   openGraph: boolean = false;
   perAreaGraphData$!: Observable<IPerAreaGraph[]>;
   selectedArea: number | null = null;
@@ -54,6 +55,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   selectedPosition: number | null = null;
   selectedAreaText: string = 'すべて';
   selectedOrder: number | null = null;
+  selectedDivision: number | null = null;
   searchValue: string | null = null;
   searchStart: boolean = false;
   viewboardStatusRatio?: IEmployeeCountRatio;
@@ -84,12 +86,12 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     const getpageview: string | null = this.appServ.tempGetKey('pagecountview');
     const getpagenum: string | null = this.appServ.tempGetKey('pagenum');
     const getArea: string | null = this.appServ.tempGetKey('areaSelected');
-    const getAreaText: string | null =
-      this.appServ.tempGetKey('selectedAreaText');
+    const getAreaText: string | null = this.appServ.tempGetKey('selectedAreaText');
     const getTeam: string | null = this.appServ.tempGetKey('teamSelected');
     const getLoc: string | null = this.appServ.tempGetKey('locSelected');
     const getPos: string | null = this.appServ.tempGetKey('posSelected');
     const getViewBoard: string | null = this.appServ.tempGetKey('vgrph');
+    const getDivision: string | null = this.appServ.tempGetKey('divSelected');
     const getSort: string | null = this.appServ.tempGetKey('order');
     this.pagecountview = getpageview
       ? parseInt(getpageview)
@@ -102,6 +104,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.selectedLocation = getLoc ? parseInt(getLoc) : null;
     this.selectedPosition = getPos ? parseInt(getPos) : null;
     this.selectedOrder = getSort ? parseInt(getSort) : null;
+    this.selectedDivision = getDivision ? parseInt(getDivision) : null;
     this.openGraph = getViewBoard === '1' ? true : false;
     this.getCurrentFilteredCount();
     this.initializeBoardView();
@@ -136,6 +139,10 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
       'posSelected',
       this.selectedPosition ? this.selectedPosition.toString() : '-'
     );
+    this.appServ.tempStoreKey(
+      'divSelected',
+      this.selectedDivision ? this.selectedDivision.toString() : '-'
+    )
     this.appServ.tempStoreKey(
       'order',
       this.selectedOrder ? this.selectedOrder.toString() : '0'
@@ -192,6 +199,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.selectedArea = null;
     this.selectedTeam = null;
     this.selectedPosition = null;
+    this.selectedDivision = null;
     this.selectedAreaText = 'すべて';
     this.reInitializeBoardFromList(false, null);
   }
@@ -250,6 +258,12 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
         return data ? data.IPositionList : [];
       })
     );
+
+    this.divisionList$ = dropDownlist.pipe(
+      map((data) => {
+        return data ? data.IDivisionList : [];
+      })
+    )
   }
 
   get ViewBoardParam(): IEmployeeBoardArgs {
@@ -260,6 +274,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
       locID: this.selectedLocation,
       order: this.selectedOrder,
       posID: this.selectedPosition,
+      divID: this.selectedDivision,
       pageoffset: this.pagecountview,
       pagenum: this.pagenum,
     };

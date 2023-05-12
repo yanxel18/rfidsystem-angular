@@ -51,6 +51,7 @@ export interface IViewEmployeeBoard {
     teamID?: number | null
     locID?: number | null
     posID?: number | null
+    divID?: number | null
     pageoffset?: number | null
     pagenum?: number | null
     order?: number | null
@@ -66,22 +67,26 @@ export interface IViewEmployeeBoard {
   }
 
   export interface IAreaList {
-    areaID?: number;
-    areaDesc?: string;
+    areaID: number;
+    areaDesc: string;
   }
   
   export interface ILocationList {
-    locID?: number;
-    buildloc?: string;
+    locID: number;
+    buildloc: string;
   }
   
   export interface ITeamList {
-    teamID?: number;
-    teamName?: string;
+    teamID: number;
+    teamName: string;
   }
   export interface IPositionList {
-    posID?: number
-    posName?: string
+    posID: number
+    posName: string
+  }
+  export interface IDivisionList {
+    divID: number
+    divName: string 
   }
   export interface IViewDropList {
     ViewDropList: {
@@ -89,6 +94,7 @@ export interface IViewEmployeeBoard {
       ILocationList: ILocationList[] ;
       ITeamList: ITeamList[];
       IPositionList: IPositionList[] | [] 
+      IDivisionList: IDivisionList[] | []
     } 
   }
   

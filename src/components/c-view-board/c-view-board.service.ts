@@ -19,6 +19,7 @@ const GET_VIEWBOARD_SUBSCRIBE = gql`
     $teamID: Int
     $locID: Int
     $posID: Int
+    $divID: Int
     $pageoffset: Int
     $pagenum: Int
     $search: String
@@ -29,6 +30,7 @@ const GET_VIEWBOARD_SUBSCRIBE = gql`
       teamID: $teamID
       locID: $locID
       posID: $posID
+      divID: $divID
       pageoffset: $pageoffset
       pagenum: $pagenum
       search: $search
@@ -68,6 +70,7 @@ const GET_VIEWBOARD_TEMPLATE = gql`
     $posID: Int
     $pageoffset: Int
     $pagenum: Int
+    $divID: Int
     $search: String
     $order: Int
   ) {
@@ -76,6 +79,7 @@ const GET_VIEWBOARD_TEMPLATE = gql`
       teamID: $teamID
       locID: $locID
       posID: $posID
+      divID: $divID
       pageoffset: $pageoffset
       pagenum: $pagenum
       search: $search
@@ -115,6 +119,7 @@ const GET_CURRENT_EMPCOUNT = gql`
     $locID: Int
     $posID: Int
     $search: String
+    $divID: Int
     $order: Int
   ) {
     EmpBoardMaxCountFilter(
@@ -122,6 +127,7 @@ const GET_CURRENT_EMPCOUNT = gql`
       teamID: $teamID
       locID: $locID
       posID: $posID
+      divID: $divID
       search: $search
       order: $order
     )
@@ -145,6 +151,10 @@ const GET_VIEWDROPLIST = gql`
       IPositionList {
         posID
         posName
+      }
+      IDivisionList {
+        divID
+        divName
       }
     }
   }
@@ -176,6 +186,7 @@ export class CViewBoardService implements OnDestroy {
         teamID: param.teamID,
         locID: param.locID,
         posID: param.posID,
+        divID: param.divID,
         order: param.order,
       },
     });
@@ -212,6 +223,7 @@ export class CViewBoardService implements OnDestroy {
         teamID: param.teamID,
         locID: param.locID,
         posID: param.posID,
+        divID: param.divID,
         order: param.order,
         pageoffset: param.pageoffset,
         pagenum: param.pagenum,

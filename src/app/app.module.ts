@@ -31,7 +31,7 @@ import { CMainDashboardComponent } from '../components/c-main-dashboard/c-main-d
 import { CAreatotalTableComponent } from '../components/c-areatotal-table/c-areatotal-table.component';
 import { CAreapieGraphComponent } from '../components/c-areapie-graph/c-areapie-graph.component';
 import { NgxTrimDirectiveModule } from 'ngx-trim-directive';
-const displayErrMsg = () => {
+const disconnectMsg = () => {
   const Toast = Swal.mixin({
     showConfirmButton: false,
     toast: true,
@@ -91,7 +91,7 @@ const newHttpLink = (link: HttpLink): ApolloLink => {
   });
   const ws = new WebSocketLink(wsLink);
   wsLink.onConnected(() => successMsg('サーバーに接続済み。'));
-  wsLink.onDisconnected(() => displayErrMsg());
+  wsLink.onDisconnected(() => disconnectMsg());
   wsLink.onReconnected(() => successMsgOnRecon('サーバーに再接続済み。'));
   const httpLink = link.create({
     uri,

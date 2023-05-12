@@ -162,6 +162,21 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
+
+        <mat-form-field class="drop-down-filter" subscriptSizing="dynamic">
+          <mat-label>区分G</mat-label>
+          <mat-select
+            panelClass="position-select"
+            [(value)]="selectedDivision"
+            (selectionChange)="reInitializeBoardFromList(false, $event)"
+            name="pos"
+          >
+            <mat-option [value]="null">ー</mat-option>
+            <mat-option *ngFor="let list of divisionList$ | async" [value]="list.divID">
+              {{ list.divName }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
       <mat-divider></mat-divider>
       <div class="filter-menu-closebutton-container" fxLayoutAlign="center">
