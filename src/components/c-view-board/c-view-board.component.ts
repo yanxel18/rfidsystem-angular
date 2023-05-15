@@ -31,7 +31,7 @@ import { AppService } from 'src/app/app.service';
   selector: 'app-c-view-board',
   templateUrl: './c-view-board.component.html',
   styleUrls: ['./c-view-board.component.sass'],
-  providers: [CViewBoardService],
+  providers: [CViewBoardService,Router,AppService],
 })
 export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   DEFAULTCOUNT: number = 100;

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CMainService } from './c-main.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Observable, Subscription, map } from 'rxjs';
 import {
   ISkeletonLoader,
@@ -17,7 +17,7 @@ import { AppService } from 'src/app/app.service';
   selector: 'app-c-main-dashboard',
   templateUrl: './c-main-dashboard.component.html',
   styleUrls: ['./c-main-dashboard.component.sass'],
-  providers: [CMainService],
+  providers: [CMainService,Router,AppService],
 })
 export class CMainDashboardComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
@@ -48,8 +48,7 @@ export class CMainDashboardComponent implements OnInit, OnDestroy {
 
   constructor(
     private mainDashboardService: CMainService,
-    private router: Router,
-    private activeroute: ActivatedRoute,
+    private router: Router, 
     private appServ: AppService
   ) {
     this.minDate = new Date(2023, 2, 1);

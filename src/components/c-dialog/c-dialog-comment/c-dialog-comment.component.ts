@@ -30,14 +30,14 @@ export class CDialogCommentComponent implements OnDestroy{
   } 
   updateComment(): void { 
     const val:INewComment  = this.commentFormGroup.value; 
-    if (this.empID){
+    if (typeof this.empID === "string"){
       const newData: ISelectedWorkerComment = {
         empID: this.empID,
         comment: val.comment
       } 
       this.Subscriptions.push(this.cDialogCommentService.updateComment(newData).subscribe(({data})=>{
         if (data){
-          if (data.UpdateEmployeeComment.status){
+          if (typeof data.UpdateEmployeeComment.status === "string"){
             this.closeDialog();
           }
         }  

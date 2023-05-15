@@ -11,12 +11,14 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { AppService } from 'src/app/app.service';
 import { IPageValues } from 'src/models/viewboard-model';
 
 @Component({
   selector: 'app-c-view-board-navi',
   templateUrl: './c-view-board-navi.component.html',
   styleUrls: ['./c-view-board-navi.component.sass'],
+  providers: [AppService]
 })
 export class CViewBoardNaviComponent implements OnInit, AfterViewInit, OnChanges {
   @ViewChild('paginator', { static: true })
@@ -37,11 +39,14 @@ export class CViewBoardNaviComponent implements OnInit, AfterViewInit, OnChanges
   disabled: boolean = false;
 
   pageEvent!: PageEvent;
+  constructor(private appService: AppService){
+    
+  }
   ngOnInit(): void {
     this.initializePagination();
   }
   initializePagination(): void {
-    const getpagenum: string | null = localStorage?.getItem('pagenum');
+    const getpagenum: string | null = this.appService.tempGetKey('pagenum');
     this.pagenum = getpagenum ? parseInt(getpagenum) - 1 : this.pagenum;
     this.pageIndex = this.InputMaxCount ? this.InputMaxCount : 0;
     this.paginator._intl.itemsPerPageLabel = 'ページあたりのアイテム';
@@ -58,8 +63,8 @@ export class CViewBoardNaviComponent implements OnInit, AfterViewInit, OnChanges
     };
   }
   handlePageEvent(e: PageEvent): void {
-    localStorage.setItem('pagecountview', e.pageSize.toString());
-    localStorage.setItem('pagenum', (e.pageIndex + 1).toString());
+    this.appService.tempStoreKey('pagecountview', e.pageSize.toString());
+    this.appService.tempStoreKey('pagenum', (e.pageIndex + 1).toString());
     this.OutPageSelect.emit({
       pageIndex: e.pageIndex + 1,
       pageSize: e.pageSize,

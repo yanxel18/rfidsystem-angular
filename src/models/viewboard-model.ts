@@ -46,15 +46,15 @@ export interface IViewEmployeeBoard {
     EmployeeBoardAllSub: IViewEmployeeBoard [] 
   }
   export interface IEmployeeBoardArgs {
-    search?: string | null
-    areaID?: number | null
-    teamID?: number | null
-    locID?: number | null
-    posID?: number | null
-    divID?: number | null
-    pageoffset?: number | null
-    pagenum?: number | null
-    order?: number | null
+    search: string | null
+    areaID: number | null
+    teamID: number | null
+    locID: number | null
+    posID: number | null
+    divID: number | null
+    pageoffset: number | null
+    pagenum: number | null
+    order: number | null
   }
 
   export interface IPageValues {
