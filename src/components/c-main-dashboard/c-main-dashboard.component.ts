@@ -17,7 +17,7 @@ import { AppService } from 'src/app/app.service';
   selector: 'app-c-main-dashboard',
   templateUrl: './c-main-dashboard.component.html',
   styleUrls: ['./c-main-dashboard.component.sass'],
-  providers: [CMainService,Router,AppService],
+  providers: [CMainService,AppService],
 })
 export class CMainDashboardComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
