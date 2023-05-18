@@ -110,7 +110,7 @@ const newHttpLink = (link: HttpLink): ApolloLink => {
   const errorlink = (): ApolloLink => {
     return onError(({ graphQLErrors, networkError, operation, forward }) => {
       if (graphQLErrors)
-        graphQLErrors.map(({ message }) => { 
+        graphQLErrors.map(({ message }) => {
           errorMSG(message);
           return forward(operation);
         });
@@ -154,7 +154,7 @@ registerLocaleData(localeJa);
     CPerareaGraphComponent,
     CMainDashboardComponent,
     CAreatotalTableComponent,
-    CAreapieGraphComponent
+    CAreapieGraphComponent,
   ],
   imports: [
     MaterialModules,
@@ -167,7 +167,7 @@ registerLocaleData(localeJa);
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,
-    NgxTrimDirectiveModule
+    NgxTrimDirectiveModule,
   ],
   providers: [
     {
@@ -182,7 +182,8 @@ registerLocaleData(localeJa);
                     merge(_, incoming) {
                       return incoming;
                     },
-                  },PerAreaGraph: {
+                  },
+                  PerAreaGraph: {
                     merge(_, incoming) {
                       return incoming;
                     },
@@ -190,7 +191,7 @@ registerLocaleData(localeJa);
                 },
               },
             },
-            addTypename: false
+            addTypename: false,
           }),
           link: newHttpLink(link),
           defaultOptions: {
@@ -207,7 +208,7 @@ registerLocaleData(localeJa);
       useValue: { appearance: 'outline' },
     },
     { provide: LOCALE_ID, useValue: 'ja-JP' },
-    {provide: APP_BASE_HREF, useValue:'/rfid/'}
+    { provide: APP_BASE_HREF, useValue: '/rfid/' },
   ],
   bootstrap: [AppComponent],
 })

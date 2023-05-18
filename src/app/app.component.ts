@@ -11,7 +11,6 @@ import { ChangeDetectorRef, Component, OnDestroy, ViewChild } from '@angular/cor
 export class AppComponent  {
   mobileQuery: MediaQueryList;
   yearNow = (new Date()).getFullYear();
-  fillerNav = Array.from({length: 50}, (_, i) => `Nav Item ${i + 1}`);
   title = "位置確認リアルタイムシステム";
   @ViewChild(CBurgerComponent) BurgerComponent!: CBurgerComponent;
   private _mobileQueryListener: () => void;
