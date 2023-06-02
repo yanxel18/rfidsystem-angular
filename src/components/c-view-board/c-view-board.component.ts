@@ -27,6 +27,7 @@ import { MatOption } from '@angular/material/core';
 import { Router } from '@angular/router';
 import { BoardGraphStyle } from 'src/models/enum';
 import { AppService } from 'src/app/app.service';
+import { Title } from '@angular/platform-browser';
 @Component({
   selector: 'app-c-view-board',
   templateUrl: './c-view-board.component.html',
@@ -34,6 +35,7 @@ import { AppService } from 'src/app/app.service';
   providers: [CViewBoardService,AppService],
 })
 export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
+  componentTitle: string = "リアルタイム監視"
   DEFAULTCOUNT: number = 100;
   empRealTime!: IViewEmployeeBoard[];
   checkDataSubscription!: Subscription;
@@ -78,10 +80,12 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(
     private viewboardService: CViewBoardService,
     private router: Router,
-    private appServ: AppService
+    private appServ: AppService,
+    private title: Title
   ) {}
 
   ngOnInit(): void {
+    
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     const getpageview: string | null = this.appServ.tempGetKey('pagecountview');
     const getpagenum: string | null = this.appServ.tempGetKey('pagenum');
@@ -94,17 +98,17 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     const getDivision: string | null = this.appServ.tempGetKey('divSelected');
     const getSort: string | null = this.appServ.tempGetKey('order');
     this.pagecountview = getpageview
-      ? parseInt(getpageview)
+      ? +getpageview
       : this.pagecountview;
     this.skeletonLoader = new Array<number>(this.pagecountview);
-    this.pagenum = getpagenum ? parseInt(getpagenum) : this.pagenum;
-    this.selectedArea = getArea ? parseInt(getArea) : null;
+    this.pagenum = getpagenum ? +getpagenum : this.pagenum;
+    this.selectedArea = getArea ? +getArea : null;
     this.selectedAreaText = getAreaText ? getAreaText : 'すべて';
-    this.selectedTeam = getTeam ? parseInt(getTeam) : null;
-    this.selectedLocation = getLoc ? parseInt(getLoc) : null;
-    this.selectedPosition = getPos ? parseInt(getPos) : null;
-    this.selectedOrder = getSort ? parseInt(getSort) : null;
-    this.selectedDivision = getDivision ? parseInt(getDivision) : null;
+    this.selectedTeam = getTeam ? +getTeam : null;
+    this.selectedLocation = getLoc ? +getLoc : null;
+    this.selectedPosition = getPos ? +getPos : null;
+    this.selectedOrder = getSort ? +getSort : null;
+    this.selectedDivision = getDivision ? +getDivision : null;
     this.openGraph = getViewBoard === '1' ? true : false;
     this.getCurrentFilteredCount();
     this.initializeBoardView();
@@ -154,7 +158,10 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.ViewBoardNaviComponent.rerenderpaginator();
     this.initializeGraph();
   }
-
+  setTitle(): void {
+    this.title.setTitle(
+      `${this.selectedAreaText}/${this.appServ.appTitle}`); 
+  }
   openSearch(): void {
     this.toggleSearch = true;
     this.searchbar.nativeElement.focus();
@@ -167,6 +174,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   initializeGraph(): void {
     this.perAreaGraphData$ = this.viewboardService.getPerAreaGraph(this.ViewBoardParam).valueChanges
     .pipe(map(({data})=> {return data.PerAreaGraph ? data.PerAreaGraph : []}))
+    this.setTitle();
   }
   initializeBoardView(): void {
     this.Subscriptions.push(

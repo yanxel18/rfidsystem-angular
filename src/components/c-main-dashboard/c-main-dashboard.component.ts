@@ -12,21 +12,23 @@ import {
 import * as moment from 'moment';
 import { FormControl, FormGroup } from '@angular/forms';
 import { AppService } from 'src/app/app.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-c-main-dashboard',
   templateUrl: './c-main-dashboard.component.html',
   styleUrls: ['./c-main-dashboard.component.sass'],
-  providers: [CMainService,AppService],
+  providers: [CMainService,AppService,Title],
 })
 export class CMainDashboardComponent implements OnInit, OnDestroy {
+  componentTitle: string = "Main"
   subscriptions: Subscription[] = [];
   $totalAreaData!: IPerAreaTotalStatistics | null;
   $pieDataSource!: ITotalArea[] | null;
   $dropDateList!: Observable<IDateSelectRes>;
   maxDate = new Date();
   minDate!: Date;
-  groupSelect!: FormGroup;
+  groupSelect!: FormGroup; 
   skeletonStyle: ISkeletonLoader = {
     'background-color': '#e2e2e2',
     height: '74px',
@@ -49,7 +51,8 @@ export class CMainDashboardComponent implements OnInit, OnDestroy {
   constructor(
     private mainDashboardService: CMainService,
     private router: Router, 
-    private appServ: AppService
+    private appServ: AppService,
+    private title: Title
   ) {
     this.minDate = new Date(2023, 2, 1);
     const btime: string | null = this.appServ.tempGetKey('btime');
@@ -63,7 +66,10 @@ export class CMainDashboardComponent implements OnInit, OnDestroy {
       selectedTime: new FormControl<string | null>(sTime),
     });
   }
-
+  setTitle(): void {
+    this.title.setTitle(
+      `${this.componentTitle}-${this.appServ.appTitle}`); 
+  }
   getSelectedDate(): void {
     this.getPerAreaStatistics(this.getSelectedValue().datetime);
   }
@@ -71,6 +77,7 @@ export class CMainDashboardComponent implements OnInit, OnDestroy {
     this.loadDropDateList();
     this.getPerAreaStatistics(this.getSelectedValue().datetime);
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.setTitle()
   }
 
   getSelectedValue(): IFormValues {
@@ -123,7 +130,7 @@ export class CMainDashboardComponent implements OnInit, OnDestroy {
     );
   }
   tableEmit(event: ITotalArea[] | null): void {
-    if (event) this.$pieDataSource = event;
+    if (Array.isArray(event)) this.$pieDataSource = event;
   }
   trackArea(index: number): number {
     return index;

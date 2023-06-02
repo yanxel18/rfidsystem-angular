@@ -10,10 +10,7 @@ import { ICommentDialog } from 'src/models/dialog-model';
   styleUrls: ['./c-employee-card.component.sass'],
 })
 export class CEmployeeCardComponent  {
-  @Input() empData!: IViewEmployeeBoard;
-  @Input() divCount!: number;
-  @Input() rowCount!: number; 
-  @Output() nameoutput = new EventEmitter<string>();
+  @Input() empData!: IViewEmployeeBoard;  
   constructor(private commentDialogBox: MatDialog){
 
   }
@@ -44,6 +41,15 @@ export class CEmployeeCardComponent  {
       minWidth: this.commentDialog.minWidth,
       data: this.empData,
     });
+  }
+
+  shortComment(comments: string) : string {
+      if (typeof comments === 'string') {
+        if (comments.length > 7) {
+          return ` ${comments.substring(0, 7)}...`;
+        }
+      } 
+    return comments; 
   }
   statusColor(): string {  
     switch (this.empData.statusID) {

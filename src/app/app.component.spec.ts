@@ -20,10 +20,10 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'rfidsystem-angular'`, () => {
+  it(`should have as title '位置確認リアルタイムシステム'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('rfidsystem-angular');
+    expect(app.apptitle).toEqual('位置確認リアルタイムシステム');
   });
 
   it('should render title', () => {

@@ -108,23 +108,27 @@ const newHttpLink = (link: HttpLink): ApolloLink => {
   });
   const Mainlink = middleware.concat(httpLink);
   const errorlink = (): ApolloLink => {
-    return onError(({ graphQLErrors, networkError, operation, forward }) => {
+    return onError(({ graphQLErrors, operation, forward }) => {
       if (graphQLErrors)
         graphQLErrors.map(({ message }) => {
           errorMSG(message);
           return forward(operation);
-        });
-      if (networkError) {
-        errorMSG(networkError.message);
-        return forward(operation);
-      }
+        }); 
       return forward(operation);
     });
   };
   const errorMSG = (msg: string): void => {
-    const m = msg.includes('failure')
-      ? 'サーバー接続問題が発生しました！'
-      : msg;
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-right',
+        showCloseButton: true,
+        showConfirmButton: false,
+        timer: 3000
+      });
+      Toast.fire({
+        icon: 'error',
+        text: msg
+      });
   };
   const xlink = split(
     ({ query }) => {

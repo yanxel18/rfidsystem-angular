@@ -13,4 +13,8 @@ export class AppService {
   tempGetKey(key: string): string | null{
     return localStorage.getItem(key)
   }
+
+  get appTitle(): string {
+    return "位置確認リアルタイムシステム"
+  }
 }

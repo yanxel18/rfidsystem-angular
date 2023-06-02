@@ -25,8 +25,8 @@
                 {{empData.areaDesc}}
             </div> 
             <div class="card-comment" fxLayout="row wrap">
-                <button mat-flat-button class="card-comment-button" (click)="openCommentBox()" matTooltip="備考入力ボタン" >
-                    <mat-icon *ngIf="!empData.comment">insert_comment</mat-icon>{{ empData.comment ? empData.comment : '' }}</button>
+                <button mat-flat-button class="card-comment-button" (click)="openCommentBox()" [matTooltip]=" empData.comment ?empData.comment : '備考入力ボタン' " >
+                    <mat-icon *ngIf="!empData.comment">insert_comment</mat-icon>{{ empData.comment ? shortComment(empData.comment) : '' }}</button>
                 
             </div> 
         

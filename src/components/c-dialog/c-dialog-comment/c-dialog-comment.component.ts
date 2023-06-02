@@ -12,33 +12,30 @@ import { FormControl, FormGroup } from '@angular/forms';
   styleUrls: ['./c-dialog-comment.component.sass'],
   providers: [CDialogCommentService]
 })
-export class CDialogCommentComponent implements OnDestroy{
-  newcomment?: string | null;
-  empID!: string | null ;
+export class CDialogCommentComponent implements OnDestroy{ 
   Subscriptions: Subscription[] = [];
   commentFormGroup! :FormGroup;
   constructor(
     public dialogRef: MatDialogRef<CDialogCommentComponent>,
     private cDialogCommentService: CDialogCommentService,
     @Inject(MAT_DIALOG_DATA) public receivedData: IViewEmployeeBoard
-  ){
-    this.newcomment = this.receivedData.comment;
-    this.empID = this.receivedData.empID;
+  ){  
     this.commentFormGroup = new FormGroup({
-      comment : new FormControl<string | null>(this.newcomment)
+      comment : new FormControl<string | null>(this.receivedData.comment)
     })
   } 
   updateComment(): void { 
+    this.Subscriptions.forEach((s) => s.unsubscribe());
     const val:INewComment  = this.commentFormGroup.value; 
-    if (typeof this.empID === "string"){
+    if (typeof this.receivedData.empID === "string"){
       const newData: ISelectedWorkerComment = {
-        empID: this.empID,
+        empID: this.receivedData.empID,
         comment: val.comment
       } 
       this.Subscriptions.push(this.cDialogCommentService.updateComment(newData).subscribe(({data})=>{
         if (data){
           if (typeof data.UpdateEmployeeComment.status === "string"){
-            this.closeDialog();
+            this.closeDialog(); 
           }
         }  
       }));
