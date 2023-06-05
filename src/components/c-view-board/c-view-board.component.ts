@@ -35,13 +35,13 @@ import { Title } from '@angular/platform-browser';
   providers: [CViewBoardService,AppService],
 })
 export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
-  componentTitle: string = "リアルタイム監視"
-  DEFAULTCOUNT: number = 100;
+  componentTitle = "リアルタイム監視"
+  DEFAULTCOUNT = 100;
   empRealTime!: IViewEmployeeBoard[];
   checkDataSubscription!: Subscription;
   empMaxCount$!: Observable<number>;
   pagecountview: number = this.DEFAULTCOUNT;
-  pagenum: number = 1;
+  pagenum = 1;
   skeletonLoader: Array<number> = [this.DEFAULTCOUNT];
   Subscriptions: Subscription[] = [];
   areaList$!: Observable<IAreaList[]>;
@@ -49,19 +49,19 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   teamList$!: Observable<ITeamList[]>;
   positionList$!: Observable<IPositionList[]>;
   divisionList$!: Observable<IDivisionList[]>;
-  openGraph: boolean = false;
+  openGraph = false;
   perAreaGraphData$!: Observable<IPerAreaGraph[]>;
   selectedArea: number | null = null;
   selectedLocation: number | null = null;
   selectedTeam: number | null = null;
   selectedPosition: number | null = null;
-  selectedAreaText: string = 'すべて';
+  selectedAreaText = 'すべて';
   selectedOrder: number | null = null;
   selectedDivision: number | null = null;
   searchValue: string | null = null;
-  searchStart: boolean = false;
+  searchStart = false;
   viewboardStatusRatio?: IEmployeeCountRatio;
-  toggleSearch: boolean = false;
+  toggleSearch = false;
   loaderStyle: ISkeletonLoader = {
     'background-color': '#e2e2e2',
     height: '70px',

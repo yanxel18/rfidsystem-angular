@@ -37,6 +37,12 @@ export interface IViewEmployeeBoard {
     }
       
   }
+  export interface testinterface {
+ 
+      EmployeeBoardAll:  EmployeeBoardWithRatio
+ 
+    
+  }
   export interface IEmployeeCountRatio {
     currentPercent?: string | null
     currentWorkerCount?: number | null

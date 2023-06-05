@@ -21,7 +21,7 @@ import { Title } from '@angular/platform-browser';
   providers: [CMainService,AppService,Title],
 })
 export class CMainDashboardComponent implements OnInit, OnDestroy {
-  componentTitle: string = "Main"
+  componentTitle = "Main"
   subscriptions: Subscription[] = [];
   $totalAreaData!: IPerAreaTotalStatistics | null;
   $pieDataSource!: ITotalArea[] | null;
@@ -84,7 +84,7 @@ export class CMainDashboardComponent implements OnInit, OnDestroy {
     const selectedDate: string = moment(
       this.groupSelect.get('selectedDate')?.value
     ).format('YYYY-MM-DD');
-    const selectedTime: String | null | undefined =
+    const selectedTime: string | null | undefined =
       this.groupSelect.get('selectedTime')?.value;
     const sTime: string = selectedTime ? selectedTime.toString() : '00:00:00';
     const selectedValue: string | null = selectedTime
@@ -112,7 +112,7 @@ export class CMainDashboardComponent implements OnInit, OnDestroy {
       );
     this.getPerAreaStatistics(this.getSelectedValue().datetime);
   }
-  getPerAreaStatistics(paramDate: String): void {
+  getPerAreaStatistics(paramDate: string): void {
     const dateval: IFormValues = this.getSelectedValue();
     this.appServ.tempStoreKey('bdate', dateval.date);
     this.appServ.tempStoreKey('btime', dateval.time);

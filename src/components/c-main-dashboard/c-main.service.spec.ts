@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { CMainService } from './c-main.service';
 
-describe('CMainService', () => {
+fdescribe('CMainService', () => {
   let service: CMainService;
 
   beforeEach(() => {

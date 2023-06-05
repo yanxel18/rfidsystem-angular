@@ -58,7 +58,8 @@ export class CAreapieGraphComponent implements OnChanges, OnInit, OnDestroy {
             | PieSeriesOption
           >;
           
-          let chartDom = document.getElementById('main')!;
+          const chartDom = document.getElementById('main');
+          if (chartDom) {
           echarts.dispose(chartDom)
           const myChart = echarts.init(chartDom) 
           const option: EChartsOption = {
@@ -96,6 +97,7 @@ export class CAreapieGraphComponent implements OnChanges, OnInit, OnDestroy {
           };
 
           option && myChart.setOption(option); 
+        }
         }
   }
   ngOnChanges(): void {

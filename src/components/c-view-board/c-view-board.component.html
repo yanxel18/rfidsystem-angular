@@ -5,7 +5,7 @@
 >
   <div class="page-navi">
     <app-c-view-board-navi
-      [InputMaxCount]=" (empMaxCount$ |async) "
+      [InputMaxCount]="empMaxCount$ |async"
       [InputPageView]="pagecountview"
       [InputPageNum]="pagenum"
       (OutPageSelect)="getPageNum($event)"
@@ -276,7 +276,7 @@
       「班」でフィルタリングしてください。
     </mat-panel-description>
   </mat-expansion-panel-header>
-  <div *ngIf="!(perAreaGraphData$ | async)" class="graph-loading">
+  <div *ngIf="(perAreaGraphData$ | async)=== undefined" class="graph-loading">
     <ngx-skeleton-loader
       count="4"
       appearance="line"

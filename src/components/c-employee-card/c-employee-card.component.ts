@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input} from '@angular/core';
 import { IViewEmployeeBoard } from 'src/models/viewboard-model';
 import { StatusStyle } from 'src/models/enum';
 import { MatDialog } from '@angular/material/dialog';
@@ -19,8 +19,8 @@ export class CEmployeeCardComponent  {
     maxWidth: '825px',
   }; 
   progressValue(): number {
-    const HOURMIN: number = 60;
-    const MAXSPINNERVAL: number = 100;
+    const HOURMIN = 60;
+    const MAXSPINNERVAL = 100;
     const elapseTimeHour: number = this.empData.timeElapse
       ? parseInt(this.empData.timeElapse.slice(0, 2))
       : 0;

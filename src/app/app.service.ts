@@ -3,8 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root',
 })
-export class AppService {
-  constructor() {}
+export class AppService { 
 
   tempStoreKey(key: string,value: string): void {
     localStorage.setItem(key,value)

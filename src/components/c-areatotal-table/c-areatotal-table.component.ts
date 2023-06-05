@@ -26,9 +26,7 @@ export class CAreatotalTableComponent implements OnChanges {
     'workerIn',
     'workerInTotal',
     'percent',
-  ];
-
-  constructor() {}
+  ]; 
 
   ngOnChanges(): void {
     this.tableDatasource = this.DataSource ? this.DataSource.PerArea : [];

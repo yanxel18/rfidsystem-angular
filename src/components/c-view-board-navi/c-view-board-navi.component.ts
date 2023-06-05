@@ -6,9 +6,7 @@ import {
   Output,
   EventEmitter,
   Input,
-  AfterViewInit,
-  OnChanges,
-  SimpleChanges,
+  AfterViewInit
 } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { AppService } from 'src/app/app.service';
@@ -20,23 +18,23 @@ import { IPageValues } from 'src/models/viewboard-model';
   styleUrls: ['./c-view-board-navi.component.sass'],
   providers: [AppService]
 })
-export class CViewBoardNaviComponent implements OnInit, AfterViewInit, OnChanges {
+export class CViewBoardNaviComponent implements OnInit, AfterViewInit {
   @ViewChild('paginator', { static: true })
   paginator!: MatPaginator;
 
   @Input() InputMaxCount: number | null = 0;
-  @Input() InputPageView: number = 10;
+  @Input() InputPageView = 10;
   @Output() OutPageSelect = new EventEmitter<IPageValues>();
   @Input() InputPageNum!: number | null;
   decimalPipe = new DecimalPipe(navigator.language);
-  pageIndex: number = 0;
-  pagenum: number = 0;
+  pageIndex = 0;
+  pagenum = 0;
   pageSizeOptions: number[] = [20, 30, 40, 50, 60, 70, 80, 90, 100];
 
-  hidePageSize: boolean = false;
-  showPageSizeOptions: boolean = true;
-  showFirstLastButtons: boolean = true;
-  disabled: boolean = false;
+  hidePageSize = false;
+  showPageSizeOptions = true;
+  showFirstLastButtons = true;
+  disabled = false;
 
   pageEvent!: PageEvent;
   constructor(private appService: AppService){
@@ -52,8 +50,7 @@ export class CViewBoardNaviComponent implements OnInit, AfterViewInit, OnChanges
     this.paginator._intl.itemsPerPageLabel = 'ページあたりのアイテム';
     this.paginator._intl.getRangeLabel = (
       page: number,
-      pageSize: number,
-      length: number
+      pageSize: number
     ) => {
       const start = page * pageSize + 1;
       const end = (page + 1) * pageSize; 
@@ -74,9 +71,6 @@ export class CViewBoardNaviComponent implements OnInit, AfterViewInit, OnChanges
     setTimeout(() => {
       this.paginator.pageIndex = this.pagenum;
     }, 0);
-  }
-  ngOnChanges(): void {
-    
   }
   public rerenderpaginator(): void {
     setTimeout(() => {

@@ -37,7 +37,7 @@ export class CMainService {
 
   constructor(private apollo: Apollo) { }
 
-  getTotalArea(selectedDate: String): QueryRef<IPerAreaTotalStatistics> {
+  getTotalArea(selectedDate: string): QueryRef<IPerAreaTotalStatistics> {
     return this.apollo.watchQuery<IPerAreaTotalStatistics>({
         query: GET_TOTALPERAREASTAT,
         variables: {
@@ -46,7 +46,7 @@ export class CMainService {
         }
     })
   }
-  getDateList(selectedDate: String | null | undefined): QueryRef<IDateSelectRes> {
+  getDateList(selectedDate: string | null | undefined): QueryRef<IDateSelectRes> {
     return this.apollo.watchQuery<IDateSelectRes>({
         query: GET_DROPDOWN_LIST,
         variables: { 

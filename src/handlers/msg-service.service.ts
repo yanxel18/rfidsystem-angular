@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
 import Swal from 'sweetalert2';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MsgServiceService {
   public messages: string | undefined;
-  public LoadSuccess: boolean = true;
-  
-  constructor() { }
- 
+  public LoadSuccess = true;
+
   public generalMessage(): void {
     const Toast = Swal.mixin({
       toast: true,
@@ -27,16 +25,14 @@ export class MsgServiceService {
         popup: '', // disable popup fade-out animation
       },
       text: `再接続しています。しばらくお待ちください。`,
-      timerProgressBar: true, 
+      timerProgressBar: true,
       didOpen() {
         Toast.showLoading();
       },
       didClose: () => {
         window.location.reload();
-      }
+      },
     });
-
-    　
   }
 
   public notFoundMsgBox(message: string): void {
@@ -47,12 +43,9 @@ export class MsgServiceService {
       timer: 5000,
     });
     Toast.fire({
-      icon: 'error',　
+      icon: 'error',
       text: `${message}`,
-      timerProgressBar: true
+      timerProgressBar: true,
     });
-
-    　
   }
- 
 }
