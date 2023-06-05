@@ -1,39 +1,16 @@
 import {
   IDateSelectRes,
   IPerAreaTotalStatistics,
-} from './../../models/viewboard-model';
-import { Injectable } from '@angular/core';
-import { Apollo, QueryRef } from 'apollo-angular';
-import gql from 'graphql-tag';
+} from "./../../models/viewboard-model";
+import { Injectable } from "@angular/core";
+import { Apollo, QueryRef } from "apollo-angular";
+import {
+  GET_TOTALPERAREASTAT,
+  GET_DROPDOWN_LIST,
+} from "./c-main-dashboard-gql";
 
-const GET_TOTALPERAREASTAT = gql`
-  query TotalArea($totalStatSelectedDate: String!, $areaSelectedDate: String!) {
-    TotalArea: TotalAreaStatistic(
-      totalStatSelectedDate: $totalStatSelectedDate
-    ) {
-      total: workerAllTotal
-      percent: workerInPercentage
-      workerIn: workerInTotal
-    }
-    PerArea: PerAreaStatistic(areaSelectedDate: $areaSelectedDate) {
-      area: actualProc
-      bldg: bldgName
-      percent: workerInPercent
-      workerIn: workerInTotal
-      workerInTotal: workerTotal
-    }
-  }
-`;
-
-const GET_DROPDOWN_LIST = gql`
-  query DateSelectList($dateFrom: String) {
-    DateList: DateSelectList(dateFrom: $dateFrom) {
-      workDate: DateSelect
-    }
-  }
-`;
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class CMainService {
   constructor(private apollo: Apollo) {}

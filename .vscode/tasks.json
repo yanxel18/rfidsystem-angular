@@ -37,6 +37,13 @@
           }
         }
       }
+    },
+    {
+      "type": "npm",
+      "script": "lint",
+      "problemMatcher": [],
+      "label": "npm: lint",
+      "detail": "ng lint --fix"
     }
   ]
 }
