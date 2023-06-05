@@ -21,7 +21,7 @@ import { CanvasRenderer } from 'echarts/renderers';
   styleUrls: ['./c-perarea-graph.component.sass'],
 })
 export class CPerareaGraphComponent implements OnChanges {
-  @Input() rawData!: IPerAreaGraph[] | null; 
+  @Input() rawData!: IPerAreaGraph[] | null;
   ngOnChanges(): void {
     echarts.use([
       TitleComponent,

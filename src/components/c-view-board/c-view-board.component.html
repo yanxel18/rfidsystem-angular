@@ -5,7 +5,7 @@
 >
   <div class="page-navi">
     <app-c-view-board-navi
-      [InputMaxCount]="empMaxCount$ |async"
+      [InputMaxCount]="empMaxCount$ | async"
       [InputPageView]="pagecountview"
       [InputPageNum]="pagenum"
       (OutPageSelect)="getPageNum($event)"
@@ -23,7 +23,7 @@
         mat-icon-button
         aria-label="close"
         matTooltip="閉じる"
-        (click)="searchClose();searchStart=false"
+        (click)="searchClose(); searchStart = false"
       >
         <mat-icon>close</mat-icon>
       </button>
@@ -37,7 +37,9 @@
           placeholder="名: 太陽　太郎"
           [(ngModel)]="searchValue"
           #searchbar
-          (keydown.enter)="reInitializeBoardFromList(false, null); searchStart = true"
+          (keydown.enter)="
+            reInitializeBoardFromList(false, null); searchStart = true
+          "
           maxlength="40"
         />
         <button
@@ -52,28 +54,20 @@
   </mat-toolbar>
 
   <div class="droplist-container" fxLayoutAlign="end center">
-    <button
-    class="search-button"
-    mat-flat-button
-    (click)="openSearch()"
-  >
-    <mat-icon>search</mat-icon>
-    検索
-  </button>
-    <button
-      class="search-button"
-      mat-flat-button
-      [matMenuTriggerFor]="sort"
-    >
-    <mat-icon>sort</mat-icon>
-    並べ替え
+    <button class="search-button" mat-flat-button (click)="openSearch()">
+      <mat-icon>search</mat-icon>
+      検索
+    </button>
+    <button class="search-button" mat-flat-button [matMenuTriggerFor]="sort">
+      <mat-icon>sort</mat-icon>
+      並べ替え
     </button>
     <mat-menu #sort="matMenu" xPosition="before" class="sortmenu-display">
       <button mat-menu-item (click)="sortCard(1)">
-        <mat-icon>arrow_drop_up</mat-icon> 
+        <mat-icon>arrow_drop_up</mat-icon>
         <span>昇順</span>
       </button>
-      <button mat-menu-item  (click)="sortCard(2)">  
+      <button mat-menu-item (click)="sortCard(2)">
         <mat-icon>arrow_drop_down</mat-icon>
         <span>降順</span>
       </button>
@@ -112,7 +106,10 @@
             name="area"
           >
             <mat-option [value]="null">ー</mat-option>
-            <mat-option *ngFor="let list of areaList$ | async" [value]="list.areaID">
+            <mat-option
+              *ngFor="let list of areaList$ | async"
+              [value]="list.areaID"
+            >
               {{ list.areaDesc }}
             </mat-option>
           </mat-select>
@@ -127,7 +124,10 @@
             name="loc"
           >
             <mat-option [value]="null">ー</mat-option>
-            <mat-option *ngFor="let list of locationList$ | async" [value]="list.locID">
+            <mat-option
+              *ngFor="let list of locationList$ | async"
+              [value]="list.locID"
+            >
               {{ list.buildloc }}
             </mat-option>
           </mat-select>
@@ -142,7 +142,10 @@
             name="team"
           >
             <mat-option [value]="null">ー</mat-option>
-            <mat-option *ngFor="let list of teamList$ | async" [value]="list.teamID">
+            <mat-option
+              *ngFor="let list of teamList$ | async"
+              [value]="list.teamID"
+            >
               {{ list.teamName }}
             </mat-option>
           </mat-select>
@@ -157,7 +160,10 @@
             name="pos"
           >
             <mat-option [value]="null">ー</mat-option>
-            <mat-option *ngFor="let list of positionList$ | async" [value]="list.posID">
+            <mat-option
+              *ngFor="let list of positionList$ | async"
+              [value]="list.posID"
+            >
               {{ list.posName }}
             </mat-option>
           </mat-select>
@@ -172,7 +178,10 @@
             name="pos"
           >
             <mat-option [value]="null">ー</mat-option>
-            <mat-option *ngFor="let list of divisionList$ | async" [value]="list.divID">
+            <mat-option
+              *ngFor="let list of divisionList$ | async"
+              [value]="list.divID"
+            >
               {{ list.divName }}
             </mat-option>
           </mat-select>
@@ -185,11 +194,7 @@
         </button>
       </div>
     </mat-menu>
-    <button
-      mat-flat-button
-      class="clear-button"
-      (click)="selectOptionClear()"
-    >
+    <button mat-flat-button class="clear-button" (click)="selectOptionClear()">
       <mat-icon>autorenew</mat-icon>
       リセット
     </button>
@@ -222,11 +227,7 @@
     <div class="card-area-view" fxLayout="row wrap" fxLayoutAlign="center">
       <div
         class="per-emp-card"
-        *ngFor="
-          let data of empRealTime;
-          let i = index;
-          trackBy: trackCardIndex
-        "
+        *ngFor="let data of empRealTime; let i = index; trackBy: trackCardIndex"
       >
         <app-c-employee-card [empData]="data"></app-c-employee-card>
       </div>
@@ -276,7 +277,7 @@
       「班」でフィルタリングしてください。
     </mat-panel-description>
   </mat-expansion-panel-header>
-  <div *ngIf="(perAreaGraphData$ | async)=== undefined" class="graph-loading">
+  <div *ngIf="(perAreaGraphData$ | async) === undefined" class="graph-loading">
     <ngx-skeleton-loader
       count="4"
       appearance="line"
@@ -286,6 +287,6 @@
   </div>
   <app-c-perarea-graph
     *ngIf="perAreaGraphData$"
-    [rawData]="perAreaGraphData$ |async"
+    [rawData]="perAreaGraphData$ | async"
   ></app-c-perarea-graph>
 </mat-expansion-panel>

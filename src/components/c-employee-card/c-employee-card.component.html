@@ -1,38 +1,89 @@
-<div class="mat-elevation-z1 card-container" fxLayout="row wrap" fxLayoutAlign="center center">
-    <div  class="card-container-holder" fxLayout="row wrap" fxLayoutAlign="center center" >
-        <div class="card-sign-holder" fxLayout="col wrap" fxLayoutAlign="center center">
-            <div class="card-spinner" [ngClass]="spinnerColor()" fxLayout="col wrap" fxLayoutAlign="center center">
-                <mat-progress-spinner [diameter]="62" mode="determinate" strokeWidth="2" [value]="progressValue()"></mat-progress-spinner>
-            </div>
-            <div class="card-status-sign" [ngClass]="statusColor()" fxLayout="col wrap" fxLayoutAlign="center center">
-                <span class="sign-text">{{empData.sign}}</span>
-            </div>
-        </div>
-        <div class="card-name-time-holder" fxLayout="row wrap" fxLayoutAlign="center">
-                <div  class="card-name"  fxLayout="row wrap" fxLayoutAlign="center center">
-                    {{empData.displayName}}
-                </div> 
-                <div class="card-time"  fxLayout="row wrap" fxLayoutAlign="center center">
-                    {{empData.timeElapse}}
-                </div>
-        </div>
-        <div class="card-divider-holder" fxLayout="col wrap" fxLayoutAlign="center center">&nbsp;</div>
-        <div class="card-location-comment-holder" fxLayout="col wrap" fxLayoutAlign="center">
-            <div  class="card-location" fxLayout="row wrap" fxLayoutAlign="center center">
-                {{empData.buildloc}}
-            </div> 
-            <div  class="card-location" fxLayout="row wrap" fxLayoutAlign="center center">
-                {{empData.areaDesc}}
-            </div> 
-            <div class="card-comment" fxLayout="row wrap">
-                <button mat-flat-button class="card-comment-button" (click)="openCommentBox()" [matTooltip]=" empData.comment ?empData.comment : '備考入力ボタン' " >
-                    <mat-icon *ngIf="!empData.comment">insert_comment</mat-icon>{{ empData.comment ? shortComment(empData.comment) : '' }}</button>
-                
-            </div> 
-        
-        </div>
+<div
+  class="mat-elevation-z1 card-container"
+  fxLayout="row wrap"
+  fxLayoutAlign="center center"
+>
+  <div
+    class="card-container-holder"
+    fxLayout="row wrap"
+    fxLayoutAlign="center center"
+  >
+    <div
+      class="card-sign-holder"
+      fxLayout="col wrap"
+      fxLayoutAlign="center center"
+    >
+      <div
+        class="card-spinner"
+        [ngClass]="spinnerColor()"
+        fxLayout="col wrap"
+        fxLayoutAlign="center center"
+      >
+        <mat-progress-spinner
+          [diameter]="62"
+          mode="determinate"
+          strokeWidth="2"
+          [value]="progressValue()"
+        ></mat-progress-spinner>
+      </div>
+      <div
+        class="card-status-sign"
+        [ngClass]="statusColor()"
+        fxLayout="col wrap"
+        fxLayoutAlign="center center"
+      >
+        <span class="sign-text">{{ empData.sign }}</span>
+      </div>
     </div>
+    <div
+      class="card-name-time-holder"
+      fxLayout="row wrap"
+      fxLayoutAlign="center"
+    >
+      <div class="card-name" fxLayout="row wrap" fxLayoutAlign="center center">
+        {{ empData.displayName }}
+      </div>
+      <div class="card-time" fxLayout="row wrap" fxLayoutAlign="center center">
+        {{ empData.timeElapse }}
+      </div>
+    </div>
+    <div
+      class="card-divider-holder"
+      fxLayout="col wrap"
+      fxLayoutAlign="center center"
+    >
+      &nbsp;
+    </div>
+    <div
+      class="card-location-comment-holder"
+      fxLayout="col wrap"
+      fxLayoutAlign="center"
+    >
+      <div
+        class="card-location"
+        fxLayout="row wrap"
+        fxLayoutAlign="center center"
+      >
+        {{ empData.buildloc }}
+      </div>
+      <div
+        class="card-location"
+        fxLayout="row wrap"
+        fxLayoutAlign="center center"
+      >
+        {{ empData.areaDesc }}
+      </div>
+      <div class="card-comment" fxLayout="row wrap">
+        <button
+          mat-flat-button
+          class="card-comment-button"
+          (click)="openCommentBox()"
+          [matTooltip]="empData.comment ? empData.comment : '備考入力ボタン'"
+        >
+          <mat-icon *ngIf="!empData.comment">insert_comment</mat-icon
+          >{{ empData.comment ? shortComment(empData.comment) : "" }}
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
-
-
-

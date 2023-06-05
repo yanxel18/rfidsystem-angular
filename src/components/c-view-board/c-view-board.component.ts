@@ -8,7 +8,7 @@ import {
   IPerAreaGraph,
   IPositionList,
   ISkeletonLoader,
-  ITeamList
+  ITeamList,
 } from './../../models/viewboard-model';
 import {
   Component,
@@ -32,10 +32,10 @@ import { Title } from '@angular/platform-browser';
   selector: 'app-c-view-board',
   templateUrl: './c-view-board.component.html',
   styleUrls: ['./c-view-board.component.sass'],
-  providers: [CViewBoardService,AppService],
+  providers: [CViewBoardService, AppService],
 })
 export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
-  componentTitle = "リアルタイム監視"
+  componentTitle = 'リアルタイム監視';
   DEFAULTCOUNT = 100;
   empRealTime!: IViewEmployeeBoard[];
   checkDataSubscription!: Subscription;
@@ -85,21 +85,19 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     const getpageview: string | null = this.appServ.tempGetKey('pagecountview');
     const getpagenum: string | null = this.appServ.tempGetKey('pagenum');
     const getArea: string | null = this.appServ.tempGetKey('areaSelected');
-    const getAreaText: string | null = this.appServ.tempGetKey('selectedAreaText');
+    const getAreaText: string | null =
+      this.appServ.tempGetKey('selectedAreaText');
     const getTeam: string | null = this.appServ.tempGetKey('teamSelected');
     const getLoc: string | null = this.appServ.tempGetKey('locSelected');
     const getPos: string | null = this.appServ.tempGetKey('posSelected');
     const getViewBoard: string | null = this.appServ.tempGetKey('vgrph');
     const getDivision: string | null = this.appServ.tempGetKey('divSelected');
     const getSort: string | null = this.appServ.tempGetKey('order');
-    this.pagecountview = getpageview
-      ? +getpageview
-      : this.pagecountview;
+    this.pagecountview = getpageview ? +getpageview : this.pagecountview;
     this.skeletonLoader = new Array<number>(this.pagecountview);
     this.pagenum = getpagenum ? +getpagenum : this.pagenum;
     this.selectedArea = getArea ? +getArea : null;
@@ -146,7 +144,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.appServ.tempStoreKey(
       'divSelected',
       this.selectedDivision ? this.selectedDivision.toString() : '-'
-    )
+    );
     this.appServ.tempStoreKey(
       'order',
       this.selectedOrder ? this.selectedOrder.toString() : '0'
@@ -159,8 +157,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.initializeGraph();
   }
   setTitle(): void {
-    this.title.setTitle(
-      `${this.selectedAreaText}/${this.appServ.appTitle}`); 
+    this.title.setTitle(`${this.selectedAreaText}/${this.appServ.appTitle}`);
   }
   openSearch(): void {
     this.toggleSearch = true;
@@ -172,8 +169,13 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.reInitializeBoardFromList(false, null);
   }
   initializeGraph(): void {
-    this.perAreaGraphData$ = this.viewboardService.getPerAreaGraph(this.ViewBoardParam).valueChanges
-    .pipe(map(({data})=> {return data.PerAreaGraph ? data.PerAreaGraph : []}))
+    this.perAreaGraphData$ = this.viewboardService
+      .getPerAreaGraph(this.ViewBoardParam)
+      .valueChanges.pipe(
+        map(({ data }) => {
+          return data.PerAreaGraph ? data.PerAreaGraph : [];
+        })
+      );
     this.setTitle();
   }
   initializeBoardView(): void {
@@ -230,7 +232,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
         map(({ data }) => {
           return data.EmpBoardMaxCountFilter ? data.EmpBoardMaxCountFilter : 0;
         })
-      ); 
+      );
   }
 
   lineGraphStyle(): string {
@@ -253,7 +255,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     );
     this.locationList$ = dropDownlist.pipe(
       map((data) => {
-        return data ?  data.ILocationList : [];
+        return data ? data.ILocationList : [];
       })
     );
     this.teamList$ = dropDownlist.pipe(
@@ -271,7 +273,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
       map((data) => {
         return data ? data.IDivisionList : [];
       })
-    )
+    );
   }
 
   get ViewBoardParam(): IEmployeeBoardArgs {

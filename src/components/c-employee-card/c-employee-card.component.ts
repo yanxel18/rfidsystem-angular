@@ -1,4 +1,4 @@
-import { Component, Input} from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { IViewEmployeeBoard } from 'src/models/viewboard-model';
 import { StatusStyle } from 'src/models/enum';
 import { MatDialog } from '@angular/material/dialog';
@@ -9,15 +9,13 @@ import { ICommentDialog } from 'src/models/dialog-model';
   templateUrl: './c-employee-card.component.html',
   styleUrls: ['./c-employee-card.component.sass'],
 })
-export class CEmployeeCardComponent  {
-  @Input() empData!: IViewEmployeeBoard;  
-  constructor(private commentDialogBox: MatDialog){
-
-  }
+export class CEmployeeCardComponent {
+  @Input() empData!: IViewEmployeeBoard;
+  constructor(private commentDialogBox: MatDialog) {}
   commentDialog: ICommentDialog = {
     minWidth: '320px',
     maxWidth: '825px',
-  }; 
+  };
   progressValue(): number {
     const HOURMIN = 60;
     const MAXSPINNERVAL = 100;
@@ -27,15 +25,16 @@ export class CEmployeeCardComponent  {
     const elapseTimeMinute: number = this.empData.timeElapse
       ? parseInt(this.empData.timeElapse.slice(3, 5))
       : 0;
-    const computeTime = parseFloat(((elapseTimeMinute / HOURMIN) * MAXSPINNERVAL).toFixed(2)
+    const computeTime = parseFloat(
+      ((elapseTimeMinute / HOURMIN) * MAXSPINNERVAL).toFixed(2)
     );
-      
+
     if (this.empData.statusID === 1) return 0;
     else if (elapseTimeHour === 0) return computeTime;
     else if (elapseTimeHour > 0) return MAXSPINNERVAL;
     else return 0;
   }
-  openCommentBox(): void { 
+  openCommentBox(): void {
     this.commentDialogBox.open(CDialogCommentComponent, {
       disableClose: false,
       minWidth: this.commentDialog.minWidth,
@@ -43,15 +42,15 @@ export class CEmployeeCardComponent  {
     });
   }
 
-  shortComment(comments: string) : string {
-      if (typeof comments === 'string') {
-        if (comments.length > 7) {
-          return ` ${comments.substring(0, 7)}...`;
-        }
-      } 
-    return comments; 
+  shortComment(comments: string): string {
+    if (typeof comments === 'string') {
+      if (comments.length > 7) {
+        return ` ${comments.substring(0, 7)}...`;
+      }
+    }
+    return comments;
   }
-  statusColor(): string {  
+  statusColor(): string {
     switch (this.empData.statusID) {
       case 1:
         return StatusStyle.IS_IN;
@@ -66,8 +65,7 @@ export class CEmployeeCardComponent  {
     }
   }
 
-  spinnerColor(): string { 
+  spinnerColor(): string {
     return this.empData.setAlarm ? 'card-spinner-red' : 'card-spinner-blue';
   }
-
 }
