@@ -8,9 +8,8 @@ describe('CViewBoardNaviComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CViewBoardNaviComponent ]
-    })
-    .compileComponents();
+      declarations: [CViewBoardNaviComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(CViewBoardNaviComponent);
     component = fixture.componentInstance;

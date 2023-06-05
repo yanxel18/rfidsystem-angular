@@ -8,9 +8,8 @@ describe('CScrolltopComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CScrolltopComponent ]
-    })
-    .compileComponents();
+      declarations: [CScrolltopComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(CScrolltopComponent);
     component = fixture.componentInstance;

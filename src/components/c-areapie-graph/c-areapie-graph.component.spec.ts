@@ -8,9 +8,8 @@ describe('CAreapieGraphComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CAreapieGraphComponent ]
-    })
-    .compileComponents();
+      declarations: [CAreapieGraphComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(CAreapieGraphComponent);
     component = fixture.componentInstance;

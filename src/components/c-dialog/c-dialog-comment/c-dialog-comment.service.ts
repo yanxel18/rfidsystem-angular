@@ -1,12 +1,12 @@
-import { Injectable } from "@angular/core";
-import { FetchResult } from "@apollo/client/link/core";
-import gql from "graphql-tag";
-import { Observable } from "rxjs";
-import { Apollo } from "apollo-angular";
+import { Injectable } from '@angular/core';
+import { FetchResult } from '@apollo/client/link/core';
+import gql from 'graphql-tag';
+import { Observable } from 'rxjs';
+import { Apollo } from 'apollo-angular';
 import {
   ISelectedWorkerComment,
   ISelectedWorkerResponse,
-} from "src/models/dialog-model";
+} from 'src/models/dialog-model';
 
 const UPDATE_COMMENT = gql`
   mutation UpdateEmployeeComment($empId: String!, $comment: String) {
@@ -17,7 +17,7 @@ const UPDATE_COMMENT = gql`
 `;
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class CDialogCommentService {
   constructor(private apollo: Apollo) {}

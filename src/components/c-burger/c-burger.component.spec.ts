@@ -8,9 +8,8 @@ describe('CBurgerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CBurgerComponent ]
-    })
-    .compileComponents();
+      declarations: [CBurgerComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(CBurgerComponent);
     component = fixture.componentInstance;

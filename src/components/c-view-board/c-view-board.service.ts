@@ -4,16 +4,16 @@ import {
   IPerAreaGraphResponse,
   IViewDropList,
   testinterface,
-} from "./../../models/viewboard-model";
-import { Injectable, OnDestroy } from "@angular/core";
-import { Apollo, QueryRef } from "apollo-angular";
+} from './../../models/viewboard-model';
+import { Injectable, OnDestroy } from '@angular/core';
+import { Apollo, QueryRef } from 'apollo-angular';
 import {
   IEmployeeBoardArgs,
   IViewEmployeeBoard,
-} from "src/models/viewboard-model";
-import gql from "graphql-tag";
-import { Observable, Subscription, map } from "rxjs";
-import { MsgServiceService } from "src/handlers/msg-service.service";
+} from 'src/models/viewboard-model';
+import gql from 'graphql-tag';
+import { Observable, Subscription, map } from 'rxjs';
+import { MsgServiceService } from 'src/handlers/msg-service.service';
 const GET_VIEWBOARD_SUBSCRIBE = gql`
   subscription EmployeeBoardAllSub(
     $areaID: Int
@@ -170,7 +170,7 @@ const GET_PERAREA_GRAPH = gql`
 `;
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class CViewBoardService implements OnDestroy {
   boardSubscription!: QueryRef<EmployeeBoardWithRatio>;

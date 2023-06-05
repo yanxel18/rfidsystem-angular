@@ -1,7 +1,7 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class AppService {
   tempStoreKey(key: string, value: string): void {
@@ -13,6 +13,6 @@ export class AppService {
   }
 
   get appTitle(): string {
-    return "位置確認リアルタイムシステム";
+    return '位置確認リアルタイムシステム';
   }
 }

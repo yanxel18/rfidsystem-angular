@@ -1,5 +1,5 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit } from "@angular/core";
-import * as echarts from "echarts/core";
+import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import * as echarts from 'echarts/core';
 import {
   TooltipComponent,
   TooltipComponentOption,
@@ -7,17 +7,17 @@ import {
   LegendComponentOption,
   TitleComponent,
   TitleComponentOption,
-} from "echarts/components";
-import { PieChart, PieSeriesOption } from "echarts/charts";
-import { LabelLayout } from "echarts/features";
-import { CanvasRenderer } from "echarts/renderers";
-import { Subscription } from "rxjs";
-import { ITotalArea } from "src/models/viewboard-model";
+} from 'echarts/components';
+import { PieChart, PieSeriesOption } from 'echarts/charts';
+import { LabelLayout } from 'echarts/features';
+import { CanvasRenderer } from 'echarts/renderers';
+import { Subscription } from 'rxjs';
+import { ITotalArea } from 'src/models/viewboard-model';
 
 @Component({
-  selector: "app-c-areapie-graph",
-  templateUrl: "./c-areapie-graph.component.html",
-  styleUrls: ["./c-areapie-graph.component.sass"],
+  selector: 'app-c-areapie-graph',
+  templateUrl: './c-areapie-graph.component.html',
+  styleUrls: ['./c-areapie-graph.component.sass'],
 })
 export class CAreapieGraphComponent implements OnChanges, OnInit, OnDestroy {
   @Input() DataSource!: ITotalArea[] | null;
@@ -32,11 +32,11 @@ export class CAreapieGraphComponent implements OnChanges, OnInit, OnDestroy {
         return [
           {
             value: AreaData.total - AreaData.workerIn,
-            name: "外室人数",
+            name: '外室人数',
           },
           {
             value: AreaData.workerIn,
-            name: "在室人数",
+            name: '在室人数',
           },
         ];
       });
@@ -57,37 +57,37 @@ export class CAreapieGraphComponent implements OnChanges, OnInit, OnDestroy {
         | PieSeriesOption
       >;
 
-      const chartDom = document.getElementById("main");
+      const chartDom = document.getElementById('main');
       if (chartDom) {
         echarts.dispose(chartDom);
         const myChart = echarts.init(chartDom);
         const option: EChartsOption = {
           title: {
-            text: "在室率",
-            left: "center",
+            text: '在室率',
+            left: 'center',
           },
           tooltip: {
-            trigger: "item",
+            trigger: 'item',
           },
           legend: {
-            orient: "vertical",
-            left: "left",
+            orient: 'vertical',
+            left: 'left',
           },
           series: [
             {
-              type: "pie",
-              radius: ["40%", "70%"],
+              type: 'pie',
+              radius: ['40%', '70%'],
               avoidLabelOverlap: false,
               itemStyle: {
                 borderRadius: 5,
-                borderColor: "#fff",
+                borderColor: '#fff',
                 borderWidth: 2,
               },
               emphasis: {
                 itemStyle: {
                   shadowBlur: 10,
                   shadowOffsetX: 0,
-                  shadowColor: "rgba(0, 0, 0, 0.5)",
+                  shadowColor: 'rgba(0, 0, 0, 0.5)',
                 },
               },
               data: newTotalAreaData[0],

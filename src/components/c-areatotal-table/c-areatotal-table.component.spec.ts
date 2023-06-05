@@ -8,9 +8,8 @@ describe('CAreatotalTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CAreatotalTableComponent ]
-    })
-    .compileComponents();
+      declarations: [CAreatotalTableComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(CAreatotalTableComponent);
     component = fixture.componentInstance;

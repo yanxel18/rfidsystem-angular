@@ -8,9 +8,8 @@ describe('CDialogCommentComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CDialogCommentComponent ]
-    })
-    .compileComponents();
+      declarations: [CDialogCommentComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(CDialogCommentComponent);
     component = fixture.componentInstance;

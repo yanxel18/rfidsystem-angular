@@ -133,9 +133,9 @@ export interface IPerAreaTotalStatistics {
 }
 
 export interface ISkeletonLoader {
-  "background-color"?: string;
+  'background-color'?: string;
   height?: string;
-  "border-radius"?: string;
+  'border-radius'?: string;
   width?: string;
   margin?: string;
 }

@@ -8,9 +8,8 @@ describe('CViewBoardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CViewBoardComponent ]
-    })
-    .compileComponents();
+      declarations: [CViewBoardComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(CViewBoardComponent);
     component = fixture.componentInstance;

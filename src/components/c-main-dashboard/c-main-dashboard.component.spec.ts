@@ -8,9 +8,8 @@ describe('CMainDashboardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CMainDashboardComponent ]
-    })
-    .compileComponents();
+      declarations: [CMainDashboardComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(CMainDashboardComponent);
     component = fixture.componentInstance;

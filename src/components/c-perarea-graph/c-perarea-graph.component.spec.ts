@@ -8,9 +8,8 @@ describe('CPerareaGraphComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CPerareaGraphComponent ]
-    })
-    .compileComponents();
+      declarations: [CPerareaGraphComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(CPerareaGraphComponent);
     component = fixture.componentInstance;
