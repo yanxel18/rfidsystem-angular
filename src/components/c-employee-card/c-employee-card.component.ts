@@ -60,6 +60,8 @@ export class CEmployeeCardComponent {
         return StatusStyle.IS_HOME;
       case 4:
         return StatusStyle.IS_LEAVE;
+      case 5:
+        return StatusStyle.IS_KETSU
       default:
         return '';
     }
