@@ -37,8 +37,7 @@ import { Title } from "@angular/platform-browser";
 export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   componentTitle = "リアルタイム監視";
   DEFAULTCOUNT = 100;
-  empRealTime!: IViewEmployeeBoard[];
-  checkDataSubscription!: Subscription;
+  empRealTime!: IViewEmployeeBoard[]; 
   empMaxCount$!: Observable<number>;
   pagecountview: number = this.DEFAULTCOUNT;
   pagenum = 1;

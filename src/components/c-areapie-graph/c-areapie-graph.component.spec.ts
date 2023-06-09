@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CAreapieGraphComponent } from './c-areapie-graph.component';
-
 describe('CAreapieGraphComponent', () => {
   let component: CAreapieGraphComponent;
   let fixture: ComponentFixture<CAreapieGraphComponent>;

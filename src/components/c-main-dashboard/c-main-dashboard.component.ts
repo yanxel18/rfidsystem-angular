@@ -22,7 +22,7 @@ import { Title } from '@angular/platform-browser';
 })
 export class CMainDashboardComponent implements OnInit, OnDestroy {
   componentTitle = 'Main';
-  subscriptions: Subscription[] = [];
+  private subscriptions: Subscription[] = [];
   $totalAreaData!: IPerAreaTotalStatistics | null;
   $pieDataSource!: ITotalArea[] | null;
   $dropDateList!: Observable<IDateSelectRes>;

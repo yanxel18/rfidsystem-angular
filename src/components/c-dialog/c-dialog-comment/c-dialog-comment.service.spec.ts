@@ -1,8 +1,8 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 
-import { CDialogCommentService } from './c-dialog-comment.service';
+import { CDialogCommentService } from "./c-dialog-comment.service";
 
-describe('CDialogCommentService', () => {
+describe("CDialogCommentService", () => {
   let service: CDialogCommentService;
 
   beforeEach(() => {
@@ -10,7 +10,7 @@ describe('CDialogCommentService', () => {
     service = TestBed.inject(CDialogCommentService);
   });
 
-  it('should be created', () => {
+  it("should be created", () => {
     expect(service).toBeTruthy();
   });
 });

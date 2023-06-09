@@ -15,7 +15,7 @@ export class CDialogCommentService {
   constructor(private apollo: Apollo) {}
 
   /**
-   * 
+   *
    * @param param received comment data
    * @returns response object
    */
