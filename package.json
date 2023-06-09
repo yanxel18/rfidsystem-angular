@@ -5,13 +5,18 @@
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json",
     "format": "prettier --write \"src/**/*.ts\"",
-    "build": "ng build",
+    "build": "ng build --base-href /rfid/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "test:cov": "ng test --watch=false --code-coverage",
     "lint": "ng lint --fix",
     "e2e": "ng e2e",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "cypress:run": "cypress run",
+    "start:cov": "http-server -c-1 ./coverage/rfidsystem-angular",
+    "start:prod": "http-server ./dist/rfidsystem-angular/ -p 4210",
+    "build-and-deploy:prod": "run-s build start:prod",
+    "e2e:sample": "start-server-and-test build-and-deploy:prod http://127.0.0.1:4210 cypress:run"
   },
   "private": true,
   "dependencies": {
@@ -36,6 +41,7 @@
     "moment": "^2.29.4",
     "ngx-skeleton-loader": "^6.0.0",
     "ngx-trim-directive": "^2.0.0",
+    "npm-run-all": "^4.1.5",
     "roboto-fontface": "^0.10.0",
     "rxjs": "~7.8.0",
     "sweetalert2": "^11.7.1",
@@ -55,6 +61,7 @@
     "@types/jasmine": "~4.3.0",
     "@typescript-eslint/eslint-plugin": "5.48.2",
     "@typescript-eslint/parser": "5.48.2",
+    "cypress": "latest",
     "eslint": "^8.33.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
@@ -65,7 +72,7 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
     "prettier-eslint": "^15.0.1",
-    "typescript": "~4.9.4",
-    "cypress": "latest"
+    "start-server-and-test": "^2.0.0",
+    "typescript": "~4.9.4"
   }
 }
