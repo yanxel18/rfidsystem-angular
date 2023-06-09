@@ -5,7 +5,7 @@ import { CViewBoardComponent } from 'src/components/c-view-board/c-view-board.co
 const routes: Routes = [
   { path: 'boardview', component: CViewBoardComponent },
   { path: 'main', component: CMainDashboardComponent },
-  { path: '', redirectTo: 'main', pathMatch: 'full' },
+  { path: '', redirectTo: 'main', pathMatch: 'full' }
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })],

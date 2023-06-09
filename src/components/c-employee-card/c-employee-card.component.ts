@@ -1,21 +1,25 @@
-import { Component, Input } from '@angular/core';
-import { IViewEmployeeBoard } from 'src/models/viewboard-model';
-import { StatusStyle } from 'src/models/enum';
-import { MatDialog } from '@angular/material/dialog';
-import { CDialogCommentComponent } from '../c-dialog/c-dialog-comment/c-dialog-comment.component';
-import { ICommentDialog } from 'src/models/dialog-model';
+import { Component, Input } from "@angular/core";
+import { IViewEmployeeBoard } from "src/models/viewboard-model";
+import { StatusStyle } from "src/models/enum";
+import { MatDialog } from "@angular/material/dialog";
+import { CDialogCommentComponent } from "../c-dialog/c-dialog-comment/c-dialog-comment.component";
+import { ICommentDialog } from "src/models/dialog-model";
 @Component({
-  selector: 'app-c-employee-card',
-  templateUrl: './c-employee-card.component.html',
-  styleUrls: ['./c-employee-card.component.sass'],
+  selector: "app-c-employee-card",
+  templateUrl: "./c-employee-card.component.html",
+  styleUrls: ["./c-employee-card.component.sass"],
 })
 export class CEmployeeCardComponent {
   @Input() empData!: IViewEmployeeBoard;
   constructor(private commentDialogBox: MatDialog) {}
   commentDialog: ICommentDialog = {
-    minWidth: '320px',
-    maxWidth: '825px',
+    minWidth: "320px",
+    maxWidth: "825px",
   };
+  /**
+   *
+   * @returns progress spinner value
+   */
   progressValue(): number {
     const HOURMIN = 60;
     const MAXSPINNERVAL = 100;
@@ -34,6 +38,9 @@ export class CEmployeeCardComponent {
     else if (elapseTimeHour > 0) return MAXSPINNERVAL;
     else return 0;
   }
+  /**
+   * Open comment dialog component
+   */
   openCommentBox(): void {
     this.commentDialogBox.open(CDialogCommentComponent, {
       disableClose: false,
@@ -41,15 +48,23 @@ export class CEmployeeCardComponent {
       data: this.empData,
     });
   }
-
-  shortComment(comments: string): string {
-    if (typeof comments === 'string') {
+  /**
+   *
+   * @param comments
+   * @returns new  short comment with 7 characters
+   */
+  shortComment(comments: string | null): string | null {
+    if (typeof comments === "string") {
       if (comments.length > 7) {
         return ` ${comments.substring(0, 7)}...`;
       }
     }
-    return comments;
+    return comments || null;
   }
+  /**
+   * 
+   * @returns CSS or null
+   */
   statusColor(): string {
     switch (this.empData.statusID) {
       case 1:
@@ -61,13 +76,16 @@ export class CEmployeeCardComponent {
       case 4:
         return StatusStyle.IS_LEAVE;
       case 5:
-        return StatusStyle.IS_KETSU
+        return StatusStyle.IS_KETSU;
       default:
-        return '';
+        return "";
     }
   }
-
+/**
+ * 
+ * @returns CSS red for exceeding 1hour or blue for less than 1 hour
+ */
   spinnerColor(): string {
-    return this.empData.setAlarm ? 'card-spinner-red' : 'card-spinner-blue';
+    return this.empData.setAlarm ? "card-spinner-red" : "card-spinner-blue";
   }
 }

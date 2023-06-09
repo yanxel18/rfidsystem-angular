@@ -27,7 +27,9 @@ export class AppComponent {
     this.mobileQuery.addListener(this._mobileQueryListener);
     this.title.setTitle(this.appService.appTitle);
   }
-
+/**
+ * Burger button retrigger to emit open event
+ */
   retriggerBurger(): void {
     this.BurgerComponent.active = true;
     this.BurgerComponent.onBurgerClicked();

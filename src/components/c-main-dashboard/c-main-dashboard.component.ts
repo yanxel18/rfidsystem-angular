@@ -54,7 +54,7 @@ export class CMainDashboardComponent implements OnInit, OnDestroy {
     private appServ: AppService,
     private title: Title
   ) {
-    this.minDate = new Date(2023, 2, 1);
+    this.minDate = new Date(2023, 2, 1); //date when RFID system starts to operate
     const btime: string | null = this.appServ.tempGetKey('btime');
     const bdate: string | null = this.appServ.tempGetKey('bdate');
     const sTime: string = btime

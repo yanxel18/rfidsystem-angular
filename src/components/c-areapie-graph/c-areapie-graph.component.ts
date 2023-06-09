@@ -26,6 +26,9 @@ export class CAreapieGraphComponent implements OnChanges, OnInit, OnDestroy {
   ngOnInit(): void {
     this.initializePieChart();
   }
+  /**
+   * Initialized Pie Graph component from the received input data
+   */
   initializePieChart(): void {
     if (this.DataSource) {
       const newTotalAreaData = this.DataSource?.map((AreaData) => {

@@ -31,6 +31,9 @@ import { CMainDashboardComponent } from '../components/c-main-dashboard/c-main-d
 import { CAreatotalTableComponent } from '../components/c-areatotal-table/c-areatotal-table.component';
 import { CAreapieGraphComponent } from '../components/c-areapie-graph/c-areapie-graph.component';
 import { NgxTrimDirectiveModule } from 'ngx-trim-directive';
+/**
+ * This message is triggered when callback  from websocket event is received
+ */
 const disconnectMsg = () => {
   const Toast = Swal.mixin({
     showConfirmButton: false,
@@ -54,7 +57,10 @@ const disconnectMsg = () => {
     },
   });
 };
-
+/**
+ * This message will be trigger when connection is established
+ * @param message success message received  parameter
+ */
 const successMsg = (message: string) => {
   const Toast = Swal.mixin({
     showConfirmButton: false,
@@ -68,6 +74,10 @@ const successMsg = (message: string) => {
     timerProgressBar: true,
   });
 };
+/**
+ * This message will be trigger when reconnected to the server
+ * @param message received from reconnection
+ */
 const successMsgOnRecon = (message: string) => {
   const Toast = Swal.mixin({
     showConfirmButton: false,
@@ -84,6 +94,11 @@ const successMsgOnRecon = (message: string) => {
     },
   });
 };
+/**
+ * 
+ * @param link  received httplink from graphql config
+ * @returns  apollolink configuration
+ */
 const newHttpLink = (link: HttpLink): ApolloLink => {
   const uri = environment.gUrl;
   const wsLink = new SubscriptionClient(environment.ws, {
@@ -96,7 +111,9 @@ const newHttpLink = (link: HttpLink): ApolloLink => {
   const httpLink = link.create({
     uri,
   });
-
+/**
+ * Setting up middleware interceptor by getting the token from the storage
+ */
   const middleware = new ApolloLink((operation, forward) => {
     operation.setContext({
       headers: new HttpHeaders().set(

@@ -31,7 +31,10 @@ export class CAreatotalTableComponent implements OnChanges {
   ngOnChanges(): void {
     this.tableDatasource = this.DataSource ? this.DataSource.PerArea : [];
   }
-
+  /**
+   * 
+   * @param element Received from selected row 
+   */
   getTableRow(element: IPerArea): void {
     const rawData: ITotalArea[] = [];
     const newTotalArea: ITotalArea = {
