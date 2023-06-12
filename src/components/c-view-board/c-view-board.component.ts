@@ -9,7 +9,7 @@ import {
   IPositionList,
   ISkeletonLoader,
   ITeamList,
-} from "./../../models/viewboard-model";
+} from './../../models/viewboard-model';
 import {
   Component,
   OnInit,
@@ -17,27 +17,27 @@ import {
   OnDestroy,
   AfterViewInit,
   ElementRef,
-} from "@angular/core";
-import { Observable, Subscription, map, take } from "rxjs";
-import { IViewEmployeeBoard } from "src/models/viewboard-model";
-import { CViewBoardService } from "./c-view-board.service";
-import { CViewBoardNaviComponent } from "../c-view-board-navi/c-view-board-navi.component";
-import { MatSelectChange } from "@angular/material/select";
-import { MatOption } from "@angular/material/core";
-import { Router } from "@angular/router";
-import { BoardGraphStyle } from "src/models/enum";
-import { AppService } from "src/app/app.service";
-import { Title } from "@angular/platform-browser";
+} from '@angular/core';
+import { Observable, Subscription, map, take } from 'rxjs';
+import { IViewEmployeeBoard } from 'src/models/viewboard-model';
+import { CViewBoardService } from './c-view-board.service';
+import { CViewBoardNaviComponent } from '../c-view-board-navi/c-view-board-navi.component';
+import { MatSelectChange } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+import { Router } from '@angular/router';
+import { BoardGraphStyle } from 'src/models/enum';
+import { AppService } from 'src/app/app.service';
+import { Title } from '@angular/platform-browser';
 @Component({
-  selector: "app-c-view-board",
-  templateUrl: "./c-view-board.component.html",
-  styleUrls: ["./c-view-board.component.sass"],
+  selector: 'app-c-view-board',
+  templateUrl: './c-view-board.component.html',
+  styleUrls: ['./c-view-board.component.sass'],
   providers: [CViewBoardService, AppService],
 })
 export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
-  componentTitle = "リアルタイム監視";
+  componentTitle = 'リアルタイム監視';
   DEFAULTCOUNT = 100;
-  empRealTime!: IViewEmployeeBoard[]; 
+  empRealTime!: IViewEmployeeBoard[];
   empMaxCount$!: Observable<number>;
   pagecountview: number = this.DEFAULTCOUNT;
   pagenum = 1;
@@ -54,7 +54,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   selectedLocation: number | null = null;
   selectedTeam: number | null = null;
   selectedPosition: number | null = null;
-  selectedAreaText = "すべて";
+  selectedAreaText = 'すべて';
   selectedOrder: number | null = null;
   selectedDivision: number | null = null;
   searchValue: string | null = null;
@@ -62,24 +62,24 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   viewboardStatusRatio?: IEmployeeCountRatio;
   toggleSearch = false;
   loaderStyle: ISkeletonLoader = {
-    "background-color": "#e2e2e2",
-    height: "70px",
-    "border-radius": "60px",
-    width: "350px",
+    'background-color': '#e2e2e2',
+    height: '70px',
+    'border-radius': '60px',
+    width: '350px',
   };
   lineChart: ISkeletonLoader = {
-    "background-color": "#e2e2e2",
-    height: "25px",
-    "border-radius": "4px",
+    'background-color': '#e2e2e2',
+    height: '25px',
+    'border-radius': '4px',
   };
   lineChart2: ISkeletonLoader = {
-    "background-color": "#e2e2e2",
-    height: "25px",
-    "border-radius": "4px",
+    'background-color': '#e2e2e2',
+    height: '25px',
+    'border-radius': '4px',
   };
   @ViewChild(CViewBoardNaviComponent)
   ViewBoardNaviComponent!: CViewBoardNaviComponent;
-  @ViewChild("searchbar") searchbar!: ElementRef;
+  @ViewChild('searchbar') searchbar!: ElementRef;
 
   constructor(
     private viewboardService: CViewBoardService,
@@ -90,28 +90,28 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit(): void {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    const getpageview: string | null = this.appServ.tempGetKey("pagecountview");
-    const getpagenum: string | null = this.appServ.tempGetKey("pagenum");
-    const getArea: string | null = this.appServ.tempGetKey("areaSelected");
+    const getpageview: string | null = this.appServ.tempGetKey('pagecountview');
+    const getpagenum: string | null = this.appServ.tempGetKey('pagenum');
+    const getArea: string | null = this.appServ.tempGetKey('areaSelected');
     const getAreaText: string | null =
-      this.appServ.tempGetKey("selectedAreaText");
-    const getTeam: string | null = this.appServ.tempGetKey("teamSelected");
-    const getLoc: string | null = this.appServ.tempGetKey("locSelected");
-    const getPos: string | null = this.appServ.tempGetKey("posSelected");
-    const getViewBoard: string | null = this.appServ.tempGetKey("vgrph");
-    const getDivision: string | null = this.appServ.tempGetKey("divSelected");
-    const getSort: string | null = this.appServ.tempGetKey("order");
+      this.appServ.tempGetKey('selectedAreaText');
+    const getTeam: string | null = this.appServ.tempGetKey('teamSelected');
+    const getLoc: string | null = this.appServ.tempGetKey('locSelected');
+    const getPos: string | null = this.appServ.tempGetKey('posSelected');
+    const getViewBoard: string | null = this.appServ.tempGetKey('vgrph');
+    const getDivision: string | null = this.appServ.tempGetKey('divSelected');
+    const getSort: string | null = this.appServ.tempGetKey('order');
     this.pagecountview = getpageview ? +getpageview : this.pagecountview;
     this.skeletonLoader = new Array<number>(this.pagecountview);
     this.pagenum = getpagenum ? +getpagenum : this.pagenum;
     this.selectedArea = getArea ? +getArea : null;
-    this.selectedAreaText = getAreaText ? getAreaText : "すべて";
+    this.selectedAreaText = getAreaText ? getAreaText : 'すべて';
     this.selectedTeam = getTeam ? +getTeam : null;
     this.selectedLocation = getLoc ? +getLoc : null;
     this.selectedPosition = getPos ? +getPos : null;
     this.selectedOrder = getSort ? +getSort : null;
     this.selectedDivision = getDivision ? +getDivision : null;
-    this.openGraph = getViewBoard === "1" ? true : false;
+    this.openGraph = getViewBoard === '1' ? true : false;
     this.getCurrentFilteredCount();
     this.initializeBoardView();
     this.initializeGraph();
@@ -122,39 +122,39 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   ): void {
     if (allowed) {
       const val = (event?.source.selected as MatOption)?.viewValue;
-      this.selectedAreaText = val ? val : "すべて";
+      this.selectedAreaText = val ? val : 'すべて';
     }
     this.Subscriptions.forEach((s) => s.unsubscribe());
     this.appServ.tempStoreKey(
-      "areaSelected",
-      this.selectedArea ? this.selectedArea.toString() : "-"
+      'areaSelected',
+      this.selectedArea ? this.selectedArea.toString() : '-'
     );
     this.appServ.tempStoreKey(
-      "selectedAreaText",
-      this.selectedAreaText ? this.selectedAreaText.toString() : "すべて"
+      'selectedAreaText',
+      this.selectedAreaText ? this.selectedAreaText.toString() : 'すべて'
     );
     this.appServ.tempStoreKey(
-      "teamSelected",
-      this.selectedTeam ? this.selectedTeam.toString() : "-"
+      'teamSelected',
+      this.selectedTeam ? this.selectedTeam.toString() : '-'
     );
     this.appServ.tempStoreKey(
-      "locSelected",
-      this.selectedLocation ? this.selectedLocation.toString() : "-"
+      'locSelected',
+      this.selectedLocation ? this.selectedLocation.toString() : '-'
     );
     this.appServ.tempStoreKey(
-      "posSelected",
-      this.selectedPosition ? this.selectedPosition.toString() : "-"
+      'posSelected',
+      this.selectedPosition ? this.selectedPosition.toString() : '-'
     );
     this.appServ.tempStoreKey(
-      "divSelected",
-      this.selectedDivision ? this.selectedDivision.toString() : "-"
+      'divSelected',
+      this.selectedDivision ? this.selectedDivision.toString() : '-'
     );
     this.appServ.tempStoreKey(
-      "order",
-      this.selectedOrder ? this.selectedOrder.toString() : "0"
+      'order',
+      this.selectedOrder ? this.selectedOrder.toString() : '0'
     );
     this.pagenum = 1;
-    this.appServ.tempStoreKey("pagenum", this.pagenum.toString());
+    this.appServ.tempStoreKey('pagenum', this.pagenum.toString());
     this.getCurrentFilteredCount();
     this.initializeBoardView();
     this.ViewBoardNaviComponent.rerenderpaginator();
@@ -175,7 +175,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   initializeGraph(): void {
     this.perAreaGraphData$ = this.viewboardService
       .getPerAreaGraph(this.ViewBoardParam)
-      .valueChanges.pipe(
+      .pipe(
         map(({ data }) => {
           return data.PerAreaGraph ? data.PerAreaGraph : [];
         })
@@ -214,7 +214,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.selectedTeam = null;
     this.selectedPosition = null;
     this.selectedDivision = null;
-    this.selectedAreaText = "すべて";
+    this.selectedAreaText = 'すべて';
     this.reInitializeBoardFromList(false, null);
   }
   reInitializedBoardView(): void {
@@ -228,10 +228,9 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getCurrentFilteredCount(): void {
-    this.viewboardService.getFilteredCount(this.ViewBoardParam).refetch();
     this.empMaxCount$ = this.viewboardService
       .getFilteredCount(this.ViewBoardParam)
-      .valueChanges.pipe(take(1))
+      .pipe(take(1))
       .pipe(
         map(({ data }) => {
           return data.EmpBoardMaxCountFilter ? data.EmpBoardMaxCountFilter : 0;
@@ -240,18 +239,15 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   lineGraphStyle(): string {
-    this.appServ.tempStoreKey("vgrph", this.openGraph ? "1" : "0");
+    this.appServ.tempStoreKey('vgrph', this.openGraph ? '1' : '0');
     return this.openGraph ? BoardGraphStyle.IS_OPEN : BoardGraphStyle.IS_CLOSE;
   }
   viewDropList(): void {
-    this.viewboardService.getViewDropList().refetch();
-    const dropDownlist = this.viewboardService
-      .getViewDropList()
-      .valueChanges.pipe(
-        map(({ data }) => {
-          return data.ViewDropList;
-        })
-      );
+    const dropDownlist = this.viewboardService.getViewDropList().pipe(
+      map(({ data }) => {
+        return data.ViewDropList;
+      })
+    );
     this.areaList$ = dropDownlist.pipe(
       map((data) => {
         return data ? data.IAreaList : [];

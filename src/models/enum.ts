@@ -3,7 +3,7 @@ export enum StatusStyle {
   IS_OUT = 'is-out',
   IS_HOME = 'is-home',
   IS_LEAVE = 'is-leave',
-  IS_KETSU = 'is-ketsu'
+  IS_KETSU = 'is-ketsu',
 }
 
 export enum BoardGraphStyle {

@@ -4,26 +4,27 @@ import {
   IPerAreaGraphResponse,
   IViewDropList,
   testinterface,
-} from "./../../models/viewboard-model";
-import { Injectable, OnDestroy } from "@angular/core";
-import { Apollo, QueryRef } from "apollo-angular";
+} from './../../models/viewboard-model';
+import { Injectable, OnDestroy } from '@angular/core';
+import { Apollo, QueryRef } from 'apollo-angular';
 import {
   IEmployeeBoardArgs,
   IViewEmployeeBoard,
-} from "src/models/viewboard-model";
+} from 'src/models/viewboard-model';
 
-import { Observable, Subscription, map } from "rxjs";
-import { MsgServiceService } from "src/handlers/msg-service.service";
+import { Observable, Subscription, map, shareReplay } from 'rxjs';
+import { MsgServiceService } from 'src/handlers/msg-service.service';
 import {
   GET_CURRENT_EMPCOUNT,
   GET_PERAREA_GRAPH,
   GET_VIEWBOARD_SUBSCRIBE,
   GET_VIEWBOARD_TEMPLATE,
   GET_VIEWDROPLIST,
-} from "./c-view-board-gql";
+} from './c-view-board-gql';
+import { ApolloQueryResult } from '@apollo/client/core';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class CViewBoardService implements OnDestroy {
   boardSubscription!: QueryRef<EmployeeBoardWithRatio>;
@@ -31,7 +32,8 @@ export class CViewBoardService implements OnDestroy {
 
   constructor(private apollo: Apollo, private msgHandler: MsgServiceService) {}
   employeeRealtimeView$!: Observable<IViewEmployeeBoard[]>;
-  getFilteredCount(param: IEmployeeBoardArgs): QueryRef<IFilteredCountRes> {
+
+  getFilteredCount(param: IEmployeeBoardArgs): Observable<ApolloQueryResult<IFilteredCountRes>> {
     return this.apollo.watchQuery<IFilteredCountRes>({
       query: GET_CURRENT_EMPCOUNT,
       variables: {
@@ -43,25 +45,31 @@ export class CViewBoardService implements OnDestroy {
         divID: param.divID,
         order: param.order,
       },
-    });
+    }).valueChanges.pipe(shareReplay(1));
   }
 
-  getPerAreaGraph(param: IEmployeeBoardArgs): QueryRef<IPerAreaGraphResponse> {
-    return this.apollo.watchQuery<IPerAreaGraphResponse>({
-      query: GET_PERAREA_GRAPH,
-      variables: {
-        areaID: param.areaID,
-        locID: param.locID,
-        teamID: param.teamID,
-      },
-      pollInterval: 1000 * 60 * 5,
-    });
+  getPerAreaGraph(
+    param: IEmployeeBoardArgs
+  ): Observable<ApolloQueryResult<IPerAreaGraphResponse>> {
+    return this.apollo
+      .watchQuery<IPerAreaGraphResponse>({
+        query: GET_PERAREA_GRAPH,
+        variables: {
+          areaID: param.areaID,
+          locID: param.locID,
+          teamID: param.teamID,
+        },
+        pollInterval: 1000 * 60 * 5,
+      })
+      .valueChanges.pipe(shareReplay(1));
   }
 
-  getViewDropList(): QueryRef<IViewDropList> {
-    return this.apollo.watchQuery<IViewDropList>({
-      query: GET_VIEWDROPLIST,
-    });
+  getViewDropList(): Observable<ApolloQueryResult<IViewDropList>> {
+    return this.apollo
+      .watchQuery<IViewDropList>({
+        query: GET_VIEWDROPLIST,
+      })
+      .valueChanges.pipe(shareReplay(1));
   }
   getRealtimeBoardView(
     param: IEmployeeBoardArgs

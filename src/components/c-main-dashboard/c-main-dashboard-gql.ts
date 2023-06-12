@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 export const GET_TOTALPERAREASTAT = gql`
   query TotalArea($totalStatSelectedDate: String!, $areaSelectedDate: String!) {

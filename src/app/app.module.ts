@@ -95,7 +95,7 @@ const successMsgOnRecon = (message: string) => {
   });
 };
 /**
- * 
+ *
  * @param link  received httplink from graphql config
  * @returns  apollolink configuration
  */
@@ -111,9 +111,9 @@ const newHttpLink = (link: HttpLink): ApolloLink => {
   const httpLink = link.create({
     uri,
   });
-/**
- * Setting up middleware interceptor by getting the token from the storage
- */
+  /**
+   * Setting up middleware interceptor by getting the token from the storage
+   */
   const middleware = new ApolloLink((operation, forward) => {
     operation.setContext({
       headers: new HttpHeaders().set(

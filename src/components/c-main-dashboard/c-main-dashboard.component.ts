@@ -101,10 +101,10 @@ export class CMainDashboardComponent implements OnInit, OnDestroy {
     const selectedDate = moment(
       this.groupSelect.get('selectedDate')?.value
     ).format('YYYY-MM-DD');
-    this.mainDashboardService.getDateList(null).refetch();
+
     this.$dropDateList = this.mainDashboardService
       .getDateList(selectedDate)
-      .valueChanges.pipe(
+      .pipe(
         map(({ data }) => {
           return data;
         })
@@ -120,7 +120,7 @@ export class CMainDashboardComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.mainDashboardService
         .getTotalArea(paramDate)
-        .valueChanges.subscribe(({ data }) => {
+        .subscribe(({ data }) => {
           if (data) {
             this.$totalAreaData = data;
             this.$pieDataSource = data.TotalArea;

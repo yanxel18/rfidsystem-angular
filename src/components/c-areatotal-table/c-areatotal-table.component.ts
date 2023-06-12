@@ -32,8 +32,8 @@ export class CAreatotalTableComponent implements OnChanges {
     this.tableDatasource = this.DataSource ? this.DataSource.PerArea : [];
   }
   /**
-   * 
-   * @param element Received from selected row 
+   *
+   * @param element Received from selected row
    */
   getTableRow(element: IPerArea): void {
     const rawData: ITotalArea[] = [];
