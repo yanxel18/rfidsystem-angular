@@ -237,9 +237,10 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
         })
       );
   }
-
-  lineGraphStyle(): string {
+  lineGraphState(): void {
     this.appServ.tempStoreKey('vgrph', this.openGraph ? '1' : '0');
+  }
+  lineGraphStyle(): string {
     return this.openGraph ? BoardGraphStyle.IS_OPEN : BoardGraphStyle.IS_CLOSE;
   }
   viewDropList(): void {

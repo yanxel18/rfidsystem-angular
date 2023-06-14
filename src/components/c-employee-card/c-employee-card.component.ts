@@ -38,9 +38,7 @@ export class CEmployeeCardComponent {
     else if (elapseTimeHour > 0) return MAXSPINNERVAL;
     else return 0;
   }
-  /**
-   * Open comment dialog component
-   */
+
   openCommentBox(): void {
     this.commentDialogBox.open(CDialogCommentComponent, {
       disableClose: false,

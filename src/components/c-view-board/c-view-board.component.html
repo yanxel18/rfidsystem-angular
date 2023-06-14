@@ -262,8 +262,8 @@
 </div>
 
 <mat-expansion-panel
-  (opened)="openGraph = true"
-  (closed)="openGraph = false"
+  (opened)="openGraph = true;lineGraphState()"
+  (closed)="openGraph = false;lineGraphState()"
   class="mat-elevation-z5 graph-expansion-container"
   [expanded]="openGraph"
 >
