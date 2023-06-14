@@ -25,7 +25,7 @@ export class CMainDashboardComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   $totalAreaData!: Observable<IPerAreaTotalStatistics | null>;
   $pieDataSource!: Observable<ITotalArea[] | null>;
-  $dropDateList!: Observable<IDateSelectRes>;
+  $dropDateList!: Observable<IDateSelectRes | null>;
   maxDate = new Date();
   minDate!: Date;
   groupSelect!: FormGroup;
@@ -105,7 +105,7 @@ export class CMainDashboardComponent implements OnInit, OnDestroy {
       .getDateList(selectedDate)
       .pipe(
         map(({ data }) => {
-          return data;
+          return data ?? null;
         })
       );
     this.getPerAreaStatistics(this.getSelectedValue().datetime);

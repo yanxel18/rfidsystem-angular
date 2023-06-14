@@ -149,7 +149,7 @@
         ></ngx-skeleton-loader>
       </div>
       <app-c-areatotal-table
-        *ngIf="$totalAreaData"
+        *ngIf="($totalAreaData | async)"
         [DataSource]="($totalAreaData |async)"
         (PieDataSource)="tableEmit($event)"
       ></app-c-areatotal-table>
