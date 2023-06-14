@@ -1,51 +1,51 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CMainService } from './c-main.service';
-import { Router } from '@angular/router';
-import { Observable, Subscription, map } from 'rxjs';
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { CMainService } from "./c-main.service";
+import { Router } from "@angular/router";
+import { Observable, Subscription, map, of } from "rxjs";
 import {
   ISkeletonLoader,
   IPerAreaTotalStatistics,
   IDateSelectRes,
   IFormValues,
   ITotalArea,
-} from 'src/models/viewboard-model';
-import * as moment from 'moment';
-import { FormControl, FormGroup } from '@angular/forms';
-import { AppService } from 'src/app/app.service';
-import { Title } from '@angular/platform-browser';
+} from "src/models/viewboard-model";
+import * as moment from "moment";
+import { FormControl, FormGroup } from "@angular/forms";
+import { AppService } from "src/app/app.service";
+import { Title } from "@angular/platform-browser";
 
 @Component({
-  selector: 'app-c-main-dashboard',
-  templateUrl: './c-main-dashboard.component.html',
-  styleUrls: ['./c-main-dashboard.component.sass'],
+  selector: "app-c-main-dashboard",
+  templateUrl: "./c-main-dashboard.component.html",
+  styleUrls: ["./c-main-dashboard.component.sass"],
   providers: [CMainService, AppService, Title],
 })
 export class CMainDashboardComponent implements OnInit, OnDestroy {
-  componentTitle = 'Main';
+  componentTitle = "Main";
   private subscriptions: Subscription[] = [];
-  $totalAreaData!: IPerAreaTotalStatistics | null;
-  $pieDataSource!: ITotalArea[] | null;
+  $totalAreaData!: Observable<IPerAreaTotalStatistics | null>;
+  $pieDataSource!: Observable<ITotalArea[] | null>;
   $dropDateList!: Observable<IDateSelectRes>;
   maxDate = new Date();
   minDate!: Date;
   groupSelect!: FormGroup;
   skeletonStyle: ISkeletonLoader = {
-    'background-color': '#e2e2e2',
-    height: '74px',
-    'border-radius': '4px',
-    width: '100%',
+    "background-color": "#e2e2e2",
+    height: "74px",
+    "border-radius": "4px",
+    width: "100%",
   };
 
   skeletonPieStyle: ISkeletonLoader = {
-    'background-color': '#e2e2e2',
-    height: '300px',
-    width: '300px',
-    margin: '0px',
+    "background-color": "#e2e2e2",
+    height: "300px",
+    width: "300px",
+    margin: "0px",
   };
   skeletonTableStyle: ISkeletonLoader = {
-    'background-color': '#e2e2e2',
-    height: '25px',
-    'border-radius': '4px',
+    "background-color": "#e2e2e2",
+    height: "25px",
+    "border-radius": "4px",
   };
 
   constructor(
@@ -55,12 +55,10 @@ export class CMainDashboardComponent implements OnInit, OnDestroy {
     private title: Title
   ) {
     this.minDate = new Date(2023, 2, 1); //date when RFID system starts to operate
-    const btime: string | null = this.appServ.tempGetKey('btime');
-    const bdate: string | null = this.appServ.tempGetKey('bdate');
-    const sTime: string = btime
-      ? btime
-      : `${moment(new Date()).format('HH')}:00:00`;
-    const sDate = bdate ? bdate : moment().format('YYYY-MM-DD');
+    const btime: string | null = this.appServ.tempGetKey("btime");
+    const bdate: string | null = this.appServ.tempGetKey("bdate");
+    const sTime: string = btime ?? `${moment(new Date()).format("HH")}:00:00`;
+    const sDate = bdate ?? moment().format("YYYY-MM-DD");
     this.groupSelect = new FormGroup({
       selectedDate: new FormControl<Date | null>(new Date(sDate)),
       selectedTime: new FormControl<string | null>(sTime),
@@ -81,14 +79,15 @@ export class CMainDashboardComponent implements OnInit, OnDestroy {
 
   getSelectedValue(): IFormValues {
     const selectedDate: string = moment(
-      this.groupSelect.get('selectedDate')?.value
-    ).format('YYYY-MM-DD');
+      this.groupSelect.get("selectedDate")?.value
+    ).format("YYYY-MM-DD");
     const selectedTime: string | null | undefined =
-      this.groupSelect.get('selectedTime')?.value;
-    const sTime: string = selectedTime ? selectedTime.toString() : '00:00:00';
-    const selectedValue: string | null = selectedTime
-      ? `${selectedDate} ${selectedTime}`
-      : `${selectedDate} ${moment(new Date()).format('HH')}:00:00`;
+      this.groupSelect.get("selectedTime")?.value;
+    const sTime: string = selectedTime ?? "00:00:00";
+    const selectedValue: string | null =
+      typeof selectedTime === "string"
+        ? `${selectedDate} ${selectedTime}`
+        : `${selectedDate} ${moment(new Date()).format("HH")}:00:00`;
 
     const retVal: IFormValues = {
       date: selectedDate,
@@ -99,8 +98,8 @@ export class CMainDashboardComponent implements OnInit, OnDestroy {
   }
   loadDropDateList(): void {
     const selectedDate = moment(
-      this.groupSelect.get('selectedDate')?.value
-    ).format('YYYY-MM-DD');
+      this.groupSelect.get("selectedDate")?.value
+    ).format("YYYY-MM-DD");
 
     this.$dropDateList = this.mainDashboardService
       .getDateList(selectedDate)
@@ -113,23 +112,31 @@ export class CMainDashboardComponent implements OnInit, OnDestroy {
   }
   getPerAreaStatistics(paramDate: string): void {
     const dateval: IFormValues = this.getSelectedValue();
-    this.appServ.tempStoreKey('bdate', dateval.date);
-    this.appServ.tempStoreKey('btime', dateval.time);
-    this.$totalAreaData = null;
-    this.$pieDataSource = null;
-    this.subscriptions.push(
-      this.mainDashboardService
-        .getTotalArea(paramDate)
-        .subscribe(({ data }) => {
-          if (data) {
-            this.$totalAreaData = data;
-            this.$pieDataSource = data.TotalArea;
-          }
+    this.appServ.tempStoreKey("bdate", dateval.date);
+    this.appServ.tempStoreKey("btime", dateval.time);
+    this.$totalAreaData = of(null);
+    this.$pieDataSource = of(null);
+
+    const graphData: Observable<IPerAreaTotalStatistics> =
+      this.mainDashboardService.getTotalArea(paramDate).pipe(
+        map(({ data }) => {
+          return data ?? [];
         })
+      );
+    this.$totalAreaData = graphData.pipe(
+      map((data) => {
+        return data ?? null;
+      })
+    );
+
+    this.$pieDataSource = graphData.pipe(
+      map((data) => {
+        return data.TotalArea ?? null;
+      })
     );
   }
   tableEmit(event: ITotalArea[] | null): void {
-    if (Array.isArray(event)) this.$pieDataSource = event;
+    if (Array.isArray(event)) this.$pieDataSource = of(event); 
   }
   trackArea(index: number): number {
     return index;

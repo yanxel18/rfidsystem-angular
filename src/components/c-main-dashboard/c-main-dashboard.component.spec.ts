@@ -31,4 +31,12 @@ fdescribe("CMainDashboardComponent", () => {
   it("should create", () => {
     expect(component).toBeTruthy();
   });
+
+  
+  it("should return tracking number", () => {
+    const trackNum = component.trackArea(1);
+    expect(trackNum).withContext("No track number returned").toBe(1)
+  })
+
+
 });

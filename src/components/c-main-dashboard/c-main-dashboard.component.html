@@ -70,7 +70,7 @@
   >
     <div
       class="mat-elevation-z0 dashboard-areavalue"
-      *ngFor="let x of $pieDataSource; let i = index; trackBy: trackArea"
+      *ngFor="let x of ($pieDataSource | async); let i = index; trackBy: trackArea"
       fxLayout="row wrap"
       fxLayoutAlign="center"
     >
@@ -111,7 +111,7 @@
   </div>
 
   <div
-    *ngIf="!$pieDataSource"
+    *ngIf="($pieDataSource | async) === null"
     class="mat-elevation-z0 skeleton-box dashboard-areavalue-container"
     fxLayout="row wrap"
     fxLayoutAlign="center"
@@ -140,7 +140,7 @@
   </div>
   <mat-card class="dashboard-content" fxLayout="col wrap">
     <mat-card class="table-container">
-      <div class="table-loader" *ngIf="$totalAreaData === null">
+      <div class="table-loader" *ngIf="($totalAreaData | async) === null">
         <ngx-skeleton-loader
           count="20"
           appearance="line"
@@ -150,12 +150,12 @@
       </div>
       <app-c-areatotal-table
         *ngIf="$totalAreaData"
-        [DataSource]="$totalAreaData"
+        [DataSource]="($totalAreaData |async)"
         (PieDataSource)="tableEmit($event)"
       ></app-c-areatotal-table>
     </mat-card>
     <mat-card class="piechart-container" fxLayoutAlign="center">
-      <div *ngIf="$pieDataSource === null" class="piechart-loader">
+      <div *ngIf="($pieDataSource | async) === null" class="piechart-loader">
         <ngx-skeleton-loader
           count="1"
           appearance="line"
@@ -171,8 +171,8 @@
       </div>
       　
       <app-c-areapie-graph
-        *ngIf="$pieDataSource"
-        [DataSource]="$pieDataSource"
+        *ngIf="($pieDataSource | async) !== null"
+        [DataSource]="$pieDataSource | async"
       ></app-c-areapie-graph>
     </mat-card>
   </mat-card>
