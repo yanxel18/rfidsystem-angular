@@ -10,6 +10,7 @@ import {
   ITotalArea,
 } from "src/models/viewboard-model";
 import * as moment from "moment";
+import * as momentTimezone from "moment-timezone";
 import { FormControl, FormGroup } from "@angular/forms";
 import { AppService } from "src/app/app.service";
 import { Title } from "@angular/platform-browser";
@@ -55,10 +56,10 @@ export class CMainDashboardComponent implements OnInit, OnDestroy {
     private title: Title
   ) {
     this.minDate = new Date(2023, 2, 1); //date when RFID system starts to operate
-    const btime: string | null = this.appServ.tempGetKey("btime");
-    const bdate: string | null = this.appServ.tempGetKey("bdate");
-    const sTime: string = btime ?? `${moment(new Date()).format("HH")}:00:00`;
-    const sDate = bdate ?? moment().format("YYYY-MM-DD");
+    const dateNow =  momentTimezone().tz("Asia/Tokyo"); 
+    const sMinute = + dateNow.format("mm") >= 30 ? "30" : "00";
+    const sTime = `${dateNow.format("HH")}:${sMinute}:00`;
+    const sDate = dateNow.format("YYYY-MM-DD");
     this.groupSelect = new FormGroup({
       selectedDate: new FormControl<Date | null>(new Date(sDate)),
       selectedTime: new FormControl<string | null>(sTime),
@@ -136,7 +137,7 @@ export class CMainDashboardComponent implements OnInit, OnDestroy {
     );
   }
   tableEmit(event: ITotalArea[] | null): void {
-    if (Array.isArray(event)) this.$pieDataSource = of(event); 
+    if (Array.isArray(event)) this.$pieDataSource = of(event);
   }
   trackArea(index: number): number {
     return index;

@@ -31,6 +31,7 @@ import { CMainDashboardComponent } from '../components/c-main-dashboard/c-main-d
 import { CAreatotalTableComponent } from '../components/c-areatotal-table/c-areatotal-table.component';
 import { CAreapieGraphComponent } from '../components/c-areapie-graph/c-areapie-graph.component';
 import { NgxTrimDirectiveModule } from 'ngx-trim-directive';
+import { CNotFoundComponent } from 'src/components/c-404/c-notfound';
 /**
  * This message is triggered when callback  from websocket event is received
  */
@@ -125,7 +126,7 @@ const newHttpLink = (link: HttpLink): ApolloLink => {
   });
   const Mainlink = middleware.concat(httpLink);
   const errorlink = (): ApolloLink => {
-    return onError(({ graphQLErrors, operation, forward }) => {
+    return onError(({ graphQLErrors, operation, forward }) => { 
       if (graphQLErrors)
         graphQLErrors.map(({ message }) => {
           errorMSG(message);
@@ -176,6 +177,7 @@ registerLocaleData(localeJa);
     CMainDashboardComponent,
     CAreatotalTableComponent,
     CAreapieGraphComponent,
+    CNotFoundComponent
   ],
   imports: [
     MaterialModules,

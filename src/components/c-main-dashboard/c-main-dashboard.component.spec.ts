@@ -4,21 +4,22 @@ import { ApolloTestingModule } from "apollo-angular/testing";
 import { MaterialModules } from "src/material-modules/material-module";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgxSkeletonLoaderModule } from "ngx-skeleton-loader";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import {
+  BrowserAnimationsModule,
+  NoopAnimationsModule,
+} from "@angular/platform-browser/animations";
 import {
   IPerAreaTotalStatistics,
   ITotalArea,
 } from "src/models/viewboard-model";
 import { mainServiceData } from "src/test-data/total-area-data";
-import { CMainService } from "./c-main.service";
-import { of } from "rxjs";
-import { DebugElement } from "@angular/core";
-import { By } from "@angular/platform-browser";
+import { CMainService } from "./c-main.service"; 
+import { DebugElement } from "@angular/core"; 
 fdescribe("CMainDashboardComponent", () => {
   let component: CMainDashboardComponent;
   let fixture: ComponentFixture<CMainDashboardComponent>;
   let mainService: any;
-  let el: DebugElement
+  let el: DebugElement;
   const TotalArea: IPerAreaTotalStatistics = mainServiceData;
   const PieArea: ITotalArea[] = mainServiceData.TotalArea;
 
@@ -34,6 +35,7 @@ fdescribe("CMainDashboardComponent", () => {
         ReactiveFormsModule,
         NgxSkeletonLoaderModule,
         BrowserAnimationsModule,
+        NoopAnimationsModule,
       ],
       declarations: [CMainDashboardComponent],
       providers: [
@@ -42,15 +44,15 @@ fdescribe("CMainDashboardComponent", () => {
           useValue: mainServiceSpy,
         },
       ],
-    }).compileComponents().then( () => {
-      fixture = TestBed.createComponent(CMainDashboardComponent);
-      component = fixture.componentInstance;
-      el = fixture.debugElement;
-      fixture.detectChanges();
-      mainService = TestBed.inject(CMainService);
-    });
-
-
+    })
+      .compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(CMainDashboardComponent);
+        component = fixture.componentInstance;
+        el = fixture.debugElement;
+        fixture.detectChanges();
+        mainService = TestBed.inject(CMainService);
+      });
   });
 
   it("should create", () => {
@@ -62,13 +64,9 @@ fdescribe("CMainDashboardComponent", () => {
     expect(trackNum).withContext("No track number returned").toBe(1);
   });
 
-  it("should display table per area ", fakeAsync(() => { 
-    // Promise.resolve().then( () => {
-    //   mainService.getTotalArea.and.returnValue(of(TotalArea));
-    // });
-    
-    // fixture.detectChanges();
-    const tableHeader = el.queryAll(By.css("dashboard-toolbar-title"));
-    console.log(tableHeader)
-  }));
+  it("should display table per area ",() => {
+    spyOn(component, 'getSelectedDate').and.callThrough();
+    component.getSelectedDate();
+    expect(component.getSelectedDate).withContext("Call selected date").toHaveBeenCalled()
+  });
 });
