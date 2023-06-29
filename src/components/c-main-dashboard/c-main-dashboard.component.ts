@@ -22,7 +22,7 @@ import { Title } from "@angular/platform-browser";
   providers: [CMainService, AppService, Title],
 })
 export class CMainDashboardComponent implements OnInit, OnDestroy {
-  readonly componentTitle = "Main";
+  readonly componentTitle: string = "Main";
   private subscriptions: Subscription[] = [];
   $totalAreaData!: Observable<IPerAreaTotalStatistics | null>;
   $pieDataSource!: Observable<ITotalArea[] | null>;
@@ -65,7 +65,7 @@ export class CMainDashboardComponent implements OnInit, OnDestroy {
       selectedTime: new FormControl<string | null>(sTime),
     });
   }
-  setTitle(): void {
+  private setTitle(): void {
     this.title.setTitle(`${this.componentTitle}-${this.appServ.appTitle}`);
   }
   getSelectedDate(): void {
@@ -78,24 +78,22 @@ export class CMainDashboardComponent implements OnInit, OnDestroy {
     this.setTitle();
   }
 
-  getSelectedValue(): IFormValues {
+  private getSelectedValue(): IFormValues {
     const selectedDate: string = moment(
       this.groupSelect.get("selectedDate")?.value
     ).format("YYYY-MM-DD");
-    const selectedTime: string | null | undefined =
+    const selectedTime: string | null  =
       this.groupSelect.get("selectedTime")?.value;
     const sTime: string = selectedTime ?? "00:00:00";
     const selectedValue: string | null =
       typeof selectedTime === "string"
         ? `${selectedDate} ${selectedTime}`
-        : `${selectedDate} ${moment(new Date()).format("HH")}:00:00`;
-
-    const retVal: IFormValues = {
+        : `${selectedDate} ${moment(new Date()).format("HH")}:00:00`; 
+    return {
       date: selectedDate,
       time: sTime,
       datetime: selectedValue,
-    };
-    return retVal;
+    }
   }
   loadDropDateList(): void {
     const selectedDate = moment(
@@ -111,7 +109,7 @@ export class CMainDashboardComponent implements OnInit, OnDestroy {
       );
     this.getPerAreaStatistics(this.getSelectedValue().datetime);
   }
-  getPerAreaStatistics(paramDate: string): void {
+  private getPerAreaStatistics(paramDate: string): void {
     const dateval: IFormValues = this.getSelectedValue();
     this.appServ.tempStoreKey("bdate", dateval.date);
     this.appServ.tempStoreKey("btime", dateval.time);

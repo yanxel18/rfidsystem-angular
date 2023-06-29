@@ -1,4 +1,4 @@
-import { DecimalPipe } from '@angular/common';
+import { DecimalPipe } from "@angular/common";
 import {
   Component,
   ViewChild,
@@ -7,19 +7,19 @@ import {
   EventEmitter,
   Input,
   AfterViewInit,
-} from '@angular/core';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { AppService } from 'src/app/app.service';
-import { IPageValues } from 'src/models/viewboard-model';
+} from "@angular/core";
+import { MatPaginator, PageEvent } from "@angular/material/paginator";
+import { AppService } from "src/app/app.service";
+import { IPageValues } from "src/models/viewboard-model";
 
 @Component({
-  selector: 'app-c-view-board-navi',
-  templateUrl: './c-view-board-navi.component.html',
-  styleUrls: ['./c-view-board-navi.component.sass'],
+  selector: "app-c-view-board-navi",
+  templateUrl: "./c-view-board-navi.component.html",
+  styleUrls: ["./c-view-board-navi.component.sass"],
   providers: [AppService],
 })
 export class CViewBoardNaviComponent implements OnInit, AfterViewInit {
-  @ViewChild('paginator', { static: true })
+  @ViewChild("paginator", { static: true })
   paginator!: MatPaginator;
 
   @Input() InputMaxCount: number | null = 0;
@@ -41,11 +41,11 @@ export class CViewBoardNaviComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.initializePagination();
   }
-  initializePagination(): void {
-    const getpagenum: string | null = this.appService.tempGetKey('pagenum');
+  private initializePagination(): void {
+    const getpagenum: string | null = this.appService.tempGetKey("pagenum");
     this.pagenum = getpagenum ? parseInt(getpagenum) - 1 : this.pagenum;
     this.pageIndex = this.InputMaxCount ? this.InputMaxCount : 0;
-    this.paginator._intl.itemsPerPageLabel = 'ページあたりのアイテム';
+    this.paginator._intl.itemsPerPageLabel = "ページあたりのアイテム";
     this.paginator._intl.getRangeLabel = (page: number, pageSize: number) => {
       const start = page * pageSize + 1;
       const end = (page + 1) * pageSize;
@@ -55,8 +55,8 @@ export class CViewBoardNaviComponent implements OnInit, AfterViewInit {
     };
   }
   handlePageEvent(e: PageEvent): void {
-    this.appService.tempStoreKey('pagecountview', e.pageSize.toString());
-    this.appService.tempStoreKey('pagenum', (e.pageIndex + 1).toString());
+    this.appService.tempStoreKey("pagecountview", e.pageSize.toString());
+    this.appService.tempStoreKey("pagenum", (e.pageIndex + 1).toString());
     this.OutPageSelect.emit({
       pageIndex: e.pageIndex + 1,
       pageSize: e.pageSize,
@@ -71,12 +71,5 @@ export class CViewBoardNaviComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.paginator.pageIndex = 0;
     }, 0);
-  }
-  setPageSizeOptions(setPageSizeOptionsInput: string): void {
-    if (setPageSizeOptionsInput) {
-      this.pageSizeOptions = setPageSizeOptionsInput
-        .split(',')
-        .map((str) => +str);
-    }
   }
 }

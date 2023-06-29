@@ -29,7 +29,7 @@ export class CAreapieGraphComponent implements OnChanges, OnInit, OnDestroy {
   /**
    * Initialized Pie Graph component from the received input data
    */
-  initializePieChart(): void {
+  private initializePieChart(): void {
     if (this.DataSource) {
       const newTotalAreaData = this.DataSource?.map((AreaData) => {
         return [
@@ -61,7 +61,7 @@ export class CAreapieGraphComponent implements OnChanges, OnInit, OnDestroy {
       >;
 
       const chartDom = document.getElementById('main');
-      if (chartDom) {
+      if (chartDom instanceof HTMLElement) {
         echarts.dispose(chartDom);
         const myChart = echarts.init(chartDom);
         const option: EChartsOption = {

@@ -36,8 +36,8 @@ import { Title } from "@angular/platform-browser";
   providers: [CViewBoardService, AppService],
 })
 export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
-  componentTitle = "リアルタイム監視";
-  DEFAULTCOUNT = 100;
+  readonly componentTitle: string = "リアルタイム監視";
+  readonly DEFAULTCOUNT: number = 100;
   empRealTime!: IViewEmployeeBoard[];
   empMaxCount$!: Observable<number>;
   pagecountview: number = this.DEFAULTCOUNT;
@@ -136,7 +136,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.initializeGraph();
   }
 
-  getlocalValue(): IDefaultStoreValue { 
+  private getlocalValue(): IDefaultStoreValue { 
     return {
       getPageView: this.appServ.tempGetKey("pagecountview"),
       getpagenum: this.appServ.tempGetKey("pagenum"),
@@ -194,7 +194,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.ViewBoardNaviComponent.rerenderpaginator();
     this.initializeGraph();
   }
-  setTitle(): void {
+  private setTitle(): void {
     this.title.setTitle(`${this.selectedAreaText}/${this.appServ.appTitle}`);
   }
   openSearch(): void {
@@ -206,9 +206,9 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.toggleSearch = false;
     this.reInitializeBoardFromList(false, null);
   }
-  initializeGraph(): void {
+  private initializeGraph(): void {
     this.perAreaGraphData$ = this.viewboardService
-      .getPerAreaGraph(this.ViewBoardParam)
+      .getPerAreaGraph(this.viewBoardParam())
       .pipe(
         map(({ data }) => {
           return data.PerAreaGraph ?? [];
@@ -216,10 +216,10 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
       );
     this.setTitle();
   }
-  initializeBoardView(): void {
+  private initializeBoardView(): void {
     this.Subscriptions.push(
       this.viewboardService
-        .getRealtimeBoardView(this.ViewBoardParam)
+        .getRealtimeBoardView(this.viewBoardParam())
         .subscribe({
           next: ({ EmployeeBoardAll }) => {
             if (EmployeeBoardAll.EmployeeBoardAllSub) {
@@ -251,19 +251,19 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.selectedAreaText = "すべて";
     this.reInitializeBoardFromList(false, null);
   }
-  reInitializedBoardView(): void {
+  private reInitializedBoardView(): void {
     this.Subscriptions.push(
       this.viewboardService
-        .getRealtimeBoardView(this.ViewBoardParam)
+        .getRealtimeBoardView(this.viewBoardParam())
         .subscribe((data) => {
           if (data) this.viewDropList();
         })
     );
   }
 
-  getCurrentFilteredCount(): void {
+  private getCurrentFilteredCount(): void {
     this.empMaxCount$ = this.viewboardService
-      .getFilteredCount(this.ViewBoardParam)
+      .getFilteredCount(this.viewBoardParam())
       .pipe(take(1))
       .pipe(
         map(({ data }) => {
@@ -277,7 +277,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   lineGraphStyle(): string {
     return this.openGraph ? BoardGraphStyle.IS_OPEN : BoardGraphStyle.IS_CLOSE;
   }
-  viewDropList(): void {
+  private viewDropList(): void {
     const dropDownlist = this.viewboardService.getViewDropList().pipe(
       map(({ data }) => {
         return data.ViewDropList;
@@ -311,8 +311,8 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     );
   }
 
-  get ViewBoardParam(): IEmployeeBoardArgs {
-    const formInfo: IEmployeeBoardArgs = {
+  private viewBoardParam(): IEmployeeBoardArgs {
+    return{
       search: this.searchValue,
       areaID: this.selectedArea,
       teamID: this.selectedTeam,
@@ -322,8 +322,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
       divID: this.selectedDivision,
       pageoffset: this.pagecountview,
       pagenum: this.pagenum,
-    };
-    return formInfo;
+    }; 
   }
   trackCardIndex(index: number): number {
     return index;

@@ -43,12 +43,12 @@ export class CPerareaGraphComponent implements OnChanges {
     >;
 
     const chartDom = document.getElementById('main');
-    if (chartDom) {
-      //echarts.dispose(chartDom);
+    if (chartDom instanceof HTMLElement) {
+      echarts.dispose(chartDom);
       const myChart = echarts.init(chartDom);
       myChart.clear();
       window.addEventListener('resize', function () {
-        if (chartDom) myChart.resize();
+        myChart.resize();
       });
       myChart.resize({
         width: 'auto',
