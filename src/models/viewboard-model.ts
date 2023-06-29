@@ -36,7 +36,7 @@ export interface EmployeeBoardWithRatio {
     AreaRatio?: IEmployeeCountRatio;
   };
 }
-export interface testinterface {
+export interface IEmployeeBoardView {
   EmployeeBoardAll: EmployeeBoardWithRatio;
 }
 export interface IEmployeeCountRatio {
@@ -152,4 +152,17 @@ export interface IFormValues {
   date: string;
   time: string;
   datetime: string;
+}
+
+export interface IDefaultStoreValue {
+  getPageView: string | null;
+  getpagenum: string | null;
+  getArea: string | null;
+  getAreaText: string | null;
+  getTeam: string | null;
+  getLoc: string | null;
+  getPos: string | null;
+  getViewBoard: string | null;
+  getDivision: string | null;
+  getSort: string | null;
 }

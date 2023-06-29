@@ -3,7 +3,7 @@ import {
   IFilteredCountRes,
   IPerAreaGraphResponse,
   IViewDropList,
-  testinterface,
+  IEmployeeBoardView,
 } from './../../models/viewboard-model';
 import { Injectable, OnDestroy } from '@angular/core';
 import { Apollo, QueryRef } from 'apollo-angular';
@@ -94,7 +94,7 @@ export class CViewBoardService implements OnDestroy {
         if (!subscriptionData.data) return prev;
         const receivedPayload: EmployeeBoardWithRatio =
           subscriptionData.data.EmployeeBoardAllSub;
-        const returnData: testinterface = {
+        const returnData: IEmployeeBoardView = {
           ...prev,
           EmployeeBoardAll: receivedPayload,
         };

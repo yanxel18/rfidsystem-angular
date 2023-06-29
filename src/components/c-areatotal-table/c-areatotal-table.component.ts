@@ -20,7 +20,7 @@ export class CAreatotalTableComponent implements OnChanges {
   @Input() DataSource!: IPerAreaTotalStatistics | null;
   @Output() PieDataSource = new EventEmitter<ITotalArea[] | null>();
   tableDatasource!: IPerArea[];
-  displayedColumns: string[] = [
+  readonly displayedColumns: string[] = [
     'bldg',
     'area',
     'workerIn',

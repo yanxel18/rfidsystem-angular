@@ -22,7 +22,7 @@ import { Title } from "@angular/platform-browser";
   providers: [CMainService, AppService, Title],
 })
 export class CMainDashboardComponent implements OnInit, OnDestroy {
-  componentTitle = "Main";
+  readonly componentTitle = "Main";
   private subscriptions: Subscription[] = [];
   $totalAreaData!: Observable<IPerAreaTotalStatistics | null>;
   $pieDataSource!: Observable<ITotalArea[] | null>;
@@ -30,20 +30,20 @@ export class CMainDashboardComponent implements OnInit, OnDestroy {
   maxDate = new Date();
   minDate!: Date;
   groupSelect!: FormGroup;
-  skeletonStyle: ISkeletonLoader = {
+  readonly skeletonStyle: ISkeletonLoader = {
     "background-color": "#e2e2e2",
     height: "74px",
     "border-radius": "4px",
     width: "100%",
   };
 
-  skeletonPieStyle: ISkeletonLoader = {
+  readonly skeletonPieStyle: ISkeletonLoader = {
     "background-color": "#e2e2e2",
     height: "300px",
     width: "300px",
     margin: "0px",
   };
-  skeletonTableStyle: ISkeletonLoader = {
+  readonly skeletonTableStyle: ISkeletonLoader = {
     "background-color": "#e2e2e2",
     height: "25px",
     "border-radius": "4px",

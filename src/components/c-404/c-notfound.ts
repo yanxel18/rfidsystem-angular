@@ -7,7 +7,7 @@ import { Title } from "@angular/platform-browser";
   styleUrls: ["./c-notfound.sass"],
 })
 export class CNotFoundComponent implements OnInit {
-  componentTitle = "Error 404! (Not Found)";
+  readonly componentTitle = "Error 404! (Not Found)";
   constructor(private title: Title) {}
   ngOnInit(): void {
     this.title.setTitle(`${this.componentTitle}`);

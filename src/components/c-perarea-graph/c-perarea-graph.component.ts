@@ -44,7 +44,7 @@ export class CPerareaGraphComponent implements OnChanges {
 
     const chartDom = document.getElementById('main');
     if (chartDom) {
-      echarts.dispose(chartDom);
+      //echarts.dispose(chartDom);
       const myChart = echarts.init(chartDom);
       myChart.clear();
       window.addEventListener('resize', function () {

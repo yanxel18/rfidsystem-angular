@@ -1,5 +1,6 @@
 import {
   IAreaList,
+  IDefaultStoreValue,
   IDivisionList,
   IEmployeeBoardArgs,
   IEmployeeCountRatio,
@@ -61,18 +62,18 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   searchStart = false;
   viewboardStatusRatio?: IEmployeeCountRatio;
   toggleSearch = false;
-  loaderStyle: ISkeletonLoader = {
+  readonly loaderStyle: ISkeletonLoader = {
     "background-color": "#e2e2e2",
     height: "70px",
     "border-radius": "60px",
     width: "350px",
   };
-  lineChart: ISkeletonLoader = {
+  readonly lineChart: ISkeletonLoader = {
     "background-color": "#e2e2e2",
     height: "25px",
     "border-radius": "4px",
   };
-  lineChart2: ISkeletonLoader = {
+  readonly lineChart2: ISkeletonLoader = {
     "background-color": "#e2e2e2",
     height: "25px",
     "border-radius": "4px",
@@ -88,33 +89,66 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     private title: Title
   ) {}
 
-  ngOnInit(): void {
+  localValue: IDefaultStoreValue = this.getlocalValue();
+
+  ngOnInit(): void { 
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    const getpageview: string | null = this.appServ.tempGetKey("pagecountview");
-    const getpagenum: string | null = this.appServ.tempGetKey("pagenum");
-    const getArea: string | null = this.appServ.tempGetKey("areaSelected");
-    const getAreaText: string | null =
-      this.appServ.tempGetKey("selectedAreaText");
-    const getTeam: string | null = this.appServ.tempGetKey("teamSelected");
-    const getLoc: string | null = this.appServ.tempGetKey("locSelected");
-    const getPos: string | null = this.appServ.tempGetKey("posSelected");
-    const getViewBoard: string | null = this.appServ.tempGetKey("vgrph");
-    const getDivision: string | null = this.appServ.tempGetKey("divSelected");
-    const getSort: string | null = this.appServ.tempGetKey("order");
-    this.pagecountview = getpageview ? +getpageview : this.pagecountview;
+    this.pagecountview =
+      typeof this.localValue.getPageView === "string"
+        ? +this.localValue.getPageView
+        : this.pagecountview;
     this.skeletonLoader = new Array<number>(this.pagecountview);
-    this.pagenum = getpagenum ? +getpagenum : this.pagenum;
-    this.selectedArea = getArea ? +getArea : null;
-    this.selectedAreaText = getAreaText ? getAreaText : "すべて";
-    this.selectedTeam = getTeam ? +getTeam : null;
-    this.selectedLocation = getLoc ? +getLoc : null;
-    this.selectedPosition = getPos ? +getPos : null;
-    this.selectedOrder = getSort ? +getSort : null;
-    this.selectedDivision = getDivision ? +getDivision : null;
-    this.openGraph = getViewBoard === "1" ? true : false;
+    this.pagenum =
+      typeof this.localValue.getpagenum === "string"
+        ? +this.localValue.getpagenum
+        : this.pagenum;
+    this.selectedArea =
+      typeof this.localValue.getArea === "string"
+        ? +this.localValue.getArea
+        : null;
+    this.selectedAreaText =
+      typeof this.localValue.getAreaText === "string"
+        ? this.localValue.getAreaText
+        : "すべて";
+    this.selectedTeam =
+      typeof this.localValue.getTeam === "string"
+        ? +this.localValue.getTeam
+        : null;
+    this.selectedLocation =
+      typeof this.localValue.getLoc === "string"
+        ? +this.localValue.getLoc
+        : null;
+    this.selectedPosition =
+      typeof this.localValue.getPos === "string"
+        ? +this.localValue.getPos
+        : null;
+    this.selectedOrder =
+      typeof this.localValue.getSort === "string"
+        ? +this.localValue.getSort
+        : null;
+    this.selectedDivision =
+      typeof this.localValue.getDivision === "string"
+        ? +this.localValue.getDivision
+        : null;
+    this.openGraph = this.localValue.getViewBoard === "1" ? true : false;
     this.getCurrentFilteredCount();
     this.initializeBoardView();
     this.initializeGraph();
+  }
+
+  getlocalValue(): IDefaultStoreValue { 
+    return {
+      getPageView: this.appServ.tempGetKey("pagecountview"),
+      getpagenum: this.appServ.tempGetKey("pagenum"),
+      getArea: this.appServ.tempGetKey("areaSelected"),
+      getAreaText: this.appServ.tempGetKey("selectedAreaText"),
+      getTeam: this.appServ.tempGetKey("teamSelected"),
+      getLoc: this.appServ.tempGetKey("locSelected"),
+      getPos: this.appServ.tempGetKey("posSelected"),
+      getViewBoard: this.appServ.tempGetKey("vgrph"),
+      getDivision: this.appServ.tempGetKey("divSelected"),
+      getSort: this.appServ.tempGetKey("order"),
+    };
   }
   reInitializeBoardFromList(
     allowed: boolean,
@@ -177,7 +211,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
       .getPerAreaGraph(this.ViewBoardParam)
       .pipe(
         map(({ data }) => {
-          return   data.PerAreaGraph ?? [];
+          return data.PerAreaGraph ?? [];
         })
       );
     this.setTitle();
@@ -233,7 +267,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
       .pipe(take(1))
       .pipe(
         map(({ data }) => {
-          return  data.EmpBoardMaxCountFilter ?? 0;
+          return data.EmpBoardMaxCountFilter ?? 0;
         })
       );
   }
@@ -272,7 +306,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.divisionList$ = dropDownlist.pipe(
       map((data) => {
-        return  data.IDivisionList ?? [];
+        return data.IDivisionList ?? [];
       })
     );
   }
