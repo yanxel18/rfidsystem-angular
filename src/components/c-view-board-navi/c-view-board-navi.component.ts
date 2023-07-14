@@ -55,8 +55,8 @@ export class CViewBoardNaviComponent implements OnInit, AfterViewInit {
     };
   }
   handlePageEvent(e: PageEvent): void {
-    this.appService.tempStoreKey("pagecountview", e.pageSize.toString());
-    this.appService.tempStoreKey("pagenum", (e.pageIndex + 1).toString());
+    this.appService.tempStoreKey("pagecountview", String(e.pageSize));
+    this.appService.tempStoreKey("pagenum", String(e.pageIndex + 1));
     this.OutPageSelect.emit({
       pageIndex: e.pageIndex + 1,
       pageSize: e.pageSize,

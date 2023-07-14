@@ -91,7 +91,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
 
   localValue: IDefaultStoreValue = this.getlocalValue();
 
-  ngOnInit(): void { 
+  ngOnInit(): void {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.pagecountview =
       typeof this.localValue.getPageView === "string"
@@ -136,7 +136,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.initializeGraph();
   }
 
-  private getlocalValue(): IDefaultStoreValue { 
+  private getlocalValue(): IDefaultStoreValue {
     return {
       getPageView: this.appServ.tempGetKey("pagecountview"),
       getpagenum: this.appServ.tempGetKey("pagenum"),
@@ -161,34 +161,34 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.Subscriptions.forEach((s) => s.unsubscribe());
     this.appServ.tempStoreKey(
       "areaSelected",
-      this.selectedArea ? this.selectedArea.toString() : "-"
+      this.selectedArea ? String(this.selectedArea) : "-"
     );
     this.appServ.tempStoreKey(
       "selectedAreaText",
-      this.selectedAreaText ? this.selectedAreaText.toString() : "すべて"
+      this.selectedAreaText ? String(this.selectedAreaText) : "すべて"
     );
     this.appServ.tempStoreKey(
       "teamSelected",
-      this.selectedTeam ? this.selectedTeam.toString() : "-"
+      this.selectedTeam ? String(this.selectedTeam) : "-"
     );
     this.appServ.tempStoreKey(
       "locSelected",
-      this.selectedLocation ? this.selectedLocation.toString() : "-"
+      this.selectedLocation ? String(this.selectedLocation) : "-"
     );
     this.appServ.tempStoreKey(
       "posSelected",
-      this.selectedPosition ? this.selectedPosition.toString() : "-"
+      this.selectedPosition ? String(this.selectedPosition) : "-"
     );
     this.appServ.tempStoreKey(
       "divSelected",
-      this.selectedDivision ? this.selectedDivision.toString() : "-"
+      this.selectedDivision ? String(this.selectedDivision) : "-"
     );
     this.appServ.tempStoreKey(
       "order",
-      this.selectedOrder ? this.selectedOrder.toString() : "0"
+      this.selectedOrder ? String(this.selectedOrder) : "0"
     );
     this.pagenum = 1;
-    this.appServ.tempStoreKey("pagenum", this.pagenum.toString());
+    this.appServ.tempStoreKey("pagenum", String(this.pagenum));
     this.getCurrentFilteredCount();
     this.initializeBoardView();
     this.ViewBoardNaviComponent.rerenderpaginator();
@@ -312,7 +312,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private viewBoardParam(): IEmployeeBoardArgs {
-    return{
+    return {
       search: this.searchValue,
       areaID: this.selectedArea,
       teamID: this.selectedTeam,
@@ -322,7 +322,7 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
       divID: this.selectedDivision,
       pageoffset: this.pagecountview,
       pagenum: this.pagenum,
-    }; 
+    };
   }
   trackCardIndex(index: number): number {
     return index;
