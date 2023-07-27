@@ -14,7 +14,7 @@ import * as momentTimezone from "moment-timezone";
 import { FormControl, FormGroup } from "@angular/forms";
 import { AppService } from "src/app/app.service";
 import { Title } from "@angular/platform-browser";
-
+import * as CryptoJS from "crypto-js";
 @Component({
   selector: "app-c-main-dashboard",
   templateUrl: "./c-main-dashboard.component.html",
@@ -64,6 +64,7 @@ export class CMainDashboardComponent implements OnInit, OnDestroy {
       selectedDate: new FormControl<Date | null>(new Date(sDate)),
       selectedTime: new FormControl<string | null>(sTime),
     });
+    this.testDecrypt();
   }
   private setTitle(): void {
     this.title.setTitle(`${this.componentTitle}-${this.appServ.appTitle}`);
@@ -77,7 +78,12 @@ export class CMainDashboardComponent implements OnInit, OnDestroy {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.setTitle();
   }
-
+  private testDecrypt(): void {
+    const key= "3cd0b690f4395d591c6513c9af86d7fc";
+    const pass = "U2FsdGVkX1%2ByXOBFkToulXdIo0aVV4qFRZ4biRF7xlA%3D";
+    console.log('test')
+    console.log(CryptoJS.AES.decrypt(decodeURIComponent(pass), key).toString(CryptoJS.enc.Utf8));
+  }
   private getSelectedValue(): IFormValues {
     const selectedDate: string = moment(
       this.groupSelect.get("selectedDate")?.value
@@ -109,6 +115,8 @@ export class CMainDashboardComponent implements OnInit, OnDestroy {
       );
     this.getPerAreaStatistics(this.getSelectedValue().datetime);
   }
+
+  
   private getPerAreaStatistics(paramDate: string): void {
     const dateval: IFormValues = this.getSelectedValue();
     this.appServ.tempStoreKey("bdate", dateval.date);
