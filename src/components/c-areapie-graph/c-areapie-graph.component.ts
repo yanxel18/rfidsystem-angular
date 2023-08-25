@@ -66,8 +66,12 @@ export class CAreapieGraphComponent implements OnChanges, OnInit, OnDestroy {
         const myChart = echarts.init(chartDom);
         const option: EChartsOption = {
           title: {
-            text: '在室率',
-            left: 'center',
+            text: this.DataSource[0].areaName ?? '全体',
+            textStyle: {
+              fontSize: '24px',
+              color: '#5470C6'
+            },
+            left: 'center', 
           },
           tooltip: {
             trigger: 'item',

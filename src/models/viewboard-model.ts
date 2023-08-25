@@ -114,6 +114,7 @@ export interface IPerAreaGraphResponse {
 }
 
 export interface ITotalArea {
+  areaName: string;
   total: number;
   percent: number;
   workerIn: number;

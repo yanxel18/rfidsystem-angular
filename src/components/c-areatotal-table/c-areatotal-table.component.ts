@@ -38,6 +38,7 @@ export class CAreatotalTableComponent implements OnChanges {
   getTableRow(element: IPerArea): void {
     const rawData: ITotalArea[] = [];
     const newTotalArea: ITotalArea = {
+      areaName: element.area,
       total: element.workerInTotal,
       percent: element.percent,
       workerIn: element.workerIn,
