@@ -8,7 +8,7 @@
 * Install the latest [Angular CLI](https://angular.io/cli) 
 
 ## Installation and Set-up
-* Step 1: Clone the repository http://172.31.12.207:7080/git/jt0191340/rfidsystem-angular.git or download by zip
+* Step 1: Clone the repository or download by zip
 * Step 2: If downloaded by zip, extract the zip file to the preferred location.
 * Step 3: Open the terminal and locate the cloned repository or extracted folder location.
 * Step 4: Download the project dependencies by using **`npm install`**
