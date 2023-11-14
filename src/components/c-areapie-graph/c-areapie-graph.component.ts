@@ -69,9 +69,9 @@ export class CAreapieGraphComponent implements OnChanges, OnInit, OnDestroy {
             text: this.DataSource[0].areaName ?? '全体',
             textStyle: {
               fontSize: '24px',
-              color: '#5470C6'
+              color: '#5470C6',
             },
-            left: 'center', 
+            left: 'center',
           },
           tooltip: {
             trigger: 'item',
@@ -106,9 +106,11 @@ export class CAreapieGraphComponent implements OnChanges, OnInit, OnDestroy {
       }
     }
   }
+
   ngOnChanges(): void {
     this.initializePieChart();
   }
+
   ngOnDestroy(): void {
     this.subscriptions.forEach((s) => s.unsubscribe());
   }

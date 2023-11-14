@@ -42,21 +42,25 @@ export interface IEmployeeBoardView {
 export interface IEmployeeCountRatio {
   currentPercent?: string | null;
   currentWorkerCount?: number | null;
+  currentWorkerLessAwol?: number | null;
+  currentPercentWithAwol?: string | null;
   totalWorkerCount?: number | null;
 }
 export interface IViewEmployedeBoardRes {
   EmployeeBoardAllSub: IViewEmployeeBoard[];
 }
+
 export interface IEmployeeBoardArgs {
-  search: string | null;
-  areaID: number | null;
-  teamID: number | null;
-  locID: number | null;
-  posID: number | null;
-  divID: number | null;
-  pageoffset: number | null;
-  pagenum: number | null;
-  order: number | null;
+  search?: string | null;
+  areaID?: number | null;
+  teamID?: number | null;
+  locID?: number | null;
+  posID?: number | null;
+  divID?: number | null;
+  kakariID?: number | null;
+  pageoffset?: number | null;
+  pagenum?: number | null;
+  order?: number | null;
 }
 
 export interface IPageValues {
@@ -90,6 +94,10 @@ export interface IDivisionList {
   divID: number;
   divName: string;
 }
+export interface IKakariList {
+  kakariID: number;
+  kakariDesc: string;
+}
 export interface IViewDropList {
   ViewDropList: {
     IAreaList: IAreaList[];
@@ -97,6 +105,7 @@ export interface IViewDropList {
     ITeamList: ITeamList[];
     IPositionList: IPositionList[] | [];
     IDivisionList: IDivisionList[] | [];
+    IKakariList: IKakariList[] | [];
   };
 }
 
@@ -166,4 +175,5 @@ export interface IDefaultStoreValue {
   getViewBoard: string | null;
   getDivision: string | null;
   getSort: string | null;
+  getKakari: string | null;
 }

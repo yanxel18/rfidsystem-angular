@@ -24,21 +24,23 @@ export class CScrolltopComponent {
       behavior: 'smooth',
     });
   }
+
   onWindowScroll(): void {
     if (
-      window.pageYOffset ||
+      window.scrollY ||
       document.documentElement.scrollTop ||
       document.body.scrollTop > 100
     ) {
       this.windowScrolled = true;
     } else if (
-      (this.windowScrolled && window.pageYOffset) ||
+      (this.windowScrolled && window.scrollY) ||
       document.documentElement.scrollTop ||
       document.body.scrollTop < 10
     ) {
       this.windowScrolled = false;
     }
   }
+
   scrollToTop(): void {
     (function smoothscroll() {
       const currentScroll =

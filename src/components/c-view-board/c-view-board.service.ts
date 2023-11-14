@@ -33,19 +33,24 @@ export class CViewBoardService implements OnDestroy {
   constructor(private apollo: Apollo, private msgHandler: MsgServiceService) {}
   employeeRealtimeView$!: Observable<IViewEmployeeBoard[]>;
 
-  getFilteredCount(param: IEmployeeBoardArgs): Observable<ApolloQueryResult<IFilteredCountRes>> {
-    return this.apollo.watchQuery<IFilteredCountRes>({
-      query: GET_CURRENT_EMPCOUNT,
-      variables: {
-        search: param.search,
-        areaID: param.areaID,
-        teamID: param.teamID,
-        locID: param.locID,
-        posID: param.posID,
-        divID: param.divID,
-        order: param.order,
-      },
-    }).valueChanges.pipe(shareReplay(1));
+  getFilteredCount(
+    param: IEmployeeBoardArgs
+  ): Observable<ApolloQueryResult<IFilteredCountRes>> {
+    return this.apollo
+      .watchQuery<IFilteredCountRes>({
+        query: GET_CURRENT_EMPCOUNT,
+        variables: {
+          search: param.search,
+          areaID: param.areaID,
+          teamID: param.teamID,
+          locID: param.locID,
+          posID: param.posID,
+          divID: param.divID,
+          order: param.order,
+          kakariID: param.kakariID,
+        },
+      })
+      .valueChanges.pipe(shareReplay(1));
   }
 
   getPerAreaGraph(
@@ -87,6 +92,7 @@ export class CViewBoardService implements OnDestroy {
         posID: param.posID,
         divID: param.divID,
         order: param.order,
+        kakariID: param.kakariID,
         pageoffset: param.pageoffset,
         pagenum: param.pagenum,
       },

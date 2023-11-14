@@ -41,7 +41,9 @@
       fxLayoutAlign="center"
     >
       <div class="card-name" fxLayout="row wrap" fxLayoutAlign="center center">
-        {{ empData.displayName }}
+        <span [ngClass]="displayNameCheck()">{{
+          removeCharFromName(empData.displayName)
+        }}</span>
       </div>
       <div class="card-time" fxLayout="row wrap" fxLayoutAlign="center center">
         {{ empData.timeElapse }}
@@ -78,7 +80,7 @@
           mat-flat-button
           class="card-comment-button"
           (click)="openCommentBox()"
-          [matTooltip]="empData.comment ? empData.comment : '備考入力ボタン'"
+          [matTooltip]="empData.comment ?? '備考入力ボタン'"
         >
           <mat-icon *ngIf="!empData.comment">insert_comment</mat-icon
           >{{ empData.comment ? shortComment(empData.comment) : "" }}

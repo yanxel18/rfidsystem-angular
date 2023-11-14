@@ -7,7 +7,7 @@ const routes: Routes = [
   { path: 'boardview', component: CViewBoardComponent },
   { path: 'main', component: CMainDashboardComponent },
   { path: '', redirectTo: 'main', pathMatch: 'full' },
-  { path: '**', component: CNotFoundComponent}
+  { path: '**', component: CNotFoundComponent },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })],

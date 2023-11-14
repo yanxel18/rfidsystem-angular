@@ -7,6 +7,7 @@ export const GET_VIEWBOARD_SUBSCRIBE = gql`
     $locID: Int
     $posID: Int
     $divID: Int
+    $kakariID: Int
     $pageoffset: Int
     $pagenum: Int
     $search: String
@@ -18,6 +19,7 @@ export const GET_VIEWBOARD_SUBSCRIBE = gql`
       locID: $locID
       posID: $posID
       divID: $divID
+      kakariID: $kakariID
       pageoffset: $pageoffset
       pagenum: $pagenum
       search: $search
@@ -40,6 +42,8 @@ export const GET_VIEWBOARD_SUBSCRIBE = gql`
         buildloc
         processName
         teamID
+        kakariID
+        kakariDesc
       }
       AreaRatio {
         currentPercent
@@ -58,6 +62,7 @@ export const GET_VIEWBOARD_TEMPLATE = gql`
     $pageoffset: Int
     $pagenum: Int
     $divID: Int
+    $kakariID: Int
     $search: String
     $order: Int
   ) {
@@ -67,6 +72,7 @@ export const GET_VIEWBOARD_TEMPLATE = gql`
       locID: $locID
       posID: $posID
       divID: $divID
+      kakariID: $kakariID
       pageoffset: $pageoffset
       pagenum: $pagenum
       search: $search
@@ -89,6 +95,8 @@ export const GET_VIEWBOARD_TEMPLATE = gql`
         buildloc
         processName
         teamID
+        kakariID
+        kakariDesc
       }
       AreaRatio {
         currentPercent
@@ -142,6 +150,10 @@ export const GET_VIEWDROPLIST = gql`
       IDivisionList {
         divID
         divName
+      }
+      IKakariList {
+        kakariID
+        kakariDesc
       }
     }
   }

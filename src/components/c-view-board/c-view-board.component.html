@@ -1,3 +1,11 @@
+<div class="mat-elevation-z0 employee-ratio-container">
+  <app-c-view-board-statistics
+    [InputIsSearching]="searchStart"
+    [InputEmployeeCountRatio]="viewboardStatusRatio"
+    [InputSelectedTextArea]="selectedAreaText"
+  ></app-c-view-board-statistics>
+</div>
+
 <div
   class="view-boardnavi-container"
   fxLayoutAlign="center"
@@ -27,10 +35,7 @@
       >
         <mat-icon>close</mat-icon>
       </button>
-      <mat-form-field 
-        class="search-control"
-        subscriptSizing="dynamic"
-      >
+      <mat-form-field class="search-control" subscriptSizing="dynamic">
         <input
           matInput
           placeholder="名: 太陽　太郎"
@@ -56,172 +61,16 @@
     <button class="search-button" mat-flat-button (click)="openSearch()">
       <mat-icon>search</mat-icon>
       検索
-    </button>
-    <button class="search-button" mat-flat-button [matMenuTriggerFor]="sort">
-      <mat-icon>sort</mat-icon>
-      並べ替え
-    </button>
-    <mat-menu #sort="matMenu" xPosition="before" class="sortmenu-display">
-      <button mat-menu-item (click)="sortCard(1)">
-        <mat-icon>arrow_drop_up</mat-icon>
-        <span>昇順</span>
-      </button>
-      <button mat-menu-item (click)="sortCard(2)">
-        <mat-icon>arrow_drop_down</mat-icon>
-        <span>降順</span>
-      </button>
-      <button mat-menu-item (click)="sortCard(0)">
-        <mat-icon>list_alt</mat-icon>
-        <span>デフォルト</span>
-      </button>
-    </mat-menu>
-    <button
-      mat-flat-button
-      class="filter-button"
-      [matMenuTriggerFor]="filterMenu"
-      #filterMenuTrigger="matMenuTrigger"
-    >
-      フィルター<mat-icon>keyboard_arrow_down</mat-icon>
-    </button>
-    <mat-menu
-      #filterMenu="matMenu"
-      xPosition="before"
-      class="filtermenu-display"
-      openMenu="true"
-    >
-      <div
-        (click)="$event.stopPropagation()"
-        (keydown)="$event.stopPropagation()"
-        class="filter-menu-container"
-        fxLayout="row wrap"
-        fxLayoutAlign="center"
-      >
-        <mat-form-field class="drop-down-filter" subscriptSizing="dynamic">
-          <mat-label>所属エリア名</mat-label>
-          <mat-select
-            panelClass="area-select"
-            [(value)]="selectedArea"
-            (selectionChange)="reInitializeBoardFromList(true, $event)"
-            name="area"
-          >
-            <mat-option [value]="null">ー</mat-option>
-            <mat-option
-              *ngFor="let list of areaList$ | async"
-              [value]="list.areaID"
-            >
-              {{ list.areaDesc }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+    </button> 
 
-        <mat-form-field class="drop-down-filter" subscriptSizing="dynamic">
-          <mat-label>号棟</mat-label>
-          <mat-select
-            panelClass="bldg-select"
-            [(value)]="selectedLocation"
-            (selectionChange)="reInitializeBoardFromList(false, $event)"
-            name="loc"
-          >
-            <mat-option [value]="null">ー</mat-option>
-            <mat-option
-              *ngFor="let list of locationList$ | async"
-              [value]="list.locID"
-            >
-              {{ list.buildloc }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field class="drop-down-filter" subscriptSizing="dynamic">
-          <mat-label>班</mat-label>
-          <mat-select
-            panelClass="team-select"
-            [(value)]="selectedTeam"
-            (selectionChange)="reInitializeBoardFromList(false, $event)"
-            name="team"
-          >
-            <mat-option [value]="null">ー</mat-option>
-            <mat-option
-              *ngFor="let list of teamList$ | async"
-              [value]="list.teamID"
-            >
-              {{ list.teamName }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field class="drop-down-filter" subscriptSizing="dynamic">
-          <mat-label>役職</mat-label>
-          <mat-select
-            panelClass="position-select"
-            [(value)]="selectedPosition"
-            (selectionChange)="reInitializeBoardFromList(false, $event)"
-            name="pos"
-          >
-            <mat-option [value]="null">ー</mat-option>
-            <mat-option
-              *ngFor="let list of positionList$ | async"
-              [value]="list.posID"
-            >
-              {{ list.posName }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field class="drop-down-filter" subscriptSizing="dynamic">
-          <mat-label>区分G</mat-label>
-          <mat-select
-            panelClass="position-select"
-            [(value)]="selectedDivision"
-            (selectionChange)="reInitializeBoardFromList(false, $event)"
-            name="pos"
-          >
-            <mat-option [value]="null">ー</mat-option>
-            <mat-option
-              *ngFor="let list of divisionList$ | async"
-              [value]="list.divID"
-            >
-              {{ list.divName }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <mat-divider></mat-divider>
-      <div class="filter-menu-closebutton-container" fxLayoutAlign="center">
-        <button color="primary" class="filter-menu-closebutton" mat-flat-button>
-          閉じる
-        </button>
-      </div>
-    </mat-menu>
-    <button mat-flat-button class="clear-button" (click)="selectOptionClear()">
-      <mat-icon>autorenew</mat-icon>
-      リセット
+    <button class="filter-button" mat-flat-button (click)="sidenav.toggle()">
+      <mat-icon>tune</mat-icon>
+      フィルター
     </button>
   </div>
 </div>
-<div
-  class="mat-elevation-z0 employee-ratio-container"
-  fxLayoutAlign="center"
-  fxLayout="row wrap"
->
-  <div>
-    <span class="area-display" *ngIf="!searchStart"
-      >所属エリア: <b>{{ selectedAreaText }}</b></span
-    >
-    <span class="area-percent-display"
-      >在室率: <b>{{ viewboardStatusRatio?.currentPercent }}</b></span
-    >
-    <span class="area-currentin-display"
-      >在室人数:
-      <b
-        >{{ viewboardStatusRatio?.currentWorkerCount }}/{{
-          viewboardStatusRatio?.totalWorkerCount
-        }}</b
-      ></span
-    >
-  </div>
-</div>
-<div class="board-view-main-container i" [ngClass]="lineGraphStyle()">
+
+<div class="board-view-main-container" [ngClass]="lineGraphStyle()">
   <div class="mat-elevation-z0 main-bulletin-container" fxLayout="column">
     <div class="card-area-view" fxLayout="row wrap" fxLayoutAlign="center">
       <div
@@ -261,8 +110,8 @@
 </div>
 
 <mat-expansion-panel
-  (opened)="openGraph = true;lineGraphState()"
-  (closed)="openGraph = false;lineGraphState()"
+  (opened)="openGraph = true; lineGraphState()"
+  (closed)="openGraph = false; lineGraphState()"
   class="mat-elevation-z5 graph-expansion-container"
   [expanded]="openGraph"
 >
@@ -289,3 +138,154 @@
     [rawData]="perAreaGraphData$ | async"
   ></app-c-perarea-graph>
 </mat-expansion-panel>
+
+<mat-sidenav
+  class="sidebar-container"
+  #sidenav
+  mode="side"
+  hasBackdrop="true"
+  position="end"
+  fixedInViewport="false"
+>
+  　
+  <div class="sidebar-title" fxLayoutAlign="left">
+    <mat-icon>tune</mat-icon>
+    <h2>フィルター</h2>
+  </div>
+  <div class="sidebar-filtercondition" fxLayoutAlign="left">フィルター条件</div>
+  <div class="filter-menu-container" fxLayout="row wrap" fxLayoutAlign="center">
+    <mat-form-field class="drop-down-filter" subscriptSizing="dynamic">
+      <mat-label>所属エリア名</mat-label>
+      <mat-select
+        panelClass="area-select"
+        [(value)]="filterValues.areaID"
+        (selectionChange)="reInitializeBoardFromList(true, $event)"
+        name="area"
+      >
+        <mat-option [value]="null">ー</mat-option>
+        <mat-option
+          *ngFor="let list of areaList$ | async"
+          [value]="list.areaID"
+        >
+          {{ list.areaDesc }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="drop-down-filter" subscriptSizing="dynamic">
+      <mat-label>号棟</mat-label>
+      <mat-select
+        panelClass="bldg-select"
+        [(value)]="filterValues.locID"
+        (selectionChange)="reInitializeBoardFromList(false, $event)"
+        name="loc"
+      >
+        <mat-option [value]="null">ー</mat-option>
+        <mat-option
+          *ngFor="let list of locationList$ | async"
+          [value]="list.locID"
+        >
+          {{ list.buildloc }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="drop-down-filter" subscriptSizing="dynamic">
+      <mat-label>班</mat-label>
+      <mat-select
+        panelClass="team-select"
+        [(value)]="filterValues.teamID"
+        (selectionChange)="reInitializeBoardFromList(false, $event)"
+        name="team"
+      >
+        <mat-option [value]="null">ー</mat-option>
+        <mat-option
+          *ngFor="let list of teamList$ | async"
+          [value]="list.teamID"
+        >
+          {{ list.teamName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="drop-down-filter" subscriptSizing="dynamic">
+      <mat-label>役職</mat-label>
+      <mat-select
+        panelClass="position-select"
+        [(value)]="filterValues.posID"
+        (selectionChange)="reInitializeBoardFromList(false, $event)"
+        name="pos"
+      >
+        <mat-option [value]="null">ー</mat-option>
+        <mat-option
+          *ngFor="let list of positionList$ | async"
+          [value]="list.posID"
+        >
+          {{ list.posName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="drop-down-filter" subscriptSizing="dynamic">
+      <mat-label>区分G</mat-label>
+      <mat-select
+        panelClass="position-select"
+        [(value)]="filterValues.divID"
+        (selectionChange)="reInitializeBoardFromList(false, $event)"
+        name="pos"
+      >
+        <mat-option [value]="null">ー</mat-option>
+        <mat-option
+          *ngFor="let list of divisionList$ | async"
+          [value]="list.divID"
+        >
+          {{ list.divName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="drop-down-filter" subscriptSizing="dynamic">
+      <mat-label>係</mat-label>
+      <mat-select
+        panelClass="position-select"
+        [(value)]="filterValues.kakariID"
+        (selectionChange)="reInitializeBoardFromList(false, $event)"
+        name="pos"
+      >
+        <mat-option [value]="null">ー</mat-option>
+        <mat-option
+          *ngFor="let list of kakariList$ | async"
+          [value]="list.kakariID"
+        >
+          {{ list.kakariDesc }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="sidebar-filtercondition" fxLayoutAlign="left">並び替え</div>
+  <div class="filter-menu-container" fxLayout="row wrap" fxLayoutAlign="center">
+    <mat-radio-group aria-label="Select an option" [ngModel]="this.localValue.getSort" (change)="sortCard($event)">
+      <mat-radio-button value="1">昇順</mat-radio-button>
+      <mat-radio-button value="2">降順</mat-radio-button>
+      <mat-radio-button value="0">デフォルト</mat-radio-button>
+    </mat-radio-group>
+  </div>
+  <div
+    class="filter-menu-closebutton-container"
+    fxLayoutAlign="center"
+    fxLayoutGap="10"
+  >
+    <button
+      color="primary"
+      class="filter-menu-closebutton"
+      (click)="sidenav.toggle()"
+      mat-flat-button
+    >
+      <mat-icon> close</mat-icon> 閉じる
+    </button>
+    <button mat-flat-button class="reset-button" (click)="selectOptionClear()">
+      <mat-icon>autorenew</mat-icon>
+      リセット
+    </button>
+  </div>
+</mat-sidenav>

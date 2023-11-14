@@ -15,6 +15,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 export class CDialogCommentComponent implements OnDestroy {
   Subscriptions: Subscription[] = [];
   commentFormGroup!: FormGroup;
+
   constructor(
     public dialogRef: MatDialogRef<CDialogCommentComponent>,
     private cDialogCommentService: CDialogCommentService,
@@ -46,6 +47,7 @@ export class CDialogCommentComponent implements OnDestroy {
       );
     }
   }
+
   closeDialog(): void {
     this.dialogRef.close();
   }

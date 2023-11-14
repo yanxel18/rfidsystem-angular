@@ -1,28 +1,38 @@
-# アイルスシステム
+[![Build Status](http://172.31.12.206:8080/buildStatus/icon?job=rfid-angular-pipeline)](http://172.31.12.206:8080/job/rfid-angular-pipeline/)
+[![Quality Gate Status](http://172.21.75.22:9000/api/project_badges/measure?project=rfid-angular-system&metric=alert_status&token=sqb_c79d15d49cfd7d55439c69fc761e91521e62e94a)](http://172.21.75.22:9000/dashboard?id=rfid-angular-system)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+[![Security Rating](http://172.21.75.22:9000/api/project_badges/measure?project=rfid-angular-system&metric=security_rating&token=sqb_c79d15d49cfd7d55439c69fc761e91521e62e94a)](http://172.21.75.22:9000/dashboard?id=rfid-angular-system)
+[![Maintainability Rating](http://172.21.75.22:9000/api/project_badges/measure?project=rfid-angular-system&metric=sqale_rating&token=sqb_c79d15d49cfd7d55439c69fc761e91521e62e94a)](http://172.21.75.22:9000/dashboard?id=rfid-angular-system)
+[![Reliability Rating](http://172.21.75.22:9000/api/project_badges/measure?project=rfid-angular-system&metric=reliability_rating&token=sqb_c79d15d49cfd7d55439c69fc761e91521e62e94a)](http://172.21.75.22:9000/dashboard?id=rfid-angular-system)
+[![Vulnerabilities](http://172.21.75.22:9000/api/project_badges/measure?project=rfid-angular-system&metric=vulnerabilities&token=sqb_c79d15d49cfd7d55439c69fc761e91521e62e94a)](http://172.21.75.22:9000/dashboard?id=rfid-angular-system)
+[![Bugs](http://172.21.75.22:9000/api/project_badges/measure?project=rfid-angular-system&metric=bugs&token=sqb_c79d15d49cfd7d55439c69fc761e91521e62e94a)](http://172.21.75.22:9000/dashboard?id=rfid-angular-system)
+## アイルスシステム
+
+![alt text](screenshot/rfid.png)
+
 作業者の位置確認。
 緊急事態時に共通プラットフォームを活用する事での安否確認高度化(所在の把握) 
-#　Author
+## システム所有者
 ブライアンフェルナンデズ
-## Requirements
-* Download the latest version of [NodeJS](https://nodejs.org/en/download/)
-* Install the latest [Angular CLI](https://angular.io/cli) 
+### ソフトウェア要件
+* 最新のNodeJSをダウンロードする。[NodeJS](https://nodejs.org/en/download/)
+* 最新のAngularCLIをインストールする。[Angular CLI](https://angular.io/cli) 
 
-## Installation and Set-up
-* Step 1: Clone the repository or download by zip
-* Step 2: If downloaded by zip, extract the zip file to the preferred location.
-* Step 3: Open the terminal and locate the cloned repository or extracted folder location.
-* Step 4: Download the project dependencies by using **`npm install`**
-* Step 5: Run **`npm start`** on the terminal and browse the the url **http://localhost:4200/**
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.1.1.
+### インストールと構成方法
+* ステップ 1: ソースコードリポジトリをダウンロードする。 http://172.31.12.207:7080/git/jt0191340/rfidsystem-angular.git
+* ステップ  2: ZIPファイルでダウンロードする場合は好きなファイルフォルダに抽出する。
+* ステップ  3: 解凍するフォルダにCMDターミナルを設定する.
+* ステップ  4: システムの依存関係ダウンロードするには**`npm install`**コマンドを実行する。
+* ステップ  5: CMDターミナルで**`npm start`**コマンドを実行し、ブラウザで**http://localhost:4200/**を閲覧する。
+プロジェクトは[Angular CLI](https://github.com/angular/angular-cli) version 15.1.1で生成される。
 
-## Technologies Used
+### 使用技術
 * Angular CLI Version 15.1.1
 * Material UI
 * SASS
 * Typescript/Rxjs
 * GraphQL
 
-## Build
-
-Run `npm run build` to build the project. The build artifacts will be stored in the `dist/` directory.
-## Development server
+### ビルド
+* システムビルドをするようにCMDターミナルで`npm run build`コマンドを実行する。
+* ビルドしたファイルは`dist/`フォルダにある。

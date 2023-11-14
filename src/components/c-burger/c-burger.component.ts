@@ -12,7 +12,7 @@ export class CBurgerComponent implements OnInit {
   public active = false;
 
   ngOnInit() {
-    this.active = this.init || false;
+    this.active = this.init ?? false;
   }
 
   public onBurgerClicked() {

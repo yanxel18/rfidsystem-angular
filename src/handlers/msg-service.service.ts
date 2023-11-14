@@ -14,6 +14,7 @@ export class MsgServiceService {
       showConfirmButton: false,
       timer: 2000,
     });
+
     Toast.fire({
       icon: 'success',
       showClass: {

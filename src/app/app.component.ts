@@ -15,7 +15,6 @@ export class AppComponent {
   apptitle = '位置確認リアルタイムシステム';
   @ViewChild(CBurgerComponent) BurgerComponent!: CBurgerComponent;
   private _mobileQueryListener: () => void;
-
   constructor(
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,
@@ -24,7 +23,7 @@ export class AppComponent {
   ) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-    this.mobileQuery.addListener(this._mobileQueryListener);
+    this.mobileQuery.addEventListener('change', this._mobileQueryListener);
     this.title.setTitle(this.appService.appTitle);
   }
   /**

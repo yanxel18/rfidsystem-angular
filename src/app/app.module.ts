@@ -32,6 +32,10 @@ import { CAreatotalTableComponent } from '../components/c-areatotal-table/c-area
 import { CAreapieGraphComponent } from '../components/c-areapie-graph/c-areapie-graph.component';
 import { NgxTrimDirectiveModule } from 'ngx-trim-directive';
 import { CNotFoundComponent } from 'src/components/c-404/c-notfound';
+import { RouteReuseStrategy } from '@angular/router';
+import { AppRouteReuseStrategy } from './app-routestrategy';
+import { CViewBoardStatisticsComponent } from '../components/c-view-board-statistics/c-view-board-statistics.component';
+
 /**
  * This message is triggered when callback  from websocket event is received
  */
@@ -96,7 +100,7 @@ const successMsgOnRecon = (message: string) => {
   });
 };
 /**
- * 
+ *
  * @param link  received httplink from graphql config
  * @returns  apollolink configuration
  */
@@ -112,21 +116,21 @@ const newHttpLink = (link: HttpLink): ApolloLink => {
   const httpLink = link.create({
     uri,
   });
-/**
- * Setting up middleware interceptor by getting the token from the storage
- */
+  /**
+   * Setting up middleware interceptor by getting the token from the storage
+   */
   const middleware = new ApolloLink((operation, forward) => {
     operation.setContext({
       headers: new HttpHeaders().set(
         'Authorization',
-        `Bearer ${localStorage.getItem('AuthNoket') || null}`
+        `Bearer ${localStorage.getItem('AuthNoket') ?? null}`
       ),
     });
     return forward(operation);
   });
   const Mainlink = middleware.concat(httpLink);
   const errorlink = (): ApolloLink => {
-    return onError(({ graphQLErrors, operation, forward }) => { 
+    return onError(({ graphQLErrors, operation, forward }) => {
       if (graphQLErrors)
         graphQLErrors.map(({ message }) => {
           errorMSG(message);
@@ -177,7 +181,8 @@ registerLocaleData(localeJa);
     CMainDashboardComponent,
     CAreatotalTableComponent,
     CAreapieGraphComponent,
-    CNotFoundComponent
+    CNotFoundComponent,
+    CViewBoardStatisticsComponent,
   ],
   imports: [
     MaterialModules,
@@ -232,6 +237,7 @@ registerLocaleData(localeJa);
     },
     { provide: LOCALE_ID, useValue: 'ja-JP' },
     { provide: APP_BASE_HREF, useValue: '/rfid/' },
+    { provide: RouteReuseStrategy, useClass: AppRouteReuseStrategy },
   ],
   bootstrap: [AppComponent],
 })

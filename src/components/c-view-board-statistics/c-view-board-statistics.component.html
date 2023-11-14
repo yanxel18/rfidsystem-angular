@@ -1,0 +1,98 @@
+<div
+  class="stat-card-container"
+  fxLayoutAlign="center center"
+  fxLayout="row wrap"
+>
+  <div class="stat-card">
+    <div class="stat-card-title">所属エリア</div>
+    <div
+      class="stat-card-progress-container"
+      fxLayoutAlign="center"
+      fxLayout="row wrap"
+    >
+      <div
+        class="stat-card-text-container stat-card-largetext"
+        fxLayoutAlign="center center"
+        fxLayout="row wrap"
+      >
+        {{  !InputIsSearching ? InputSelectedTextArea : "ー" }}
+      </div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-card-title">出勤率</div>
+    <div
+      class="stat-card-progress-container"
+      fxLayoutAlign="center"
+      fxLayout="row wrap"
+    >
+      <div
+        class="stat-card-progress-value"
+        [ngClass]="percentLoadColor(workInPercent())"
+        fxLayoutAlign="center center"
+        fxLayout="row wrap"
+      >
+        <mat-progress-spinner
+          diameter="30"
+          mode="determinate"
+          class="current-progress"
+          strokeWidth="6"
+          [value]="workInPercent()"
+        ></mat-progress-spinner>
+        <mat-progress-spinner
+          diameter="30"
+          class="full-progress"
+          mode="determinate"
+          strokeWidth="6"
+          value="100"
+        ></mat-progress-spinner>
+      </div>
+      <div
+        class="stat-card-text-container stat-card-largetext"
+        fxLayoutAlign="center center"
+        fxLayout="row wrap"
+      >
+        {{ InputEmployeeCountRatio?.currentPercent ?? "0%" }}
+      </div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-card-title">出勤人数</div>
+    <div
+      class="stat-card-progress-container"
+      fxLayoutAlign="center"
+      fxLayout="row wrap"
+      [ngClass]="percentLoadColor(workInPercent())"
+    >
+      <div
+        class="stat-card-progress-value"
+        fxLayoutAlign="center center"
+        fxLayout="row wrap"
+      >
+        <mat-progress-spinner
+          diameter="30"
+          mode="determinate"
+          class="current-progress"
+          strokeWidth="6"
+          [value]="workInPercent()"
+        ></mat-progress-spinner>
+        <mat-progress-spinner
+          diameter="30"
+          class="full-progress"
+          mode="determinate"
+          strokeWidth="6"
+          value="100"
+        ></mat-progress-spinner>
+      </div>
+      <div
+        class="stat-card-text-container stat-card-largetext"
+        fxLayoutAlign="center center"
+        fxLayout="row wrap"
+      >
+        {{ InputEmployeeCountRatio?.currentWorkerCount ?? 0 }}/{{
+          InputEmployeeCountRatio?.totalWorkerCount ?? 0
+        }}
+      </div>
+    </div>
+  </div>
+</div>
