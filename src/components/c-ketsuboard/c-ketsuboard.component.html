@@ -1,0 +1,28 @@
+<mat-card class="dashboard-container">
+  <mat-card class="tab-container">
+    <mat-tab-group animationDuration="0ms">
+      <mat-tab label="対応表">
+        <div class="table-tab-container">
+          <app-c-ketsuboard-current
+            [DataSource]="currentAbsent$ | async"
+            [InputPageView]="argValues.pageoffset"
+            [InputPageNum]="argValues.pagenum"
+            (OutPageSelect)="getPageNum($event)"
+            [InputCurrentData]="true"
+            (OutRefreshData)="initializeTables(true)"
+          ></app-c-ketsuboard-current>
+        </div>
+      </mat-tab>
+      <mat-tab label="対応履歴">
+        <div class="table-tab-container">
+          <app-c-ketsuboard-current
+            [DataSource]="previousAbsent$ | async"
+            [InputPageView]="prevArgValues.pageoffset"
+            [InputPageNum]="prevArgValues.pagenum"
+            (OutPageSelect)="getPageNumPrev($event)"
+            [InputCurrentData]="false"
+          ></app-c-ketsuboard-current></div
+      ></mat-tab>
+    </mat-tab-group>
+  </mat-card>
+</mat-card>

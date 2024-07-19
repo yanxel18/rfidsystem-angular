@@ -28,7 +28,7 @@
     >
       <div
         class="stat-card-progress-value"
-        [ngClass]="percentLoadColor(workInPercent())"
+        [ngClass]="loadColor"
         fxLayoutAlign="center center"
         fxLayout="row wrap"
       >
@@ -37,7 +37,7 @@
           mode="determinate"
           class="current-progress"
           strokeWidth="6"
-          [value]="workInPercent()"
+          [value]="workerPercentage"
         ></mat-progress-spinner>
         <mat-progress-spinner
           diameter="30"
@@ -52,7 +52,7 @@
         fxLayoutAlign="center center"
         fxLayout="row wrap"
       >
-        {{ InputEmployeeCountRatio?.currentPercent ?? "0%" }}
+        {{ InputEmployeeCountRatio?.currentPercent ?? "ー" }}
       </div>
     </div>
   </div>
@@ -62,7 +62,7 @@
       class="stat-card-progress-container"
       fxLayoutAlign="center"
       fxLayout="row wrap"
-      [ngClass]="percentLoadColor(workInPercent())"
+      [ngClass]="loadColor"
     >
       <div
         class="stat-card-progress-value"
@@ -74,7 +74,7 @@
           mode="determinate"
           class="current-progress"
           strokeWidth="6"
-          [value]="workInPercent()"
+          [value]="workerPercentage"
         ></mat-progress-spinner>
         <mat-progress-spinner
           diameter="30"
@@ -89,8 +89,8 @@
         fxLayoutAlign="center center"
         fxLayout="row wrap"
       >
-        {{ InputEmployeeCountRatio?.currentWorkerCount ?? 0 }}/{{
-          InputEmployeeCountRatio?.totalWorkerCount ?? 0
+        {{ InputEmployeeCountRatio?.currentWorkerCount ?? "ー" }}/{{
+          InputEmployeeCountRatio?.totalWorkerCount ?? "ー"
         }}
       </div>
     </div>

@@ -1,0 +1,104 @@
+<form [formGroup]="absentForm" (ngSubmit)="updateInfo()">
+  <div mat-dialog-content class="dialog-container">
+    <div
+      class="worker-name-container"
+      fxLayout="col wrap"
+      fxLayoutAlign="left center"
+    >
+      名: {{ this.receivedData.displayName }}
+    </div>
+
+    <div class="comment-text-area-container">
+      <div fxLayout="col wrap" fxLayoutAlign="center center">
+        <mat-form-field appearance="outline" class="fieldflex">
+          <mat-label>「第１~第6」確認対応者</mat-label>
+          <mat-select
+            formControlName="approverName"
+            (selectionChange)="selectedApproverNameOnChange()"
+          >
+            <mat-option
+              *ngFor="let option of approverListOptions$ | async"
+              [value]="option"
+            >
+              {{ option }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="absentForm.get('approverName')?.invalid">{{
+            approverNameError()
+          }}</mat-error>
+        </mat-form-field>
+      </div>
+      <ng-container *ngIf="this.absentForm.value.approverName === 'その他'">
+        <div fxLayout="col wrap" fxLayoutAlign="center center">
+          <mat-form-field class="fieldflex">
+            <mat-label>「その他」確認対応者</mat-label>
+            <input
+              type="text"
+              matInput
+              autofocus
+              formControlName="otherApproverName"
+              [matAutocomplete]="auto" 
+              trim="blur"
+            />
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+              <mat-option
+                *ngFor="let option of approverAllListOptions$ | async"
+                [value]="option"
+              >
+                {{ option }}
+              </mat-option>
+            </mat-autocomplete>
+            <mat-error *ngIf="absentForm.get('otherApproverName')?.invalid">{{
+              otherApproverNameError()
+            }}</mat-error>
+          </mat-form-field>
+        </div>
+      </ng-container>
+      <div fxLayout="col wrap" fxLayoutAlign="center center">
+        <mat-form-field appearance="outline" class="fieldflex">
+          <mat-label>内容</mat-label>
+          <mat-select formControlName="reasonID">
+            <mat-option
+              *ngFor="let reason of reasonList$ | async"
+              [value]="reason.reasonID"
+              >{{ reason.reasonDesc }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="absentForm.get('reasonID')?.invalid">{{
+            reasonError()
+          }}</mat-error>
+        </mat-form-field>
+      </div>
+      <div fxLayout="col wrap" fxLayoutAlign="center center">
+        <mat-form-field appearance="outline" class="fieldflex">
+          <mat-label>連絡有無</mat-label>
+          <mat-select formControlName="contactID">
+            <mat-option
+              *ngFor="let contact of contactList$ | async"
+              [value]="contact.contactID"
+              >{{ contact.contactDesc }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="absentForm.get('contactID')?.invalid">{{
+            contactError()
+          }}</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div mat-dialog-actions fxLayout="col wrap" fxLayoutAlign="center center">
+    <button type="submit" mat-flat-button color="primary" class="save-button">
+      <mat-icon>save</mat-icon>
+      更新
+    </button>
+    <button
+      mat-stroked-button
+      (click)="closeDialog()"
+      type="button"
+      class="close-button"
+    >
+      <mat-icon>cancel</mat-icon>
+      閉じる
+    </button>
+  </div>
+</form>

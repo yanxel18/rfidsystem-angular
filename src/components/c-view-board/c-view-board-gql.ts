@@ -2,12 +2,12 @@ import gql from 'graphql-tag';
 
 export const GET_VIEWBOARD_SUBSCRIBE = gql`
   subscription EmployeeBoardAllSub(
-    $areaID: Int
-    $teamID: Int
-    $locID: Int
-    $posID: Int
-    $divID: Int
-    $kakariID: Int
+    $areaID: [Int]!
+    $teamID: [Int]!
+    $locID: [Int]!
+    $posID: [Int]!
+    $divID: [Int]!
+    $kakariID: [Int]!
     $pageoffset: Int
     $pagenum: Int
     $search: String
@@ -55,19 +55,19 @@ export const GET_VIEWBOARD_SUBSCRIBE = gql`
 `;
 export const GET_VIEWBOARD_TEMPLATE = gql`
   query EmployeeBoardAll(
-    $areaId: Int
-    $teamID: Int
-    $locID: Int
-    $posID: Int
+    $areaID: [Int]!
+    $teamID: [Int]!
+    $locID: [Int]!
+    $posID: [Int]!
     $pageoffset: Int
     $pagenum: Int
-    $divID: Int
-    $kakariID: Int
+    $divID: [Int]!
+    $kakariID: [Int]!
     $search: String
     $order: Int
   ) {
     EmployeeBoardAll(
-      areaID: $areaId
+      areaID: $areaID
       teamID: $teamID
       locID: $locID
       posID: $posID
@@ -109,12 +109,13 @@ export const GET_VIEWBOARD_TEMPLATE = gql`
 
 export const GET_CURRENT_EMPCOUNT = gql`
   query Query(
-    $areaID: Int
-    $teamID: Int
-    $locID: Int
-    $posID: Int
+    $areaID: [Int]!
+    $teamID: [Int]!
+    $locID: [Int]!
+    $posID: [Int]!
     $search: String
-    $divID: Int
+    $divID: [Int]!
+    $kakariID: [Int]!
     $order: Int
   ) {
     EmpBoardMaxCountFilter(
@@ -123,6 +124,7 @@ export const GET_CURRENT_EMPCOUNT = gql`
       locID: $locID
       posID: $posID
       divID: $divID
+      kakariID: $kakariID
       search: $search
       order: $order
     )
@@ -155,14 +157,6 @@ export const GET_VIEWDROPLIST = gql`
         kakariID
         kakariDesc
       }
-    }
-  }
-`;
-export const GET_PERAREA_GRAPH = gql`
-  query Query($areaID: Int, $locID: Int, $teamID: Int) {
-    PerAreaGraph(areaID: $areaID, locID: $locID, teamID: $teamID) {
-      x: DateSelect
-      y: WorkerRate
     }
   }
 `;

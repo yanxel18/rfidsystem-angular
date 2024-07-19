@@ -7,7 +7,7 @@ import {
 } from 'src/models/enum';
 import { MatDialog } from '@angular/material/dialog';
 import { CDialogCommentComponent } from '../c-dialog/c-dialog-comment/c-dialog-comment.component';
-import { ICommentDialog } from 'src/models/dialog-model';
+import { IDialog } from 'src/models/dialog-model';
 import { toHalfwidthKana } from 'japanese-string-utils';
 @Component({
   selector: 'app-c-employee-card',
@@ -19,7 +19,7 @@ export class CEmployeeCardComponent {
 
   constructor(private commentDialogBox: MatDialog) {}
 
-  readonly commentDialog: ICommentDialog = {
+  readonly commentDialog: IDialog = {
     minWidth: '320px',
     maxWidth: '825px',
   };

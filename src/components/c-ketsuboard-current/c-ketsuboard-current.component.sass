@@ -1,0 +1,71 @@
+
+.with-pointer
+    cursor: pointer
+.no-pointer
+    cursor: default
+
+.area-table tr:hover
+    background-color: #f0fdff
+    color: red
+.row-color-alt
+    background-color: #f9fafa
+
+.area-table td
+    font-size: 16px !important
+    padding-bottom: 0px !important
+    border: 0px
+    font-weight: 500
+    color: #616161
+    text-align: center
+
+.area-table tr
+    height: 35px
+    padding: 0px
+.area-table th
+    font-weight: 600
+    color: #0073c0
+    font-size: 16px
+    height: 30px
+    text-align: center
+@mixin status-display
+    width: 80px
+    border: 1px solid #cccccc
+    color: #ffffff
+    font-size: 12px
+    border-radius: 20px
+
+.confirm-status
+    background-color: #00ca43
+    @include status-display
+.unconfirm-status
+    background-color: #f57d0e
+    @include status-display
+.confirm-status-noedit
+    font-size: 14px
+    color: #00ca43
+.unconfirm-status-noedit
+    font-size: 14px
+    color: #f57d0e
+.area-table
+    min-width: 2100px
+    white-space: nowrap
+
+@keyframes popIn
+    0%
+        transform: scale(0)
+        opacity: 0
+
+    60%
+        transform: scale(1.4)
+        opacity: 1
+
+    100%
+        transform: scale(1)
+
+.fab-button
+    position: fixed
+    background-color: #006eb8
+    right: 25px
+    bottom: 45px
+    z-index: 1000
+    animation: popIn 0.5s ease-out

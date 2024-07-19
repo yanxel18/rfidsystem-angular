@@ -1,0 +1,14 @@
+node_modules
+downloads
+.vscode
+bat
+test
+*.log
+*.tmp
+*.swp
+.git
+.gitignore
+coverage
+cypress
+screenshot
+.angular

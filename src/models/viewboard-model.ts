@@ -50,24 +50,32 @@ export interface IViewEmployedeBoardRes {
   EmployeeBoardAllSub: IViewEmployeeBoard[];
 }
 
-export interface IEmployeeBoardArgs {
+export interface IEmployeeBoardArgs extends PageFilters {
+  areaID?: number[] | null;
+  teamID?: number[] | null;
+  locID?: number[] | null;
+  posID?: number[] | null;
+  divID?: number[] | null;
   search?: string | null;
-  areaID?: number | null;
-  teamID?: number | null;
-  locID?: number | null;
-  posID?: number | null;
-  divID?: number | null;
-  kakariID?: number | null;
-  pageoffset?: number | null;
-  pagenum?: number | null;
+  kakariID?: number[] | null;
   order?: number | null;
 }
 
+export interface PageFilters {
+  pageoffset: number;
+  pagenum: number;
+}
 export interface IPageValues {
   pageSize: number;
   pageIndex: number;
 }
 
+export interface KetsuPageValues {
+  getCurrentPageCount: string | null;
+  getCurrentPageNum: string | null;
+  getPrevPageCount: string | null;
+  getPrevPageNum: string | null;
+}
 export interface IResponseGetEmpCount {
   EmpCount: number | null;
 }
@@ -113,15 +121,6 @@ export interface IFilteredCountRes {
   EmpBoardMaxCountFilter: number;
 }
 
-export interface IPerAreaGraph {
-  x: string;
-  y: number;
-}
-
-export interface IPerAreaGraphResponse {
-  PerAreaGraph: IPerAreaGraph[];
-}
-
 export interface ITotalArea {
   areaName: string;
   total: number;
@@ -164,16 +163,19 @@ export interface IFormValues {
   datetime: string;
 }
 
+export interface IFilterDefaultTypes {
+  areaID?: number[];
+  locID?: number[];
+  teamID?: number[];
+  posID?: number[];
+  divID?: number[];
+  kakariID?: number[];
+}
 export interface IDefaultStoreValue {
   getPageView: string | null;
   getpagenum: string | null;
-  getArea: string | null;
   getAreaText: string | null;
-  getTeam: string | null;
-  getLoc: string | null;
-  getPos: string | null;
   getViewBoard: string | null;
-  getDivision: string | null;
   getSort: string | null;
-  getKakari: string | null;
+  getDefaultFilter: string | null;
 }

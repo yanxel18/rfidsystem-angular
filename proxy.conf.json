@@ -1,8 +1,8 @@
 {
-    "/graphql" :{
-        "target": "http://localhost:3000/",
-        "secure":false,
-        "ws": true
-    },
-    "logLevel": "debug"
+  "/graphql": {
+    "target": "http://localhost:3000/",
+    "secure": false,
+    "ws": true
+  },
+  "logLevel": "debug"
 }

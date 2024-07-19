@@ -29,7 +29,7 @@ export class CViewBoardNaviComponent implements OnInit, AfterViewInit {
   decimalPipe = new DecimalPipe(navigator.language);
   pageIndex = 0;
   pagenum = 0;
-  pageSizeOptions: number[] = [20, 30, 40, 50, 60, 70, 80, 90, 100];
+  readonly pageSizeOptions: number[] = [20, 30, 40, 50, 60, 70, 80, 90, 100];
 
   hidePageSize = false;
   showPageSizeOptions = true;

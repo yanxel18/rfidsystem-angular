@@ -1,6 +1,6 @@
 <div class="main-container" [class.is-mobile]="mobileQuery.matches">
   <mat-toolbar class="main-toolbar">
-    <button class="app-name" routerLink="/main" mat-button>
+    <button class="app-name" routerLink="/boardview" mat-button>
       <div class="title-subscript-container">アイㇽス</div>
       <div class="title-main-container">IRS(位置確認リアルタイムシステム)</div>
     </button>
@@ -11,21 +11,29 @@
       <button
         routerLink="/main"
         routerLinkActive="toolbar-menu-buttons-activelink"
-        matTooltip="表形式データ"
         class="toolbar-menu-buttons"
         mat-flat-button
       >
-        <mat-icon>dashboard</mat-icon>在室率確認
+        <mat-icon>dashboard</mat-icon>
+        出勤率確認
       </button>
       <button
         routerLink="/boardview"
         routerLinkActive="toolbar-menu-buttons-activelink"
         class="toolbar-menu-buttons"
         mat-flat-button
-        matTooltip="エリア毎"
       >
         <mat-icon>table_chart</mat-icon>
         位置確認
+      </button>
+      <button
+        routerLink="/absent"
+        routerLinkActive="toolbar-menu-buttons-activelink"
+        class="toolbar-menu-buttons"
+        mat-flat-button
+      >
+        <mat-icon>table_chart</mat-icon>
+        対応表
       </button>
     </div>
   </mat-toolbar>
@@ -45,9 +53,31 @@
     </mat-sidenav>
 
     <mat-sidenav-content class="side-nav-content">
-      <router-outlet></router-outlet>
+      <ngx-loading-bar
+        [includeSpinner]="false"
+        color="#0073c0"
+        height="6px"
+        ref="router"
+      ></ngx-loading-bar>
+      <ngx-loading-bar
+        [includeSpinner]="false"
+        color="#0073c0"
+        height="6px"
+        ref="http"
+      ></ngx-loading-bar>
+      <router-outlet>
+        <ng-http-loader
+          opacity="0.7"
+          [extraDuration]="400"
+          class="overlay-swal"
+          [backgroundColor]="'#0073c0'"
+          [backdropBackgroundColor]="'#ffffff'"
+          [spinner]="spinkit.skCubeGrid"
+        ></ng-http-loader>
+      </router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>
+
   <div class="footer" fxLayout="row wrap" fxLayoutAlign="center center">
     Taiyo Yuden Co. Ltd © {{ yearNow }}
   </div>

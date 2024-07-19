@@ -1,0 +1,21 @@
+services:
+  angular:
+    container_name: rfidsystem-frontend
+    build:
+      context: .
+      dockerfile: ./dockerfile 
+    image: rfidsystem-angular-image 
+    restart: always
+    ports:
+      - "4210:4210"
+    env_file: ./env/docker.env
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4210"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - front-tier
+
+networks:
+  front-tier:

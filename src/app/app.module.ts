@@ -1,3 +1,4 @@
+import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
@@ -26,7 +27,6 @@ import Swal from 'sweetalert2';
 import { CDialogCommentComponent } from '../components/c-dialog/c-dialog-comment/c-dialog-comment.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CScrolltopComponent } from '../components/c-scrolltop/c-scrolltop.component';
-import { CPerareaGraphComponent } from '../components/c-perarea-graph/c-perarea-graph.component';
 import { CMainDashboardComponent } from '../components/c-main-dashboard/c-main-dashboard.component';
 import { CAreatotalTableComponent } from '../components/c-areatotal-table/c-areatotal-table.component';
 import { CAreapieGraphComponent } from '../components/c-areapie-graph/c-areapie-graph.component';
@@ -35,7 +35,15 @@ import { CNotFoundComponent } from 'src/components/c-404/c-notfound';
 import { RouteReuseStrategy } from '@angular/router';
 import { AppRouteReuseStrategy } from './app-routestrategy';
 import { CViewBoardStatisticsComponent } from '../components/c-view-board-statistics/c-view-board-statistics.component';
-
+import { CAttendanceBoardComponent } from 'src/components/c-attendance-board/c-attendance-board.component';
+import { CAttendanceStatsComponent } from 'src/components/c-attendance-stats/c-attendance-stats.component';
+import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
+import { CAttendanceTableComponent } from 'src/components/c-attendance-table/c-attendance-table.component';
+import { NgHttpLoaderModule } from 'ng-http-loader';
+import { LoadingBarModule } from '@ngx-loading-bar/core';
+import { CKetsuboardComponent } from 'src/components/c-ketsuboard/c-ketsuboard.component';
+import { CKetsuboardCurrentComponent } from 'src/components/c-ketsuboard-current/c-ketsuboard-current.component';
+import { CSetabsentDialogComponent } from 'src/components/c-ketsuboard-current/c-setabsent-dialog/c-setabsent-dialog.component';
 /**
  * This message is triggered when callback  from websocket event is received
  */
@@ -119,7 +127,7 @@ const newHttpLink = (link: HttpLink): ApolloLink => {
   /**
    * Setting up middleware interceptor by getting the token from the storage
    */
-  const middleware = new ApolloLink((operation, forward) => {
+  const middleware: ApolloLink = new ApolloLink((operation, forward) => {
     operation.setContext({
       headers: new HttpHeaders().set(
         'Authorization',
@@ -128,7 +136,7 @@ const newHttpLink = (link: HttpLink): ApolloLink => {
     });
     return forward(operation);
   });
-  const Mainlink = middleware.concat(httpLink);
+  const Mainlink: ApolloLink = middleware.concat(httpLink);
   const errorlink = (): ApolloLink => {
     return onError(({ graphQLErrors, operation, forward }) => {
       if (graphQLErrors)
@@ -152,7 +160,7 @@ const newHttpLink = (link: HttpLink): ApolloLink => {
       text: msg,
     });
   };
-  const xlink = split(
+  const xlink: ApolloLink = split(
     ({ query }) => {
       const definition = getMainDefinition(query);
       return (
@@ -177,12 +185,17 @@ registerLocaleData(localeJa);
     CViewBoardNaviComponent,
     CDialogCommentComponent,
     CScrolltopComponent,
-    CPerareaGraphComponent,
     CMainDashboardComponent,
     CAreatotalTableComponent,
     CAreapieGraphComponent,
+    CAttendanceBoardComponent,
     CNotFoundComponent,
     CViewBoardStatisticsComponent,
+    CAttendanceStatsComponent,
+    CAttendanceTableComponent,
+    CKetsuboardComponent,
+    CKetsuboardCurrentComponent,
+    CSetabsentDialogComponent,
   ],
   imports: [
     MaterialModules,
@@ -196,6 +209,10 @@ registerLocaleData(localeJa);
     FormsModule,
     ReactiveFormsModule,
     NgxTrimDirectiveModule,
+    LoadingBarHttpClientModule,
+    LoadingBarRouterModule,
+    LoadingBarModule,
+    NgHttpLoaderModule.forRoot(),
   ],
   providers: [
     {
@@ -206,12 +223,7 @@ registerLocaleData(localeJa);
             typePolicies: {
               Query: {
                 fields: {
-                  EmployeeBoardAll: {
-                    merge(_, incoming) {
-                      return incoming;
-                    },
-                  },
-                  PerAreaGraph: {
+                  EmployeeBoardAllSub: {
                     merge(_, incoming) {
                       return incoming;
                     },

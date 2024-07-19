@@ -1,0 +1,107 @@
+<table
+  mat-table
+  [dataSource]="tableDatasource"
+  class="mat-elevation-z0 area-table"
+  aria-describedby="Worker Statistics"
+>
+  <ng-container matColumnDef="divName">
+    <th mat-header-cell *matHeaderCellDef class="tableColumnBorder">
+      グループ
+    </th>
+    <td mat-cell *matCellDef="let e" class="tableColumnBorder">{{ e.divName }}</td>
+  </ng-container>
+  <ng-container matColumnDef="kakariDesc">
+    <th mat-header-cell *matHeaderCellDef class="tableColumnBorder">係</th>
+    <td mat-cell *matCellDef="let e" class="tableColumnBorder">{{ e.kakariDesc }}</td>
+  </ng-container>
+  <ng-container matColumnDef="koutaiInCount">
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+      class="tableColumnBorder tableColumnBorder"
+    >
+      交代出勤人数
+    </th>
+    <td mat-cell *matCellDef="let e" class="shiftingcolumn tableColumnBorder">
+      {{ e.koutaiInCount }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="koutaiTotalCount">
+    <th mat-header-cell *matHeaderCellDef class="tableColumnBorder">
+      交代出勤予定人数
+    </th>
+    <td mat-cell *matCellDef="let e" class="shiftingcolumn tableColumnBorder">
+      {{ e.koutaiTotalCount }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="koutaiPercent">
+    <th mat-header-cell *matHeaderCellDef class="tableColumnBorder">
+      交代出勤率
+    </th>
+    <td mat-cell *matCellDef="let e" class="shiftingcolumn tableColumnBorder">
+      {{ e.koutaiPercent }}%
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="dayShiftInCount">
+    <th mat-header-cell *matHeaderCellDef class="tableColumnBorder">
+      日交出勤人数
+    </th>
+    <td
+      mat-cell
+      *matCellDef="let e"
+      class="normalshiftcolumn tableColumnBorder"
+    >
+      {{ e.dayShiftInCount }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="dayShiftTotalCount">
+    <th mat-header-cell *matHeaderCellDef class="tableColumnBorder">
+      日交出勤予定人数
+    </th>
+    <td
+      mat-cell
+      *matCellDef="let e"
+      class="normalshiftcolumn tableColumnBorder"
+    >
+      {{ e.dayShiftTotalCount }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="dayShiftPercent">
+    <th mat-header-cell *matHeaderCellDef class="tableColumnBorder">
+      日交出勤率
+    </th>
+    <td
+      mat-cell
+      *matCellDef="let e"
+      class="normalshiftcolumn tableColumnBorder"
+    >
+      {{ e.dayShiftPercent }}%
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="normalShiftInCount">
+    <th mat-header-cell *matHeaderCellDef class="tableColumnBorder">
+      日勤出勤人数
+    </th>
+    <td mat-cell *matCellDef="let e" class="dayshiftcolumn tableColumnBorder">
+      {{ e.normalShiftInCount }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="normalShiftTotalCount">
+    <th mat-header-cell *matHeaderCellDef class="tableColumnBorder">
+      日勤出勤予定人数
+    </th>
+    <td mat-cell *matCellDef="let e" class="dayshiftcolumn tableColumnBorder">
+      {{ e.normalShiftTotalCount }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="normalShiftPercent">
+    <th mat-header-cell *matHeaderCellDef class="tableColumnBorder">
+      日勤出勤率
+    </th>
+    <td mat-cell *matCellDef="let e" class="dayshiftcolumn tableColumnBorder">
+      {{ e.normalShiftPercent }}%
+    </td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="listColumns; sticky: true"></tr>
+  <tr mat-row *matRowDef="let row; let even = even; columns: listColumns"></tr>
+</table>

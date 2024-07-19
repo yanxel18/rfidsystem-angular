@@ -4,7 +4,13 @@
     fxLayout="col wrap"
     fxLayoutAlign="left center"
   >
-    名: {{ this.receivedData.displayName }}
+    <div
+      class="worker-name-container"
+      fxLayout="col wrap"
+      fxLayoutAlign="left center"
+    >
+      名: {{ this.receivedData.displayName }}
+    </div>
   </div>
   <div
     class="comment-text-area-container"
@@ -50,8 +56,10 @@
     class="save-button"
   >
     <mat-icon>save</mat-icon>
+    保存
   </button>
   <button mat-stroked-button (click)="closeDialog()" class="close-button">
     <mat-icon>cancel</mat-icon>
+    キャンセル
   </button>
 </div>

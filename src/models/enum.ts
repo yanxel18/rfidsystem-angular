@@ -6,11 +6,6 @@ export enum StatusStyle {
   IS_KETSU = 'is-ketsu',
 }
 
-export enum BoardGraphStyle {
-  IS_OPEN = 'graph-is-open',
-  IS_CLOSE = 'graph-is-close',
-}
-
 export enum DisplayNameStyle {
   IS_NAME_LONG = 'displayname-long',
   IS_NAME_SHORT = 'displayname-short',

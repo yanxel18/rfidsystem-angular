@@ -3,7 +3,7 @@ import { CBurgerComponent } from './../components/c-burger/c-burger.component';
 import { AppService } from './app.service';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
-
+import { Spinkit } from 'ng-http-loader';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -15,6 +15,7 @@ export class AppComponent {
   apptitle = '位置確認リアルタイムシステム';
   @ViewChild(CBurgerComponent) BurgerComponent!: CBurgerComponent;
   private _mobileQueryListener: () => void;
+  public spinkit = Spinkit;
   constructor(
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,

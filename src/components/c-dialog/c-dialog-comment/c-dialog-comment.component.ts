@@ -40,9 +40,8 @@ export class CDialogCommentComponent implements OnDestroy {
         this.cDialogCommentService
           .updateComment(newData)
           .subscribe(({ data }) => {
-            if (data)
-              if (data.UpdateEmployeeComment.status === 'success')
-                this.closeDialog();
+            if (data?.UpdateEmployeeComment.status === 'success')
+              this.closeDialog();
           })
       );
     }

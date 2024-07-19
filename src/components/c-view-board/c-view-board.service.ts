@@ -1,7 +1,6 @@
 import {
   EmployeeBoardWithRatio,
   IFilteredCountRes,
-  IPerAreaGraphResponse,
   IViewDropList,
   IEmployeeBoardView,
 } from './../../models/viewboard-model';
@@ -16,7 +15,6 @@ import { Observable, Subscription, map, shareReplay } from 'rxjs';
 import { MsgServiceService } from 'src/handlers/msg-service.service';
 import {
   GET_CURRENT_EMPCOUNT,
-  GET_PERAREA_GRAPH,
   GET_VIEWBOARD_SUBSCRIBE,
   GET_VIEWBOARD_TEMPLATE,
   GET_VIEWDROPLIST,
@@ -53,22 +51,6 @@ export class CViewBoardService implements OnDestroy {
       .valueChanges.pipe(shareReplay(1));
   }
 
-  getPerAreaGraph(
-    param: IEmployeeBoardArgs
-  ): Observable<ApolloQueryResult<IPerAreaGraphResponse>> {
-    return this.apollo
-      .watchQuery<IPerAreaGraphResponse>({
-        query: GET_PERAREA_GRAPH,
-        variables: {
-          areaID: param.areaID,
-          locID: param.locID,
-          teamID: param.teamID,
-        },
-        pollInterval: 1000 * 60 * 5,
-      })
-      .valueChanges.pipe(shareReplay(1));
-  }
-
   getViewDropList(): Observable<ApolloQueryResult<IViewDropList>> {
     return this.apollo
       .watchQuery<IViewDropList>({
@@ -81,6 +63,14 @@ export class CViewBoardService implements OnDestroy {
   ): Observable<EmployeeBoardWithRatio> {
     this.boardSubscription = this.apollo.watchQuery<EmployeeBoardWithRatio>({
       query: GET_VIEWBOARD_TEMPLATE,
+      variables: {
+        areaID: param.areaID,
+        teamID: param.teamID,
+        locID: param.locID,
+        posID: param.posID,
+        divID: param.divID,
+        kakariID: param.kakariID,
+      },
     });
     this.boardSubscription.subscribeToMore({
       document: GET_VIEWBOARD_SUBSCRIBE,

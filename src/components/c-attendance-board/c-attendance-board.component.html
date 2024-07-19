@@ -1,0 +1,23 @@
+<mat-card class="dashboard-container">
+  <div class="dashboard-toolbar">
+    <app-c-attendance-stats
+      [InputTableTotal]="attendanceTotal$ | async"
+    ></app-c-attendance-stats>
+  </div>
+  <div class="dashboard-content">
+    <mat-card class="table-container">
+        <div class="table-loader" *ngIf="(attendanceTotal$ | async)=== null">
+            <ngx-skeleton-loader
+              count="18"
+              appearance="line"
+              [theme]="skeletonTableStyle"
+              animation="progress"
+            ></ngx-skeleton-loader>
+          </div>
+      <app-c-attendance-table
+      *ngIf="(attendanceTotal$ | async)"
+        [InputTableList]="attendanceList$ | async"
+      ></app-c-attendance-table>
+    </mat-card>
+  </div>
+</mat-card>

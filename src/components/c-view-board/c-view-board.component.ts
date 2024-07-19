@@ -7,7 +7,6 @@ import {
   IKakariList,
   ILocationList,
   IPageValues,
-  IPerAreaGraph,
   IPositionList,
   ISkeletonLoader,
   ITeamList,
@@ -24,13 +23,18 @@ import { Observable, Subscription, map, take } from 'rxjs';
 import { IViewEmployeeBoard } from 'src/models/viewboard-model';
 import { CViewBoardService } from './c-view-board.service';
 import { CViewBoardNaviComponent } from '../c-view-board-navi/c-view-board-navi.component';
-import { MatSelectChange } from '@angular/material/select';
-import { MatOption } from '@angular/material/core';
-import { BoardGraphStyle } from 'src/models/enum';
+import { MatSelect } from '@angular/material/select';
 import { AppService } from 'src/app/app.service';
 import { Title } from '@angular/platform-browser';
 import { toHalfwidthKana } from 'japanese-string-utils';
 import { MatRadioChange } from '@angular/material/radio';
+import { FormControl, FormGroup } from '@angular/forms';
+import {
+  FilterTypes,
+  IFilterTypes,
+  ISelectedItem,
+} from '../c-view-board/c-view-interface';
+
 @Component({
   selector: 'app-c-view-board',
   templateUrl: './c-view-board.component.html',
@@ -40,10 +44,9 @@ import { MatRadioChange } from '@angular/material/radio';
 export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   readonly componentTitle: string = 'リアルタイム監視';
   readonly DEFAULTCOUNT: number = 100;
+  readonly FIRSTPAGE: number = 1;
   empRealTime!: IViewEmployeeBoard[];
   empMaxCount$!: Observable<number>;
-  pagecountview: number = this.DEFAULTCOUNT;
-  pagenum = 1;
   skeletonLoader: Array<number> = [this.DEFAULTCOUNT];
   Subscriptions: Subscription[] = [];
   areaList$!: Observable<IAreaList[]>;
@@ -52,24 +55,22 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   positionList$!: Observable<IPositionList[]>;
   divisionList$!: Observable<IDivisionList[]>;
   kakariList$!: Observable<IKakariList[]>;
-  openGraph = false;
-  perAreaGraphData$!: Observable<IPerAreaGraph[]>;
   selectedAreaText = 'すべて';
   filterValues: IEmployeeBoardArgs = {
     search: null,
-    areaID: null,
-    teamID: null,
-    locID: null,
-    posID: null,
-    divID: null,
-    kakariID: null, 
-    pageoffset: null,
-    pagenum: 1,
+    areaID: [],
+    teamID: [],
+    locID: [],
+    posID: [],
+    divID: [],
+    kakariID: [],
+    pageoffset: this.DEFAULTCOUNT,
+    pagenum: this.FIRSTPAGE,
     order: null,
-  }; 
-  searchValue: string | null = null;
+  };
+
   searchStart = false;
-  viewboardStatusRatio?: IEmployeeCountRatio;
+  viewboardStatusRatio!: IEmployeeCountRatio;
   toggleSearch = false;
 
   readonly loaderStyle: ISkeletonLoader = {
@@ -101,145 +102,147 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   localValue: IDefaultStoreValue = this.getlocalValue();
 
   ngOnInit(): void {
-    this.pagecountview =
-      typeof this.localValue.getPageView === 'string'
-        ? +this.localValue.getPageView
-        : this.pagecountview;
-    this.skeletonLoader = new Array<number>(this.pagecountview);
-    this.pagenum =
-      typeof this.localValue.getpagenum === 'string'
-        ? +this.localValue.getpagenum
-        : this.pagenum;
-
-    this.selectedAreaText =
-      typeof this.localValue.getAreaText === 'string'
-        ? this.localValue.getAreaText
-        : 'すべて';
-    this.filterValues = {
-      areaID:
-        typeof this.localValue.getArea === 'string'
-          ? +this.localValue.getArea
-          : null,
-      teamID:
-        typeof this.localValue.getTeam === 'string'
-          ? +this.localValue.getTeam
-          : null,
-      locID:
-        typeof this.localValue.getLoc === 'string'
-          ? +this.localValue.getLoc
-          : null,
-      posID:
-        typeof this.localValue.getPos === 'string'
-          ? +this.localValue.getPos
-          : null,
-      order:
-        typeof this.localValue.getSort === 'string'
-          ? +this.localValue.getSort
-          : null,
-      divID:
-        typeof this.localValue.getDivision === 'string'
-          ? +this.localValue.getDivision
-          : null,
-      kakariID:
-        typeof this.localValue.getKakari === 'string'
-          ? +this.localValue.getKakari
-          : null,
-      pageoffset: null,
-      search: null,
-      pagenum: null,
-    };
-    this.openGraph = this.localValue.getViewBoard === '1' ? true : false;
+    this.title.setTitle('位置確認');
+    this.initializeFilterValues();
+    this.skeletonLoader = new Array<number>(this.filterValues.pageoffset);
     this.getCurrentFilteredCount();
     this.initializeBoardView();
-    this.initializeGraph();
   }
 
+  filterFormGroup = new FormGroup({
+    areaID: new FormControl<number[]>([]),
+    locID: new FormControl<number[]>([]),
+    teamID: new FormControl<number[]>([]),
+    posID: new FormControl<number[]>([]),
+    divID: new FormControl<number[]>([]),
+    kakariID: new FormControl<number[]>([]),
+  });
+
+  @ViewChild('areaSelect') areaSelect!: MatSelect;
+  @ViewChild('locSelect') locSelect!: MatSelect;
+  @ViewChild('teamSelect') teamSelect!: MatSelect;
+  @ViewChild('posSelect') posSelect!: MatSelect;
+  @ViewChild('divSelect') divSelect!: MatSelect;
+  @ViewChild('kakariSelect') kakariSelect!: MatSelect;
+
+  selectedItem<T, K extends keyof T>(
+    list$: Observable<T[]>,
+    selected: number,
+    key: K
+  ): Observable<T[]> {
+    return list$.pipe(map((data) => data.filter((i) => i[key] === selected)));
+  }
+  clearEachFilter(selectedviewChild: MatSelect): void {
+    selectedviewChild.options.forEach((option) => option.deselect());
+    this.reInitializeBoard();
+  }
+  returnSelectedTextFilter: ISelectedItem = {
+    areaSelected: (selected: number) =>
+      this.selectedItem(this.areaList$, selected, 'areaID'),
+    locSelected: (selected: number) =>
+      this.selectedItem(this.locationList$, selected, 'locID'),
+    teamSelected: (selected: number) =>
+      this.selectedItem(this.teamList$, selected, 'teamID'),
+    posSelected: (selected: number) =>
+      this.selectedItem(this.positionList$, selected, 'posID'),
+    divSelected: (selected: number) =>
+      this.selectedItem(this.divisionList$, selected, 'divID'),
+    kakariSelected: (selected: number) =>
+      this.selectedItem(this.kakariList$, selected, 'kakariID'),
+  };
+
+  clearFilters(): void {
+    this.filterFormGroup.reset({
+      areaID: [],
+      locID: [],
+      teamID: [],
+      posID: [],
+      divID: [],
+      kakariID: [],
+    });
+    this.reInitializeBoard();
+    this.setAreaName();
+  }
+  private initializeFilterValues(): void {
+    const filterdata: string | null = this.localValue.getDefaultFilter;
+    if (typeof filterdata === 'string') {
+      const storedData: IFilterTypes = JSON.parse(filterdata);
+      if (FilterTypes.safeParse(storedData).success)
+        this.filterFormGroup.setValue(storedData);
+      else
+        this.appServ.tempStoreKey(
+          'defaultFilter',
+          JSON.stringify(this.filterFormGroup.value)
+        );
+
+      this.selectedAreaText =
+        typeof this.localValue.getAreaText === 'string'
+          ? this.localValue.getAreaText
+          : 'すべて';
+      this.filterValues = {
+        areaID: storedData.areaID,
+        teamID: storedData.teamID,
+        locID: storedData.locID,
+        posID: storedData.posID,
+        order:
+          typeof this.localValue.getSort === 'string'
+            ? +this.localValue.getSort
+            : null,
+        divID: storedData.divID,
+        kakariID: storedData.kakariID,
+        pageoffset:
+          typeof this.localValue.getPageView === 'string'
+            ? +this.localValue.getPageView
+            : this.DEFAULTCOUNT,
+        search: null,
+        pagenum:
+          typeof this.localValue.getpagenum === 'string'
+            ? +this.localValue.getpagenum
+            : this.FIRSTPAGE,
+      };
+    }
+  }
   private getlocalValue(): IDefaultStoreValue {
     return {
       getPageView: this.appServ.tempGetKey('pagecountview'),
       getpagenum: this.appServ.tempGetKey('pagenum'),
-      getArea: this.appServ.tempGetKey('areaSelected'),
       getAreaText: this.appServ.tempGetKey('selectedAreaText'),
-      getTeam: this.appServ.tempGetKey('teamSelected'),
-      getLoc: this.appServ.tempGetKey('locSelected'),
-      getPos: this.appServ.tempGetKey('posSelected'),
       getViewBoard: this.appServ.tempGetKey('vgrph'),
-      getDivision: this.appServ.tempGetKey('divSelected'),
       getSort: this.appServ.tempGetKey('order'),
-      getKakari: this.appServ.tempGetKey('kakariSelected'),
+      getDefaultFilter: this.appServ.tempGetKey('defaultFilter'),
     };
   }
 
-  reInitializeBoardFromList(
-    allowed: boolean,
-    event: MatSelectChange | null
-  ): void {
-    if (allowed) {
-      const val = (event?.source.selected as MatOption)?.viewValue;
-      this.selectedAreaText = val ?? 'すべて';
-    }
+  reInitializeBoard(): void {
     this.Subscriptions.forEach((s) => s.unsubscribe());
     this.appServ.tempStoreKey(
-      'areaSelected',
-      this.filterValues.areaID ? String(this.filterValues.areaID) : '-'
-    );
-    this.appServ.tempStoreKey(
-      'selectedAreaText',
-      this.selectedAreaText ? String(this.selectedAreaText) : 'すべて'
-    );
-    this.appServ.tempStoreKey(
-      'teamSelected',
-      this.filterValues.teamID ? String(this.filterValues.teamID) : '-'
-    );
-    this.appServ.tempStoreKey(
-      'locSelected',
-      this.filterValues.locID ? String(this.filterValues.locID) : '-'
-    );
-    this.appServ.tempStoreKey(
-      'posSelected',
-      this.filterValues.posID ? String(this.filterValues.posID) : '-'
-    );
-    this.appServ.tempStoreKey(
-      'divSelected',
-      this.filterValues.divID ? String(this.filterValues.divID) : '-'
+      'defaultFilter',
+      JSON.stringify(this.filterFormGroup.value)
     );
     this.appServ.tempStoreKey(
       'order',
       this.filterValues.order ? String(this.filterValues.order) : '0'
     );
-    this.appServ.tempStoreKey(
-      'kakariSelected',
-      this.filterValues.kakariID ? String(this.filterValues.kakariID) : '-'
-    );
-    this.pagenum = 1;
-    this.appServ.tempStoreKey('pagenum', String(this.pagenum));
+
+    this.filterValues.pagenum = 1;
+    this.appServ.tempStoreKey('pagenum', String(this.filterValues.pagenum));
     this.getCurrentFilteredCount();
     this.initializeBoardView();
     this.ViewBoardNaviComponent.rerenderpaginator();
-    this.initializeGraph();
   }
-
   private setTitle(): void {
     this.title.setTitle(`${this.selectedAreaText}/${this.appServ.appTitle}`);
   }
+
   openSearch(): void {
     this.toggleSearch = true;
     this.searchbar.nativeElement.focus();
   }
+
   searchClose(): void {
-    this.searchValue = null;
+    this.filterValues.search = null;
     this.toggleSearch = false;
-    this.reInitializeBoardFromList(false, null);
-  }
-  private initializeGraph(): void {
-    this.perAreaGraphData$ = this.viewboardService
-      .getPerAreaGraph(this.viewBoardParam())
-      .pipe(
-        map(({ data }) => {
-          return data.PerAreaGraph ?? [];
-        })
-      );
-    this.setTitle();
+    this.reInitializeBoard();
   }
 
   private initializeBoardView(): void {
@@ -247,14 +250,16 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
       this.viewboardService
         .getRealtimeBoardView(this.viewBoardParam())
         .subscribe({
-          next: ({ EmployeeBoardAll }) => {
-            if (EmployeeBoardAll.EmployeeBoardAllSub) {
-              if (EmployeeBoardAll.EmployeeBoardAllSub.length > 0) {
-                this.empRealTime = EmployeeBoardAll.EmployeeBoardAllSub;
-              } else this.empRealTime = [];
+          next: (data) => {
+            if (data) {
+              if (data.EmployeeBoardAll.EmployeeBoardAllSub) {
+                if (data.EmployeeBoardAll.EmployeeBoardAllSub.length > 0) {
+                  this.empRealTime = data.EmployeeBoardAll.EmployeeBoardAllSub;
+                } else this.empRealTime = [];
+              }
+              if (data.EmployeeBoardAll.AreaRatio)
+                this.viewboardStatusRatio = data.EmployeeBoardAll.AreaRatio;
             }
-            if (EmployeeBoardAll.AreaRatio)
-              this.viewboardStatusRatio = EmployeeBoardAll.AreaRatio;
           },
           error: () => {
             this.Subscriptions.forEach((s) => s.unsubscribe());
@@ -266,18 +271,32 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   sortCard(sortVal: MatRadioChange): void {
     this.filterValues.order = +sortVal.value;
-    this.reInitializeBoardFromList(false, null);
+    this.reInitializeBoard();
   }
-  selectOptionClear(): void {
-    this.filterValues.locID = null;
-    this.filterValues.areaID = null;
-    this.filterValues.teamID = null;
-    this.filterValues.posID = null;
-    this.filterValues.divID = null;
-    this.filterValues.kakariID = null;
-    this.selectedAreaText = 'すべて';
-    this.reInitializeBoardFromList(false, null);
+
+  setAreaName(): void {
+    const areaField: number[] | null | undefined =
+      this.filterFormGroup.value.areaID;
+    if (Array.isArray(areaField))
+      this.Subscriptions.push(
+        this.returnSelectedTextFilter
+          .areaSelected(areaField?.[0])
+          .subscribe((data) => {
+            const othersTxt: string =
+              areaField.length > 1 ? `(他+${areaField.length - 1})` : '';
+            this.selectedAreaText =
+              areaField.length >= 1
+                ? `${data[0].areaDesc}  ${othersTxt}`
+                : 'すべて';
+            this.appServ.tempStoreKey(
+              'selectedAreaText',
+              this.selectedAreaText
+            );
+            this.setTitle();
+          })
+      );
   }
+
   private reInitializedBoardView(): void {
     this.Subscriptions.push(
       this.viewboardService
@@ -299,68 +318,53 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
       );
   }
 
-  lineGraphState(): void {
-    this.appServ.tempStoreKey('vgrph', this.openGraph ? '1' : '0');
-  }
-
-  lineGraphStyle(): string {
-    return this.openGraph ? BoardGraphStyle.IS_OPEN : BoardGraphStyle.IS_CLOSE;
-  }
-
   private viewDropList(): void {
-    const dropDownlist = this.viewboardService.getViewDropList().pipe(
-      map(({ data }) => {
-        return data.ViewDropList;
-      })
-    );
-    this.areaList$ = dropDownlist.pipe(
-      map((data) => {
-        return data.IAreaList ?? [];
-      })
-    );
-    this.locationList$ = dropDownlist.pipe(
-      map((data) => {
-        return data.ILocationList ?? [];
-      })
-    );
-    this.teamList$ = dropDownlist.pipe(
-      map((data) => {
-        return data.ITeamList ?? [];
-      })
-    );
-    this.positionList$ = dropDownlist.pipe(
-      map((data) => {
-        return data.IPositionList ?? [];
-      })
-    );
+    const dropDownlist = this.viewboardService
+      .getViewDropList()
+      .pipe(map(({ data }) => data.ViewDropList));
 
-    this.divisionList$ = dropDownlist.pipe(
-      map((data) => {
-        return data.IDivisionList ?? [];
-      })
+    this.areaList$ = this.extractListFromDropDown(dropDownlist, 'IAreaList');
+    this.locationList$ = this.extractListFromDropDown(
+      dropDownlist,
+      'ILocationList'
     );
-    this.kakariList$ = dropDownlist.pipe(
-      map((data) => {
-        return data.IKakariList ?? [];
-      })
+    this.teamList$ = this.extractListFromDropDown(dropDownlist, 'ITeamList');
+    this.positionList$ = this.extractListFromDropDown(
+      dropDownlist,
+      'IPositionList'
     );
+    this.divisionList$ = this.extractListFromDropDown(
+      dropDownlist,
+      'IDivisionList'
+    );
+    this.kakariList$ = this.extractListFromDropDown(
+      dropDownlist,
+      'IKakariList'
+    );
+  }
+
+  private extractListFromDropDown<T>(
+    dropDownlist$: Observable<any>,
+    listName: string
+  ): Observable<T[]> {
+    return dropDownlist$.pipe(map((data) => data[listName] ?? []));
   }
 
   private viewBoardParam(): IEmployeeBoardArgs {
     return {
       search:
-        typeof this.searchValue === 'string'
-          ? toHalfwidthKana(this.searchValue)
+        typeof this.filterValues.search === 'string'
+          ? toHalfwidthKana(this.filterValues.search)
           : null,
-      areaID: this.filterValues.areaID,
-      teamID: this.filterValues.teamID,
-      locID: this.filterValues.locID,
+      areaID: this.filterFormGroup.value.areaID ?? [],
+      teamID: this.filterFormGroup.value.teamID ?? [],
+      locID: this.filterFormGroup.value.locID ?? [],
       order: this.filterValues.order,
-      posID: this.filterValues.posID,
-      kakariID: this.filterValues.kakariID,
-      divID: this.filterValues.divID,
-      pageoffset: this.pagecountview,
-      pagenum: this.pagenum,
+      posID: this.filterFormGroup.value.posID ?? [],
+      kakariID: this.filterFormGroup.value.kakariID ?? [],
+      divID: this.filterFormGroup.value.divID ?? [],
+      pageoffset: this.filterValues.pageoffset,
+      pagenum: this.filterValues.pagenum,
     };
   }
 
@@ -370,9 +374,9 @@ export class CViewBoardComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getPageNum(data: IPageValues): void {
     this.empRealTime = [];
-    this.pagecountview = data.pageSize;
-    this.pagenum = data.pageIndex;
-    this.skeletonLoader = new Array<number>(this.pagecountview);
+    this.filterValues.pageoffset = data.pageSize;
+    this.filterValues.pagenum = data.pageIndex;
+    this.skeletonLoader = new Array<number>(this.filterValues.pageoffset);
     this.Subscriptions.forEach((s) => s.unsubscribe());
     this.initializeBoardView();
   }

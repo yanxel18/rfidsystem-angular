@@ -1,0 +1,139 @@
+<table
+  mat-table
+  [dataSource]="tableDataSource"
+  class="area-table mat-elevation-z0"
+  [ngClass]="InputCurrentData ? 'with-pointer' : 'no-pointer'"
+  aria-describedby="Area Data"
+>
+  <ng-container matColumnDef="status">
+    <th mat-header-cell *matHeaderCellDef>状況</th>
+    <td mat-cell *matCellDef="let e">
+      <ng-container *ngIf="InputCurrentData; else notAllow">
+        <div
+          [ngClass]="e.confirm ? 'confirm-status' : 'unconfirm-status'"
+        >
+          {{ e.confirm ? "確認済み" : "未確認" }}
+        </div>
+      </ng-container>
+      <ng-template #notAllow>
+        <div
+          [ngClass]="
+            e.confirm ? 'confirm-status-noedit' : 'unconfirm-status-noedit'
+          "
+        >
+          {{ e.confirm ? "確認済み" : "未確認" }}
+        </div>
+      </ng-template>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="createdDate">
+    <th mat-header-cell *matHeaderCellDef>日付</th>
+    <td mat-cell *matCellDef="let e">{{ e.createdDate }}</td>
+  </ng-container>
+  <ng-container matColumnDef="processName">
+    <th mat-header-cell *matHeaderCellDef>実工程</th>
+    <td mat-cell *matCellDef="let e">{{ e.processName }}</td>
+  </ng-container>
+  <ng-container matColumnDef="locName">
+    <th mat-header-cell *matHeaderCellDef>号棟</th>
+    <td mat-cell *matCellDef="let e">{{ e.locName }}</td>
+  </ng-container>
+  <ng-container matColumnDef="teamName">
+    <th mat-header-cell *matHeaderCellDef>実班</th>
+    <td mat-cell *matCellDef="let e">{{ e.teamName }}</td>
+  </ng-container>
+  <ng-container matColumnDef="shiftName">
+    <th mat-header-cell *matHeaderCellDef>直</th>
+    <td mat-cell *matCellDef="let e">{{ e.shiftName }}</td>
+  </ng-container>
+  <ng-container matColumnDef="GID">
+    <th mat-header-cell *matHeaderCellDef>GID</th>
+    <td mat-cell *matCellDef="let e">{{ e.GID }}</td>
+  </ng-container>
+  <ng-container matColumnDef="divName">
+    <th mat-header-cell *matHeaderCellDef>区分G</th>
+    <td mat-cell *matCellDef="let e">{{ e.divName }}</td>
+  </ng-container>
+  <ng-container matColumnDef="kakariDesc">
+    <th mat-header-cell *matHeaderCellDef>係</th>
+    <td mat-cell *matCellDef="let e">{{ e.kakariDesc }}</td>
+  </ng-container>
+  <ng-container matColumnDef="displayName">
+    <th mat-header-cell *matHeaderCellDef>氏名</th>
+    <td mat-cell *matCellDef="let e">{{ e.displayName ?? "ー" }}</td>
+  </ng-container>
+  <ng-container matColumnDef="checkerWorkerA">
+    <th mat-header-cell *matHeaderCellDef>第1勤怠確認者</th>
+    <td mat-cell *matCellDef="let e">{{ e.checkerWorkerA ?? "ー" }}</td>
+  </ng-container>
+  <ng-container matColumnDef="checkerWorkerB">
+    <th mat-header-cell *matHeaderCellDef>第2勤怠確認者</th>
+    <td mat-cell *matCellDef="let e">{{ e.checkerWorkerB ?? "ー" }}</td>
+  </ng-container>
+  <ng-container matColumnDef="checkerWorkerC">
+    <th mat-header-cell *matHeaderCellDef>第3勤怠確認者</th>
+    <td mat-cell *matCellDef="let e">{{ e.checkerWorkerC ?? "ー" }}</td>
+  </ng-container>
+  <ng-container matColumnDef="checkerWorkerD">
+    <th mat-header-cell *matHeaderCellDef>第4勤怠確認者</th>
+    <td mat-cell *matCellDef="let e">{{ e.checkerWorkerD ?? "ー" }}</td>
+  </ng-container>
+  <ng-container matColumnDef="checkerWorkerE">
+    <th mat-header-cell *matHeaderCellDef>第5勤怠確認者</th>
+    <td mat-cell *matCellDef="let e">{{ e.checkerWorkerE ?? "ー" }}</td>
+  </ng-container>
+  <ng-container matColumnDef="checkerWorkerF">
+    <th mat-header-cell *matHeaderCellDef>第6勤怠確認者</th>
+    <td mat-cell *matCellDef="let e">{{ e.checkerWorkerF ?? "ー" }}</td>
+  </ng-container>
+  <ng-container matColumnDef="confirmWorker">
+    <th mat-header-cell *matHeaderCellDef>確認対応者</th>
+    <td mat-cell *matCellDef="let e">{{ e.confirmWorker ?? "ー" }}</td>
+  </ng-container>
+  <ng-container matColumnDef="reasonDesc">
+    <th mat-header-cell *matHeaderCellDef>内容</th>
+    <td mat-cell *matCellDef="let e">{{ e.reasonDesc ?? "ー" }}</td>
+  </ng-container>
+  <ng-container matColumnDef="contactDesc">
+    <th mat-header-cell *matHeaderCellDef>連絡有無</th>
+    <td mat-cell *matCellDef="let e">{{ e.contactDesc ?? "ー" }}</td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="currentColumns; sticky: true"></tr>
+  <tr
+    mat-row
+    *matRowDef="let row; let even = even; columns: currentColumns"
+    [ngClass]="{ 'row-color-alt': even }"
+    class="element-row"
+    (click)="selectedWorker(row)"
+  ></tr>
+  <tr class="mat-row" *matNoDataRow>
+    <td class="mat-cell not-found-row" colspan="15">
+      該当データがありません。
+    </td>
+  </tr>
+</table>
+<div fxLayoutAlign="center center">
+  <mat-paginator
+    #paginator
+    (page)="handlePageEvent($event)"
+    [length]="DataSource?.absentCount"
+    [pageSize]="InputPageView"
+    [showFirstLastButtons]="showFirstLastButtons"
+    [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
+    [hidePageSize]="hidePageSize"
+    [pageIndex]="pageIndex"
+    aria-label="Select page"
+  >
+  </mat-paginator>
+</div>
+<button
+  mat-fab
+  color="primary"
+  class="fab-button"
+  matTooltip="リストをCSVファイルにダウンロードする"
+  aria-label="CSVファイルダウンロード"
+  (click)="downloadKetsuLogsCSV()"
+>
+  <mat-icon>cloud_download</mat-icon>
+</button>
